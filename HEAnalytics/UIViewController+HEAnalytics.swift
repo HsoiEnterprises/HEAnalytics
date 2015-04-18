@@ -54,7 +54,12 @@ extension UIViewController {
     :returns: A string to use as the view tracking title.
     */
     func HE_analyticsViewTrackingTitle() -> String {
-        return self.title ?? NSStringFromClass(self.dynamicType)
+        if let title = self.title {
+            if !title.isEmpty {
+                return title
+            }
+        }
+        return NSStringFromClass(self.dynamicType)
     }
 
 }
