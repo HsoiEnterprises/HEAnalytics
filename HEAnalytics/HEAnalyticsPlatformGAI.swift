@@ -110,9 +110,9 @@ class HEAnalyticsPlatformGAI: HEAnalyticsPlatform {
             return
         }
         
-        var JSONString: String? = nil
-        if data.parameters != nil {
-            JSONString = HEJSONHelper.canonicalJSONRepresentationWithObject(data.parameters!)
+        var JSONString: String?
+        if let dataParameters = data.parameters {
+            JSONString = HEJSONHelper.canonicalJSONRepresentationWithObject(dataParameters)
         }
         GAI.sharedInstance().defaultTracker.send(GAIDictionaryBuilder.createEventWithCategory(data.category, action:data.event, label:JSONString, value:nil).build())
     }
