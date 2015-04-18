@@ -142,6 +142,7 @@ class HEAnalyticsPlatformFlurry: HEAnalyticsPlatform {
         let title = self.viewControlerTitle(viewController)
         let flurryEvent = "TrackView - " + title
         Flurry.logEvent(flurryEvent)
+        Flurry.logPageView()
     }
 
 }
