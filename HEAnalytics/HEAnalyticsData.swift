@@ -1,0 +1,161 @@
+//
+//  HEAnalyticsData.swift
+//
+//  Created by hsoi on 4/4/15.
+//
+//  HEAnalytics - Copyright (c) 2015, Hsoi Enterprises LLC
+//  All rights reserved.
+//  hsoi@hsoienterprises.com
+//
+//  Redistribution and use in source and binary forms, with or without
+//  modification, are permitted provided that the following conditions are met:
+//
+//  * Redistributions of source code must retain the above copyright notice, this
+//  list of conditions and the following disclaimer.
+//
+//  * Redistributions in binary form must reproduce the above copyright notice,
+//  this list of conditions and the following disclaimer in the documentation
+//  and/or other materials provided with the distribution.
+//
+//  * Neither the name of HEAnalytics nor the names of its
+//  contributors may be used to endorse or promote products derived from
+//  this software without specific prior written permission.
+//
+//  THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS"
+//  AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE
+//  IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE
+//  DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT HOLDER OR CONTRIBUTORS BE LIABLE
+//  FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL
+//  DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR
+//  SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER
+//  CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY,
+//  OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
+//  OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+
+import UIKit
+
+// Hsoi 2015-04-04 - strictly speaking this should be a struct, but since it may need to be accessed from ObjC, it can't be.
+@objc public class HEAnalyticsData {
+   
+    // convenient way to ensure we have some sort of consistent naming of the category.
+
+    /**
+    AnalyticsCategory is an enumeration of event categories, used to help hierarchically structure and organize an analytic event.
+    
+    Some analytics platforms directly utilize categories (e.g. Google Analytics). Those that do not should still strive to take advantage of the categorization (e.g. Flurry events will have the category name and event name concatenated to make the actual logged event).
+    
+    You should consider using Swift's support for enum extensions to add your own categories. You can of course use raw strings, but the enum, like using any sort of constant, can help with error reduction and code maintenance.
+    
+    - Activity:     Events dealing with "activity", such as from UIActivityViewController.
+    - Application:  Events from the "application", such as UIApplicationDelegate notifications.
+    - General:      A general "catch-all" category.
+    - View:         Events dealing with views, such as tracking that a view did appear.
+    - Error:        If you log errors as events, use this category.
+    - Settings:     Events working with in-app settings.
+    - Sharing:      A category for when the user "shares".
+    - Support:      For tracking support events (e.g. tapped on the button to email tech support)
+    - VersionCheck: If your app uses built-in version checking, track it with this category.
+    */
+    enum AnalyticsCategory : String {
+        case Activity                   =   "Activity"
+        case Application                =   "Application"
+        case General                    =   "General"
+        case View                       =   "View"
+        case Error                      =   "Error"
+        case Settings                   =   "Settings"
+        case Sharing                    =   "Sharing"
+        case Support                    =   "Support"
+        case VersionCheck               =   "VersionCheck"
+    }
+    
+    
+    /**
+    AnalyticsEvent is an enumeration of the actual events to log.
+    
+    You should consider using Swift's support for enum extensions to add your own events. You can of course use raw strings, but the enum, like using any sort of constant, can help with error reduction and code maintenance.
+
+    - Unknown:  For an unknown event. This can be used as some sort of fallback or default case.
+    */
+    enum AnalyticsEvent : String {
+        case Unknown                    =   "<unknown>"
+    }
+    
+    private (set) var category: String = AnalyticsCategory.General.rawValue
+    private (set) var event: String = AnalyticsEvent.Unknown.rawValue
+    private (set) var parameters: [NSObject:AnyObject]?
+
+    
+    /**
+    Designated Initializer.
+    
+    Creates an HEAnalyticsData object from the given strings and optional parameters.
+    
+    NB: While this may be the designated initializer, it is only because it satisfies the lowest common denominator
+    for how categories and events must be handled: as a string. This is what is ultimately required by the
+    analytics platforms and of course provides the client with as much flexibility as they desire. Plus, it maximizes
+    interoperability with Objective-C.
+    
+    HOWEVER, it is recommended to utilize the AnalyticsCategory/AnalyticsEvent initializers instead, and to
+    extend those enums as needed. This will provide for clearer and less error-prone code over time.
+    
+    :param: category   The event category.
+    :param: event      The event.
+    :param: parameters The optional parameters. Typed as an [NSObject:AnyObject] to maximize interoperability with NSDictionary and Objective-C code, but it is expected that the key is a (NS)String and the value is a plist-able/json-able type such as string, number, array/dictionary (of string, number). The data won't necessarily be santized before being passed along to a platform API, so the general recommendation is in your HEAnalytics subclass's specific event tracking functions to take the app-provided raw data to track and convert it to a "safe" type (strings and numbers are best), then pass this sanitized type/data in the event parameters.
+    
+    :returns: An HEAnalyticsData object, suitable for passing to HEAnalytics.trackData()
+    */
+    init(category: String, event: String, parameters: [NSObject:AnyObject]? = nil) {
+        self.category = category
+        self.event = event
+        self.parameters = parameters
+    }
+
+
+    /**
+    Convenience (and generally preferred) initializer.
+    
+    Creates an HEAnalyticsData object from the given AnalyticsCategory and AnalyticsEvent.
+    
+    :param: category   The AnalyticsCategory of the event to track
+    :param: event      The AnalyticsEvent of the event to track
+    :param: parameters The optional parameters. See comments on the designated initializer.
+    
+    :returns: An HEAnalyticsData object, suitable for passing to HEAnalytics.trackData()
+    */
+    convenience init(category: AnalyticsCategory, event: AnalyticsEvent, parameters: [NSObject:AnyObject]? = nil) {
+        self.init(category: category.rawValue, event: event.rawValue, parameters: parameters)
+    }
+    
+
+    /**
+    Convenience initializer.
+    
+    Creates an HEAnalyticsData object from the given AnalyticsCategory and a string for the event.
+    
+    :param: category   The AnalyticsCategory of the event to track
+    :param: event      A string/name of the event to track
+    :param: parameters The optional parameters. See comments on the designated initializer.
+    
+    :returns: An HEAnalyticsData object, suitable for passing to HEAnalytics.trackData()
+    */
+    convenience init(category: AnalyticsCategory, event: String, parameters: [NSObject:AnyObject]? = nil) {
+        self.init(category: category.rawValue, event: event, parameters: parameters)
+    }
+
+    
+    /**
+    Convenience initializer.
+    
+    Creates an HEAnalyticsData object from the given category string and AnalyticsEvent.
+    
+    :param: category   A string/name of the category to track
+    :param: event      The AnalyticsEvent of the event to track
+    :param: parameters The optional parameters. See comments on the designated initializer.
+    
+    :returns: An HEAnalyticsData object, suitable for passing to HEAnalytics.trackData()
+    */
+    convenience init(category: String, event: AnalyticsEvent, parameters: [NSObject:AnyObject]? = nil) {
+        self.init(category: category, event: event.rawValue, parameters: parameters)
+    }
+
+}
