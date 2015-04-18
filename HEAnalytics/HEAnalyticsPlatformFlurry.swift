@@ -34,6 +34,9 @@
 
 import UIKit
 
+/**
+An HEAnalyticsPlatform for the Flurry analytics platform.
+*/
 class HEAnalyticsPlatformFlurry: HEAnalyticsPlatform {
    
     override init() {

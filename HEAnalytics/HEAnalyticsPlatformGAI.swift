@@ -34,6 +34,10 @@
 
 import UIKit
 
+
+/**
+An HEAnalyticsPlatform for the Google Analytics (GAI) platform.
+*/
 class HEAnalyticsPlatformGAI: HEAnalyticsPlatform {
    
     override init() {

@@ -34,11 +34,25 @@
 
 import Foundation
 
-/** HEAnalytics Extends UIViewController
-
+/**
+HEAnalytic's extension to UIViewController.
 */
 extension UIViewController {
     
+    /**
+    HE_analyticsViewTrackingTitle is an effort to always provide a stable value for view tracking by HEAnalytics.
+    
+    By default, it wants to return the title of the ViewController. If however the ViewController does not have
+    a title (either nil or empty), it will return the name of the ViewController class (e.g. "MyUIViewController").
+    
+    You can also implement this method in your UIViewController subclasses. This can be useful if you want to track
+    views by a more stable identifier. For example, a ViewController might have a title based upon the content of
+    the ViewController, but you just want to track they went to "this view" so you could override this method
+    to return a stable string constant.
+    
+    
+    :returns: A string to use as the view tracking title.
+    */
     func HE_analyticsViewTrackingTitle() -> String {
         return self.title ?? NSStringFromClass(self.dynamicType)
     }

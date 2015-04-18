@@ -35,6 +35,10 @@
 
 import UIKit
 
+
+/**
+HEJSONHelper provides some simple helpers for working with JSON.
+*/
 public class HEJSONHelper: NSObject {
    
     
