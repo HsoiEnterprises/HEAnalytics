@@ -37,6 +37,8 @@ Developed with Xcode 6.2 and Swift 1.1, aiming for iOS 8 as a minimum supported 
 
 Swift 1.2 support is planned.
 
+No effort has been made to make this work on Mac OS X, and there are presently no plans to do so.
+
 
 # Installation
 
@@ -51,7 +53,7 @@ You will also need to obtain and integrate the analytics platform SDK of your ch
 
 ## AnalyticsPlatformConfig.plist
 
-Create an `AnalyticsPlatformConfig.plist` file. The structure of this file is fairly simple. The plist root is a dictionary. Each entry in the root dictionary is another dictionary, the key of which is the class name of the `HEAnalyticsPlatform` subclass you want to support. Within the platform dictionary, place the platform-specific configuration info. Refer to each `HEAnalyticsPlatform.initializePlatform()` implementation for knowledge of what keys/values are supported.
+Create an `AnalyticsPlatformConfig.plist` file. The structure of this file is fairly simple. The plist root is a dictionary. Each entry in the root dictionary is another dictionary, the key of which is the class name of the `HEAnalyticsPlatform` subclass you want to support – the subclass name is important as `HEAnalytics` uses this to perform a dynamic instantiation of the named class. Within the platform dictionary, place the platform-specific configuration info. Refer to each `HEAnalyticsPlatform.initializePlatform()` implementation for knowledge of what keys/values are supported.
 
 For example, if you want to support both Flurry and Google Analytics, your file might look like this:
 
@@ -136,7 +138,12 @@ View tracking can be performed by invoking `HEAnalytics.trackView()`, passing th
 
 ## Opt-Out
 
+Tracking and privacy are important to users. Many analytics platforms offer a means of opting out, and so `HEAnalytics` provides and API for this.
 
+Some considerations:
+
+- `HEAnalytics` considers "start/stop" and "opt-out" as related but distinct. You can still start if opted out, and depending upon the platform it may or may not result in side-effect behaviors.
+- 'HEAnalytics' does nothing to manage the "opt-out" state. This is something you should expose to your users somewhere in your GUI (e.g. a `UISwitch`). In doing so, you are responsible for saving and restoring the state, enforcing the state, ensuring `HEAnalytics` is in compliance with the state.
 
 
 
