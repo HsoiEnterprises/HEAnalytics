@@ -38,26 +38,23 @@ import UIKit
 /**
 An HEAnalyticsPlatform for the Google Analytics (GAI) platform.
 */
+@objc(HEAnalyticsPlatformGAI)
 class HEAnalyticsPlatformGAI: HEAnalyticsPlatform {
    
-    override init() {
-        super.init()
+    required init(platformData: [NSObject:AnyObject]) {
+        super.init(platformData: platformData)
     }
 
-    override internal var platformKey: String {
-        return "GAI"
-    }
+    override func initializePlatform(platformData: [NSObject:AnyObject]) {
 
-    
-    override func initializePlatform() {
-
-        let configDict = self.loadPlatformConfig()
-
-        if let dispatchInterval = configDict["dispatchInterval"] as? NSTimeInterval {
+        if let dispatchInterval = platformData["dispatchInterval"] as? NSTimeInterval {
             GAI.sharedInstance().dispatchInterval = dispatchInterval
         }
+        else {
+            GAI.sharedInstance().dispatchInterval = 120 // Google's documented default.
+        }
         
-        if let logLevel = configDict["logLevel"] as? UInt {
+        if let logLevel = platformData["logLevel"] as? UInt {
             GAI.sharedInstance().logger.logLevel = GAILogLevel(rawValue: logLevel) ?? .Error
         }
         else {
@@ -68,19 +65,22 @@ class HEAnalyticsPlatformGAI: HEAnalyticsPlatform {
         #endif
         }
         
-        let trackingID = configDict["trackingID"] as String
+        let trackingID = platformData["trackingID"] as String
         GAI.sharedInstance().trackerWithTrackingId(trackingID)
         
-        if let dryRun = configDict["dryRun"] as? Bool {
+        if let dryRun = platformData["dryRun"] as? Bool {
             GAI.sharedInstance().dryRun = dryRun
         }
+        else {
+            GAI.sharedInstance().dryRun = false
+        }
 
-        if let allowIDFACollection = configDict["allowIDFA"] as? Bool {
+        if let allowIDFACollection = platformData["allowIDFA"] as? Bool {
             GAI.sharedInstance().defaultTracker.allowIDFACollection = allowIDFACollection
         }
         
 
-        super.initializePlatform()
+        super.initializePlatform(platformData)
     }
     
     

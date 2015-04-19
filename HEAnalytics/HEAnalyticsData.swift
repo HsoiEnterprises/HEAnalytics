@@ -69,19 +69,8 @@ import UIKit
     }
     
     
-    /**
-    AnalyticsEvent is an enumeration of the actual events to log.
-    
-    You should consider using Swift's support for enum extensions to add your own events. You can of course use raw strings, but the enum, like using any sort of constant, can help with error reduction and code maintenance.
-
-    - Unknown:  For an unknown event. This can be used as some sort of fallback or default case.
-    */
-    enum AnalyticsEvent : String {
-        case Unknown                    =   "<unknown>"
-    }
-    
     private (set) var category: String = AnalyticsCategory.General.rawValue
-    private (set) var event: String = AnalyticsEvent.Unknown.rawValue
+    private (set) var event: String = "<unknown>"
     private (set) var parameters: [NSObject:AnyObject]?
 
     
@@ -95,7 +84,7 @@ import UIKit
     analytics platforms and of course provides the client with as much flexibility as they desire. Plus, it maximizes
     interoperability with Objective-C.
     
-    HOWEVER, it is recommended to utilize the AnalyticsCategory/AnalyticsEvent initializers instead, and to
+    HOWEVER, it is recommended to utilize the AnalyticsCategory/Event(as String) initializers instead, and to
     extend those enums as needed. This will provide for clearer and less error-prone code over time.
     
     :param: category   The event category.
@@ -114,22 +103,6 @@ import UIKit
     /**
     Convenience (and generally preferred) initializer.
     
-    Creates an HEAnalyticsData object from the given AnalyticsCategory and AnalyticsEvent.
-    
-    :param: category   The AnalyticsCategory of the event to track
-    :param: event      The AnalyticsEvent of the event to track
-    :param: parameters The optional parameters. See comments on the designated initializer.
-    
-    :returns: An HEAnalyticsData object, suitable for passing to HEAnalytics.trackData()
-    */
-    convenience init(category: AnalyticsCategory, event: AnalyticsEvent, parameters: [NSObject:AnyObject]? = nil) {
-        self.init(category: category.rawValue, event: event.rawValue, parameters: parameters)
-    }
-    
-
-    /**
-    Convenience initializer.
-    
     Creates an HEAnalyticsData object from the given AnalyticsCategory and a string for the event.
     
     :param: category   The AnalyticsCategory of the event to track
@@ -140,22 +113,6 @@ import UIKit
     */
     convenience init(category: AnalyticsCategory, event: String, parameters: [NSObject:AnyObject]? = nil) {
         self.init(category: category.rawValue, event: event, parameters: parameters)
-    }
-
-    
-    /**
-    Convenience initializer.
-    
-    Creates an HEAnalyticsData object from the given category string and AnalyticsEvent.
-    
-    :param: category   A string/name of the category to track
-    :param: event      The AnalyticsEvent of the event to track
-    :param: parameters The optional parameters. See comments on the designated initializer.
-    
-    :returns: An HEAnalyticsData object, suitable for passing to HEAnalytics.trackData()
-    */
-    convenience init(category: String, event: AnalyticsEvent, parameters: [NSObject:AnyObject]? = nil) {
-        self.init(category: category, event: event.rawValue, parameters: parameters)
     }
 
 }

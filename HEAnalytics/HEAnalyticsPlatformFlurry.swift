@@ -37,21 +37,17 @@ import UIKit
 /**
 An HEAnalyticsPlatform for the Flurry analytics platform.
 */
+@objc(HEAnalyticsPlatformFlurry)
 class HEAnalyticsPlatformFlurry: HEAnalyticsPlatform {
    
-    override init() {
-        super.init()
+    required init(platformData: [NSObject:AnyObject]) {
+        super.init(platformData: platformData)
     }
     
-    override internal var platformKey: String {
-        return "Flurry"
-    }
-    
-    
-    override func initializePlatform() {
-        let configDict = self.loadPlatformConfig()
 
-        if let logLevel = configDict["logLevel"] as? UInt {
+    override func initializePlatform(platformData: [NSObject:AnyObject]) {
+
+        if let logLevel = platformData["logLevel"] as? UInt {
             let levelAsUInt32 = UInt32(logLevel)
             Flurry.setLogLevel(FlurryLogLevel(levelAsUInt32))
         }
@@ -68,10 +64,10 @@ class HEAnalyticsPlatformFlurry: HEAnalyticsPlatform {
 
         Flurry.setAppVersion(self.appVersion())
 
-        let apiKey = configDict["apiKey"] as String
+        let apiKey = platformData["apiKey"] as String
         Flurry.startSession(apiKey)
 
-        super.initializePlatform()
+        super.initializePlatform(platformData)
     }
     
     
