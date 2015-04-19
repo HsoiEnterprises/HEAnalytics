@@ -32,64 +32,6 @@
 //  OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
 //  OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
-/*
-
-So the expectation....
-
-Apps always are unique in the analytics they want to track. Thus, we can only provide base structure.
-
-The app should subclass HEAnalytics. Likely you'll want the one-and-only-one instance of the analytics
-tracker, so adding sharedInstance() to your subclass makes sense. Of course, if you want to have multiple
-trackers that's fine (Google Analytics API docs even discuss doing this), but you'll have to make it
-go (e.g. you may need to subclass the HEAnalyticsPlatform classes to add in the way to get the unique
-API keys per tracker and so on). And then, into your HEAnalytics subclass you should add whatever
-individual functions are needed to track your stuff. For example:
-
-    func userTappedSomeImportantButton() {
-        let data = HEAnalyticsData(category: .General, event: "Tapped Important Button")
-        trackData(data)
-    }
-
-Then throughout the app code...
-
-The analytics MUST be setup in application(application, willFinishLaunchingWithOptions). NB: ** WILL ** NOT "DID"
-
-    MyAppAnalytics.sharedInstance().addPlatform(HEAnalyticsPlatformFlurry())
-    MyAppAnalytics.sharedInstance().addPlatform(HEAnalyticsPlatformGAI())
-    MyAppAnalytics.sharedInstance().start()
-
-and that'll start things rolling.
-
-Again NOTE! It must be set up in "WILL FINISH" so that everything can be fully established, including the automatic
-tracking of Application events. By the time "did finish launching" happens, it's too late.
-
-Then in relevant spots, call things:
-
-    @IBAction func importantButtonTapped(sender: AnyObject?) {
-        MyAppAnalytics.sharedInstance().userTappedSomeImportantButton()
-    }
-
-Note: if you need to, the analytic tracking functions can take arguments, which you can then funnel into the
-parameters... whatever is relevant to you. Just a few things to note:
-
--   try to minimize the work you do in the code that will invoke the analytics API. That code shouldn't
-    know nor care about how the analytics tracks or massages the data. Try to encapsulate any sort of
-    data massaging in the analytics (sub)classes.
--   When implementing your analytics (sub)classes, be mindful of passing nil data around, as the analytics
-    don't always like that. What you may have to do before passing along to the lower-level APIs is
-    sanitize the data, like turn nil into "" (empty string) or "<unknown value>" or something else. Remember
-    that 1. we don't want things to crash, 2. it's better to be more expressive in the data collected
-    because once the release goes out the door we can't get at more analytics data -- so it's generally
-    better to collect more data and then filter it out afterwards (easier to filter than try to gather
-    after the fact).
-
-
-On "optOut" - this is something HEAnalytics works to provide infrastructre for, but use of it is up to you.
-It is upon you to provide UI for working with this setting. It is up to you to persist this setting across
-launches, and to enforce the application of it into the HEAnalytics framework.
-
-*/
-
 import UIKit
 
 /**
@@ -106,13 +48,17 @@ public class HEAnalytics: NSObject {
     }
     */
     
+    
     override init() {
         super.init()
     }
     
+    
     deinit {
         self.stop()
     }
+    
+    
     
     private var platforms: [HEAnalyticsPlatform] = []
     
@@ -125,8 +71,19 @@ public class HEAnalytics: NSObject {
     */
     func start() {
         
+        self.loadPlatforms()
+        
+        self.registerForNotifications()
+        
+        for platform in self.platforms {
+            platform.start()
+        }
+    }
+    
+    
+    internal func loadPlatforms() {
         assert(self.platforms.count == 0, "calling HEAnalytics.start() and there are loaded platforms. How did this happen?")
-
+        
         // Hsoi 2015-04-18 - Load up the configuration.
         //
         // Note the interesting things we must do because Swift isn't the most dynamic of languages. Long live Objective-C!
@@ -149,8 +106,14 @@ public class HEAnalytics: NSObject {
             }
         }
         assert(self.platforms.count > 0, "no analytics platforms were loaded. Is the AnalyticsPlatformConfig.plist present and populated?")
-        
-        
+    }
+    
+    internal func unloadPlatforms() {
+        platforms = []
+    }
+    
+    
+    internal func registerForNotifications() {
         // Hsoi 2015-04-18 - Most apps want to track UIApplication events, so let's just track them automatically. One less thing
         // for you to have to worry about!
         NSNotificationCenter.defaultCenter().addObserver(self, selector: Selector("handleUIApplicationBackgroundRefreshStatusDidChangeNotification:"), name: UIApplicationBackgroundRefreshStatusDidChangeNotification, object: nil)
@@ -162,12 +125,10 @@ public class HEAnalytics: NSObject {
         NSNotificationCenter.defaultCenter().addObserver(self, selector: Selector("handleUIApplicationWillResignActiveNotification:"), name: UIApplicationWillResignActiveNotification, object: nil)
         NSNotificationCenter.defaultCenter().addObserver(self, selector: Selector("handleUIApplicationWillTerminateNotification:"), name: UIApplicationWillTerminateNotification, object: nil)
         NSNotificationCenter.defaultCenter().addObserver(self, selector: Selector("handleUIContentSizeCategoryDidChangeNotification:"), name: UIContentSizeCategoryDidChangeNotification, object: nil)
-        
-        
-        // Hsoi 2015-04-18 - And finally, we can start each platform doing what it needs to do.
-        for platform in self.platforms {
-            platform.start()
-        }
+    }
+    
+    internal func unregisterForNotifications() {
+        NSNotificationCenter.defaultCenter().removeObserver(self)
     }
 
     
@@ -179,8 +140,8 @@ public class HEAnalytics: NSObject {
             platform.stop()
         }
         
-        NSNotificationCenter.defaultCenter().removeObserver(self)
-        platforms = []
+        self.unregisterForNotifications()
+        self.unloadPlatforms()
     }
     
     
