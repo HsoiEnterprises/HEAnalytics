@@ -33,7 +33,13 @@ It enables logic for converting the data-to-track into something the analytics A
 
 # Supported OS and SDK
 
-Developed with Xcode 6.2 and Swift 1.1, aiming for iOS 8 as a minimum supported version. It should work with iOS 7, but has not been heavily tested to that end.
+Developed with
+
+- Xcode 6.2
+- Swift 1.1
+- iOS 8
+
+It should work with iOS 7, but has not been extensively tested.
 
 Swift 1.2 support is planned.
 
@@ -146,7 +152,23 @@ Some considerations:
 - 'HEAnalytics' does nothing to manage the "opt-out" state. This is something you should expose to your users somewhere in your GUI (e.g. a `UISwitch`). In doing so, you are responsible for saving and restoring the state, enforcing the state, ensuring `HEAnalytics` is in compliance with the state.
 
 
+# Contact
+
+## Hsoi Enterprises
+- [Website][hsoienterprises-website]
+- [Facebook][hsoienterprises-facebook]
+- [Twitter (@HsoiEnterprises)][hsoienterprises-twitter]
+
+## Creator
+- John C. Daub [(@hsoi)][hsoi-twitter]
 
 # License
 
 BSD 3-clause “New” or “Revised” License. See included "License" file.
+
+
+
+[hsoienterprises-website]: http://www.hsoienterprises.com
+[hsoienterprises-facebook]: https://www.facebook.com/HsoiEnterprises
+[hsoienterprises-twitter]: http://twitter.com/hsoienterprises
+[hsoi-twitter]: http://twitter.com/hsoi
