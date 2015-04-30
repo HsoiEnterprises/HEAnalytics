@@ -97,7 +97,7 @@ public class HEAnalytics: NSObject {
                 configDict.enumerateKeysAndObjectsUsingBlock({ (key:AnyObject!, value:AnyObject!, stop:UnsafeMutablePointer<ObjCBool>) -> Void in
                     if let keyString = key as? String {
                         if let valueDictionary = value as? [NSObject:AnyObject] {
-                            let theClass = NSClassFromString(keyString) as HEAnalyticsPlatform.Type
+                            let theClass = NSClassFromString(keyString) as! HEAnalyticsPlatform.Type
                             let platform = theClass(platformData: valueDictionary)
                             self.platforms.append(platform)
                         }
