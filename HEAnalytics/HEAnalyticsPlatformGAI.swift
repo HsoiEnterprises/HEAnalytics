@@ -65,8 +65,9 @@ class HEAnalyticsPlatformGAI: HEAnalyticsPlatform {
         #endif
         }
         
-        let trackingID = platformData["trackingID"] as String
-        GAI.sharedInstance().trackerWithTrackingId(trackingID)
+        if let trackingID = platformData["trackingID"] as? String {
+            GAI.sharedInstance().trackerWithTrackingId(trackingID)
+        }
         
         if let dryRun = platformData["dryRun"] as? Bool {
             GAI.sharedInstance().dryRun = dryRun
@@ -114,7 +115,8 @@ class HEAnalyticsPlatformGAI: HEAnalyticsPlatform {
         if let dataParameters = data.parameters {
             JSONString = HEJSONHelper.canonicalJSONRepresentationWithObject(dataParameters)
         }
-        GAI.sharedInstance().defaultTracker.send(GAIDictionaryBuilder.createEventWithCategory(data.category, action:data.event, label:JSONString, value:nil).build())
+        let sendData = GAIDictionaryBuilder.createEventWithCategory(data.category, action:data.event, label:JSONString, value:nil).build()
+        GAI.sharedInstance().defaultTracker.send(sendData as [NSObject: AnyObject])
     }
 
     
@@ -126,7 +128,7 @@ class HEAnalyticsPlatformGAI: HEAnalyticsPlatform {
         let tracker = GAI.sharedInstance().defaultTracker
         let title = self.viewControlerTitle(viewController)
         tracker.set(kGAIScreenName, value: title)
-        tracker.send(GAIDictionaryBuilder.createScreenView().build())
+        tracker.send(GAIDictionaryBuilder.createScreenView().build() as [NSObject: AnyObject])
     }
 
 }
