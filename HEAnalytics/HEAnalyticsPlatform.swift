@@ -33,6 +33,7 @@
 //  OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
 import Foundation
+import UIKit
 
 /**
 HEAnalyticsPlatform provides the base class and structure for implementing an analytics platform's specific API and integrating it into the HEAnalytics framework.
