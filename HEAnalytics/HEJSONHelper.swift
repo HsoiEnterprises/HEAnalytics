@@ -165,8 +165,8 @@ public class HEJSONHelper: NSObject {
             var keys = sorted(dictionary.keys) {
                 (obj1, obj2) in
 
-                // NOTE: These forced casts should not fail, but if they do, we'll need to find
-                //       another solution.
+                // Forcing casts because they SHOULD be strings. If they are not, then there's programmer error somewhere
+                // and we should crash to become aware of whatever the problem is.
                 let s1 = obj1 as! String
                 let s2 = obj2 as! String
                 return s1 < s2

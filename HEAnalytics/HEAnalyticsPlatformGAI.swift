@@ -65,9 +65,8 @@ class HEAnalyticsPlatformGAI: HEAnalyticsPlatform {
         #endif
         }
         
-        if let trackingID = platformData["trackingID"] as? String {
-            GAI.sharedInstance().trackerWithTrackingId(trackingID)
-        }
+        let trackingID = platformData["trackingID"] as! String
+        GAI.sharedInstance().trackerWithTrackingId(trackingID)
         
         if let dryRun = platformData["dryRun"] as? Bool {
             GAI.sharedInstance().dryRun = dryRun
