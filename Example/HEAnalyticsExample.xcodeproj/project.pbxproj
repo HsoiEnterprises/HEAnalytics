@@ -14,6 +14,14 @@
 		791FBE7A1AFB76F000E3453C /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 791FBE791AFB76F000E3453C /* Images.xcassets */; };
 		791FBE7D1AFB76F000E3453C /* LaunchScreen.xib in Resources */ = {isa = PBXBuildFile; fileRef = 791FBE7B1AFB76F000E3453C /* LaunchScreen.xib */; };
 		791FBE891AFB76F000E3453C /* HEAnalyticsExampleTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 791FBE881AFB76F000E3453C /* HEAnalyticsExampleTests.swift */; };
+		794B108D1AFB799300D93A51 /* HEAnalytics.swift in Sources */ = {isa = PBXBuildFile; fileRef = 794B10851AFB799300D93A51 /* HEAnalytics.swift */; };
+		794B108E1AFB799300D93A51 /* HEAnalyticsData.swift in Sources */ = {isa = PBXBuildFile; fileRef = 794B10861AFB799300D93A51 /* HEAnalyticsData.swift */; };
+		794B108F1AFB799300D93A51 /* HEAnalyticsPlatform.swift in Sources */ = {isa = PBXBuildFile; fileRef = 794B10871AFB799300D93A51 /* HEAnalyticsPlatform.swift */; };
+		794B10901AFB799300D93A51 /* HEAnalyticsPlatformFlurry.swift in Sources */ = {isa = PBXBuildFile; fileRef = 794B10881AFB799300D93A51 /* HEAnalyticsPlatformFlurry.swift */; };
+		794B10911AFB799300D93A51 /* HEAnalyticsPlatformGAI.swift in Sources */ = {isa = PBXBuildFile; fileRef = 794B10891AFB799300D93A51 /* HEAnalyticsPlatformGAI.swift */; };
+		794B10921AFB799300D93A51 /* HEAnalyticsPlatformMixpanel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 794B108A1AFB799300D93A51 /* HEAnalyticsPlatformMixpanel.swift */; };
+		794B10931AFB799300D93A51 /* HEJSONHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 794B108B1AFB799300D93A51 /* HEJSONHelper.swift */; };
+		794B10941AFB799300D93A51 /* UIViewController+HEAnalytics.swift in Sources */ = {isa = PBXBuildFile; fileRef = 794B108C1AFB799300D93A51 /* UIViewController+HEAnalytics.swift */; };
 		A38557D5FD85E22805F9A167 /* libPods.a in Frameworks */ = {isa = PBXBuildFile; fileRef = C3900659B69E7C5ABD2A12D2 /* libPods.a */; };
 /* End PBXBuildFile section */
 
@@ -40,6 +48,15 @@
 		791FBE821AFB76F000E3453C /* HEAnalyticsExampleTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = HEAnalyticsExampleTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		791FBE871AFB76F000E3453C /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		791FBE881AFB76F000E3453C /* HEAnalyticsExampleTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HEAnalyticsExampleTests.swift; sourceTree = "<group>"; };
+		794B10851AFB799300D93A51 /* HEAnalytics.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = HEAnalytics.swift; sourceTree = "<group>"; };
+		794B10861AFB799300D93A51 /* HEAnalyticsData.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = HEAnalyticsData.swift; sourceTree = "<group>"; };
+		794B10871AFB799300D93A51 /* HEAnalyticsPlatform.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = HEAnalyticsPlatform.swift; sourceTree = "<group>"; };
+		794B10881AFB799300D93A51 /* HEAnalyticsPlatformFlurry.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = HEAnalyticsPlatformFlurry.swift; sourceTree = "<group>"; };
+		794B10891AFB799300D93A51 /* HEAnalyticsPlatformGAI.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = HEAnalyticsPlatformGAI.swift; sourceTree = "<group>"; };
+		794B108A1AFB799300D93A51 /* HEAnalyticsPlatformMixpanel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = HEAnalyticsPlatformMixpanel.swift; sourceTree = "<group>"; };
+		794B108B1AFB799300D93A51 /* HEJSONHelper.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = HEJSONHelper.swift; sourceTree = "<group>"; };
+		794B108C1AFB799300D93A51 /* UIViewController+HEAnalytics.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "UIViewController+HEAnalytics.swift"; sourceTree = "<group>"; };
+		794B10951AFB7A4100D93A51 /* HEAnalyticsExample-Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "HEAnalyticsExample-Bridging-Header.h"; sourceTree = "<group>"; };
 		C3900659B69E7C5ABD2A12D2 /* libPods.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libPods.a; sourceTree = BUILT_PRODUCTS_DIR; };
 		D1FB6D3D95B4C56DF5DB3762 /* Pods.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = Pods.debug.xcconfig; path = "Pods/Target Support Files/Pods/Pods.debug.xcconfig"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -75,6 +92,7 @@
 		791FBE621AFB76F000E3453C = {
 			isa = PBXGroup;
 			children = (
+				794B10841AFB799300D93A51 /* HEAnalytics */,
 				791FBE6D1AFB76F000E3453C /* HEAnalyticsExample */,
 				791FBE851AFB76F000E3453C /* HEAnalyticsExampleTests */,
 				791FBE6C1AFB76F000E3453C /* Products */,
@@ -110,6 +128,7 @@
 			isa = PBXGroup;
 			children = (
 				791FBE6F1AFB76F000E3453C /* Info.plist */,
+				794B10951AFB7A4100D93A51 /* HEAnalyticsExample-Bridging-Header.h */,
 			);
 			name = "Supporting Files";
 			sourceTree = "<group>";
@@ -129,6 +148,22 @@
 				791FBE871AFB76F000E3453C /* Info.plist */,
 			);
 			name = "Supporting Files";
+			sourceTree = "<group>";
+		};
+		794B10841AFB799300D93A51 /* HEAnalytics */ = {
+			isa = PBXGroup;
+			children = (
+				794B10851AFB799300D93A51 /* HEAnalytics.swift */,
+				794B10861AFB799300D93A51 /* HEAnalyticsData.swift */,
+				794B10871AFB799300D93A51 /* HEAnalyticsPlatform.swift */,
+				794B10881AFB799300D93A51 /* HEAnalyticsPlatformFlurry.swift */,
+				794B10891AFB799300D93A51 /* HEAnalyticsPlatformGAI.swift */,
+				794B108A1AFB799300D93A51 /* HEAnalyticsPlatformMixpanel.swift */,
+				794B108B1AFB799300D93A51 /* HEJSONHelper.swift */,
+				794B108C1AFB799300D93A51 /* UIViewController+HEAnalytics.swift */,
+			);
+			name = HEAnalytics;
+			path = ../HEAnalytics;
 			sourceTree = "<group>";
 		};
 		D952D336F3218A19D4273B4E /* Frameworks */ = {
@@ -275,8 +310,16 @@
 			buildActionMask = 2147483647;
 			files = (
 				791FBE751AFB76F000E3453C /* SecondViewController.swift in Sources */,
+				794B10941AFB799300D93A51 /* UIViewController+HEAnalytics.swift in Sources */,
+				794B108E1AFB799300D93A51 /* HEAnalyticsData.swift in Sources */,
+				794B10911AFB799300D93A51 /* HEAnalyticsPlatformGAI.swift in Sources */,
+				794B108D1AFB799300D93A51 /* HEAnalytics.swift in Sources */,
+				794B10931AFB799300D93A51 /* HEJSONHelper.swift in Sources */,
+				794B10901AFB799300D93A51 /* HEAnalyticsPlatformFlurry.swift in Sources */,
 				791FBE711AFB76F000E3453C /* AppDelegate.swift in Sources */,
+				794B108F1AFB799300D93A51 /* HEAnalyticsPlatform.swift in Sources */,
 				791FBE731AFB76F000E3453C /* FirstViewController.swift in Sources */,
+				794B10921AFB799300D93A51 /* HEAnalyticsPlatformMixpanel.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -407,6 +450,7 @@
 				INFOPLIST_FILE = HEAnalyticsExample/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_OBJC_BRIDGING_HEADER = "HEAnalyticsExample/HEAnalyticsExample-Bridging-Header.h";
 			};
 			name = Debug;
 		};
@@ -418,6 +462,7 @@
 				INFOPLIST_FILE = HEAnalyticsExample/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_OBJC_BRIDGING_HEADER = "HEAnalyticsExample/HEAnalyticsExample-Bridging-Header.h";
 			};
 			name = Release;
 		};
