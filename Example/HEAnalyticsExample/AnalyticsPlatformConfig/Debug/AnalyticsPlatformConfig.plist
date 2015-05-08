@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>HEAnalyticsPlatformGAI</key>
+	<dict>
+		<key>trackingID</key>
+		<string>UA-61735748-3</string>
+		<key>dispatchInterval</key>
+		<integer>10</integer>
+		<key>logLevel</key>
+		<integer>4</integer>
+	</dict>
+	<key>HEAnalyticsPlatformFlurry</key>
+	<dict>
+		<key>apiKey</key>
+		<string>P9YDTB5WD6288CH33YP9</string>
+		<key>logLevel</key>
+		<integer>3</integer>
+	</dict>
+</dict>
+</plist>
