@@ -35,13 +35,11 @@ It enables logic for converting the data-to-track into something the analytics A
 
 Developed with
 
-- Xcode 6.2
-- Swift 1.1
+- Xcode 6.4 beta 2 (should work with Xcode 6.3.1)
+- Swift 1.2
 - iOS 8
 
 It should work with iOS 7, but has not been extensively tested.
-
-Swift 1.2 support is planned.
 
 No effort has been made to make this work on Mac OS X, and there are presently no plans to do so.
 
@@ -98,12 +96,7 @@ Second, `HEAnalytics` aims to provide a unified abstraction layer for analytics 
 Code would look something like this:
 
     class MyAppAnalytics: HEAnalytics {
-        class var sharedInstance: MyAppAnalytics {
-            struct Static {
-                static let instance: MyAppAnalytics = MyAppAnalytics()
-            }
-            return Static.instance
-        }
+        static let sharedInstance = MyAppAnalytics()
 
         func trackSliderValue(value: Float) {
             let parameters = ["value": value]
