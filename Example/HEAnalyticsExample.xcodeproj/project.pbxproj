@@ -22,6 +22,7 @@
 		794B10921AFB799300D93A51 /* HEAnalyticsPlatformMixpanel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 794B108A1AFB799300D93A51 /* HEAnalyticsPlatformMixpanel.swift */; };
 		794B10931AFB799300D93A51 /* HEJSONHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 794B108B1AFB799300D93A51 /* HEJSONHelper.swift */; };
 		794B10941AFB799300D93A51 /* UIViewController+HEAnalytics.swift in Sources */ = {isa = PBXBuildFile; fileRef = 794B108C1AFB799300D93A51 /* UIViewController+HEAnalytics.swift */; };
+		799860571AFCC5BD00C70A50 /* SampleAnalytics.swift in Sources */ = {isa = PBXBuildFile; fileRef = 799860561AFCC5BD00C70A50 /* SampleAnalytics.swift */; };
 		A38557D5FD85E22805F9A167 /* libPods.a in Frameworks */ = {isa = PBXBuildFile; fileRef = C3900659B69E7C5ABD2A12D2 /* libPods.a */; };
 /* End PBXBuildFile section */
 
@@ -57,6 +58,7 @@
 		794B108B1AFB799300D93A51 /* HEJSONHelper.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = HEJSONHelper.swift; sourceTree = "<group>"; };
 		794B108C1AFB799300D93A51 /* UIViewController+HEAnalytics.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "UIViewController+HEAnalytics.swift"; sourceTree = "<group>"; };
 		794B10951AFB7A4100D93A51 /* HEAnalyticsExample-Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "HEAnalyticsExample-Bridging-Header.h"; sourceTree = "<group>"; };
+		799860561AFCC5BD00C70A50 /* SampleAnalytics.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SampleAnalytics.swift; sourceTree = "<group>"; };
 		C3900659B69E7C5ABD2A12D2 /* libPods.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libPods.a; sourceTree = BUILT_PRODUCTS_DIR; };
 		D1FB6D3D95B4C56DF5DB3762 /* Pods.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = Pods.debug.xcconfig; path = "Pods/Target Support Files/Pods/Pods.debug.xcconfig"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -113,6 +115,7 @@
 		791FBE6D1AFB76F000E3453C /* HEAnalyticsExample */ = {
 			isa = PBXGroup;
 			children = (
+				799860561AFCC5BD00C70A50 /* SampleAnalytics.swift */,
 				791FBE701AFB76F000E3453C /* AppDelegate.swift */,
 				791FBE721AFB76F000E3453C /* FirstViewController.swift */,
 				791FBE741AFB76F000E3453C /* SecondViewController.swift */,
@@ -186,6 +189,7 @@
 				791FBE681AFB76F000E3453C /* Frameworks */,
 				791FBE691AFB76F000E3453C /* Resources */,
 				32B7D6E56AEFFD870DE7E27D /* Copy Pods Resources */,
+				799860551AFCC41300C70A50 /* Run Script - HEAnalytics Config */,
 			);
 			buildRules = (
 			);
@@ -287,6 +291,20 @@
 			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods/Pods-resources.sh\"\n";
 			showEnvVarsInLog = 0;
 		};
+		799860551AFCC41300C70A50 /* Run Script - HEAnalytics Config */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			name = "Run Script - HEAnalytics Config";
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "script_file=\"AppBuildPostflight.rb\"\n\necho \"Running a custom build phase script: $script_file\"\n${PROJECT_DIR}/HEAnalyticsExample/BuildScripts/${script_file}\nscriptExitStatus=$?\necho \"DONE with script: ${script_file} (exitStatus=${scriptExitStatus})\\n\\n\"\nexit \"${scriptExitStatus}\"\n";
+		};
 		E0393E6E471229E03CBD6C30 /* Check Pods Manifest.lock */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
@@ -319,6 +337,7 @@
 				791FBE711AFB76F000E3453C /* AppDelegate.swift in Sources */,
 				794B108F1AFB799300D93A51 /* HEAnalyticsPlatform.swift in Sources */,
 				791FBE731AFB76F000E3453C /* FirstViewController.swift in Sources */,
+				799860571AFCC5BD00C70A50 /* SampleAnalytics.swift in Sources */,
 				794B10921AFB799300D93A51 /* HEAnalyticsPlatformMixpanel.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
