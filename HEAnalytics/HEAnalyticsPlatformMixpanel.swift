@@ -57,9 +57,8 @@ class HEAnalyticsPlatformMixpanel: HEAnalyticsPlatform {
             defaultFlushInterval = flushInterval
         }
 
-        if let token = platformData["token"] as? String {
-            self.mixpanel = Mixpanel(token: token, launchOptions: nil, andFlushInterval: defaultFlushInterval)
-        }
+        let token = platformData["token"] as! String
+        self.mixpanel = Mixpanel(token: token, launchOptions: nil, andFlushInterval: defaultFlushInterval)
         
         if let flushOnBackground = platformData["flushOnBackground"] as? Bool {
             self.mixpanel.flushOnBackground = flushOnBackground

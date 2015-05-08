@@ -39,15 +39,6 @@ HEAnalytics provides a base API for logging analytics.
 */
 public class HEAnalytics: NSObject {
 
-    /*
-    class var sharedInstance: HEAnalytics {
-        struct Static {
-            static let instance: HEAnalytics = HEAnalytics()
-        }
-        return Static.instance
-    }
-    */
-    
     
     override init() {
         super.init()

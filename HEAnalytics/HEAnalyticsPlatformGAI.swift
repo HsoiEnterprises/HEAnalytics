@@ -47,6 +47,9 @@ class HEAnalyticsPlatformGAI: HEAnalyticsPlatform {
 
     override func initializePlatform(platformData: [NSObject:AnyObject]) {
 
+        let trackingID = platformData["trackingID"] as! String
+        GAI.sharedInstance().trackerWithTrackingId(trackingID)
+
         if let dispatchInterval = platformData["dispatchInterval"] as? NSTimeInterval {
             GAI.sharedInstance().dispatchInterval = dispatchInterval
         }
@@ -63,10 +66,6 @@ class HEAnalyticsPlatformGAI: HEAnalyticsPlatform {
         #else
             GAI.sharedInstance().logger.logLevel = .Error
         #endif
-        }
-        
-        if let trackingID = platformData["trackingID"] as? String {
-            GAI.sharedInstance().trackerWithTrackingId(trackingID)
         }
         
         if let dryRun = platformData["dryRun"] as? Bool {
