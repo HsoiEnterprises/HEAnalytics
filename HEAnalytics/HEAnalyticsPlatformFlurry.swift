@@ -71,20 +71,6 @@ class HEAnalyticsPlatformFlurry: HEAnalyticsPlatform {
     }
     
     
-    internal func appVersion() -> String {
-        // Hsoi 2015-04-04 - Flurry uses the CFBUndleVersion to report versions. I tend to like using the
-        // CFBundleShortVersionString for marketing version (e.g. "major.minor.bugfix") and the CFBundleVersion
-        // for a simple incrementing build integer/number. So we'll make our own version number here to
-        // force into Flurry so I can know exactly what I'm working with.
-        //
-        // If you'd like a different approach, subclass and override.
-        let infoDict = NSBundle.mainBundle().infoDictionary!
-        let shortVersion = infoDict["CFBundleShortVersionString"] as! String
-        let bundleVersion = infoDict["CFBundleVersion"] as! String
-        let flurryVersion = shortVersion + "." + bundleVersion
-        return flurryVersion
-    }
-    
     
     override var optOut: Bool {
         didSet {

@@ -79,11 +79,13 @@ class HEAnalyticsPlatformGAI: HEAnalyticsPlatform {
             GAI.sharedInstance().defaultTracker.allowIDFACollection = allowIDFACollection
         }
         
+        // Hsoi 2015-05-23 - https://groups.google.com/forum/#!topic/ga-mobile-app-analytics/U4nqqBnBhjU
+        GAI.sharedInstance().defaultTracker.set(kGAIAppVersion, value: self.appVersion())
 
         super.initializePlatform(platformData)
     }
     
-    
+
     override var optOut: Bool {
         didSet {
             GAI.sharedInstance().optOut = self.optOut
