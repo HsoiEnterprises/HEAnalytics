@@ -35,7 +35,7 @@ It enables logic for converting the data-to-track into something the analytics A
 
 Developed with
 
-- Xcode 6.4 beta 2 (should work with Xcode 6.3.1)
+- Xcode 6.3.2
 - Swift 1.2
 - iOS 8
 
@@ -134,6 +134,12 @@ Because `HEAnalytics` automatically tracks `UIApplicationDelegate` notifications
 Event tracking is performed by filling out an `HEAnalyticsData` object and passing it to `HEAnalytics.trackData()`. While one can perform this "raw" at any point in code, again it is recommended to have an app-specific subclass of `HEAnalytics` that performs the heavy lifting (see above).
 
 View tracking can be performed by invoking `HEAnalytics.trackView()`, passing the `UIViewController` you wish to track. Invoking `trackView()` can technically be done anywhere, but makes most sense to be called in your `UIViewController` subclass override of `viewDidAppear()`. To facilitate view tracking, `HEAnalytics` extends `UIViewController` with the `HE_analyticsViewTrackingTitle()` function. This function is intended to provide a stable value for analytics view tracking. By default it returns the `viewController.title` if it is non-nil and non-empty, else returns the name of the `UIViewController` (sub)class. This default behavior is acceptable, but may not always be desired. For example, if your ViewController's title is based upon the contents of the ViewController, that may make it difficult for you to track the view. To counter this, your `UIViewController` subclass can override and implement `HE_analyticsViewTrackingTitle()` and return a known stable title string that is useful for tracking and doesn't interfere with your UI.
+
+## App Version
+
+If the analytics platform supports setting the app's version, HEAnalytics will do so. The version will be synthesized from the `CFBundleShortVersionString` and the `CFBundleVersion` as "`CFBundleShortVersionString`.`CFBundleVersion`". The intention is the `CFBundleShortVersionString` is a public/marketing/semantic version only bumped for releases, and the `CFBundleVersion` is a forever-incrementing build number (integer) which can be bumped during development/testing/releases. Thus you may have a "2.0.1.55" then a "2.0.1.56" and finally "2.0.1.57" is actually what's released to the public, so next version becomes "3.0.0.58".
+
+If you wish to have a different approach, you can subclass the relevant `HEAnalyticsPlatform` and override `appVersion()`.
 
 ## Opt-Out
 

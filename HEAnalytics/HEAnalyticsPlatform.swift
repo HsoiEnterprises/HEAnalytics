@@ -117,6 +117,22 @@ public class HEAnalyticsPlatform: NSObject {
         // No need to call `super`.
     }
     
+    
+    /**
+    Internal function for obtaining the app version.
+    
+    I like using the `CFBundleShortVersionString` as either a semantic or marketing version, such as "x.y.z". The `CFBundleVersion` then is used as a simple forever-incrementing integer build number. We will concatenate the two versions for a more descriptive version that if an analytics SDK supports it, we can use to set it to have a more robust version reporting.
+    
+    :returns: an app version string.
+    */
+    internal func appVersion() -> String {
+        let infoDict = NSBundle.mainBundle().infoDictionary!
+        let shortVersion = infoDict["CFBundleShortVersionString"] as! String
+        let bundleVersion = infoDict["CFBundleVersion"] as! String
+        let fullVersion = shortVersion + "." + bundleVersion
+        return fullVersion
+    }
+    
 
     /**
     A helper for obtaining the UIViewController "title" for use in trackView().
