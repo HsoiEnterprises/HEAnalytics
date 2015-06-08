@@ -54,7 +54,7 @@ class HEAnalyticsPlatformIntercom: HEAnalyticsPlatform {
         let appID = platformData["appID"] as! String
         Intercom.setApiKey(apikey, forAppId: appID)
         
-        if let logging = platformData["enableLogging"] as? Bool {
+        if let logging = platformData["enableLogging"] as? Bool where logging {
             Intercom.enableLogging()
         }
         
