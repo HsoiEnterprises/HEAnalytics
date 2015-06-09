@@ -88,7 +88,7 @@ class HEAnalyticsPlatformIntercom: HEAnalyticsPlatform {
         }
 
         let event = data.category + " - " + data.event
-        if let dataParameters = data.parameters {
+        if let dataParameters = data.parameters where dataParameters.count > 0 {
             Intercom.logEventWithName(event, metaData: dataParameters)
         }
         else {
