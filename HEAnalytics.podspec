@@ -7,7 +7,7 @@ Pod::Spec.new do |spec|
   spec.description   = 'A simple Swift-based framework for iOS app analytics across analytics platforms.'
   spec.requires_arc  = true
   spec.license       = { :type => 'BSD 3-clause “New” or “Revised”', :file => 'LICENSE' }
-  spec.source_files  = 'HEAnalytics/*.swift'
+  spec.source_files  = ['HEAnalytics/*.swift', 'HEAnalytics/*.h']
 
   spec.subspec 'Flurry' do |flurry|
     flurry.source_files = 'HEAnalytics/HEAnalyticsPlatformFlurry.swift'
