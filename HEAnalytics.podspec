@@ -8,7 +8,8 @@ Pod::Spec.new do |spec|
   spec.requires_arc  = true
   spec.license       = { :type => 'BSD 3-clause “New” or “Revised”', :file => 'LICENSE' }
   spec.source_files  = ['HEAnalytics/*.swift', 'HEAnalytics/*.h']
-
+  spec.platform      = :ios, '8.0'
+  
   spec.subspec 'Flurry' do |flurry|
     flurry.source_files = 'HEAnalytics/HEAnalyticsPlatformFlurry.swift'
     flurry.dependency 'FlurrySDK'
