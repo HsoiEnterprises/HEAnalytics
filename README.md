@@ -158,6 +158,8 @@ class MyViewController: UIViewController {
 }
 ```
 
+**See `handleUIApplicationDidFinishLaunchingNotification()` in `HEAnalytics.swift` for a more detailed illustration of the utility of this approach.
+
 This approach:
 
 * Keeps calling code cleaner, easier to read.
