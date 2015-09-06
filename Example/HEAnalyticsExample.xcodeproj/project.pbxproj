@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		79175CAB1B9C395A000AB0CA /* HEAnalyticsPlatformIntercom.swift in Sources */ = {isa = PBXBuildFile; fileRef = 79175CAA1B9C395A000AB0CA /* HEAnalyticsPlatformIntercom.swift */; };
 		791FBE711AFB76F000E3453C /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 791FBE701AFB76F000E3453C /* AppDelegate.swift */; };
 		791FBE731AFB76F000E3453C /* FirstViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 791FBE721AFB76F000E3453C /* FirstViewController.swift */; };
 		791FBE751AFB76F000E3453C /* SecondViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 791FBE741AFB76F000E3453C /* SecondViewController.swift */; };
@@ -38,6 +39,7 @@
 
 /* Begin PBXFileReference section */
 		3C4DDED3DD9F2A52F9D4EBCC /* Pods.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = Pods.release.xcconfig; path = "Pods/Target Support Files/Pods/Pods.release.xcconfig"; sourceTree = "<group>"; };
+		79175CAA1B9C395A000AB0CA /* HEAnalyticsPlatformIntercom.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = HEAnalyticsPlatformIntercom.swift; sourceTree = "<group>"; };
 		791FBE6B1AFB76F000E3453C /* HEAnalyticsExample.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = HEAnalyticsExample.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		791FBE6F1AFB76F000E3453C /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		791FBE701AFB76F000E3453C /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
@@ -161,6 +163,7 @@
 				794B10871AFB799300D93A51 /* HEAnalyticsPlatform.swift */,
 				794B10881AFB799300D93A51 /* HEAnalyticsPlatformFlurry.swift */,
 				794B10891AFB799300D93A51 /* HEAnalyticsPlatformGAI.swift */,
+				79175CAA1B9C395A000AB0CA /* HEAnalyticsPlatformIntercom.swift */,
 				794B108A1AFB799300D93A51 /* HEAnalyticsPlatformMixpanel.swift */,
 				794B108B1AFB799300D93A51 /* HEJSONHelper.swift */,
 				794B108C1AFB799300D93A51 /* UIViewController+HEAnalytics.swift */,
@@ -333,6 +336,7 @@
 				794B10911AFB799300D93A51 /* HEAnalyticsPlatformGAI.swift in Sources */,
 				794B108D1AFB799300D93A51 /* HEAnalytics.swift in Sources */,
 				794B10931AFB799300D93A51 /* HEJSONHelper.swift in Sources */,
+				79175CAB1B9C395A000AB0CA /* HEAnalyticsPlatformIntercom.swift in Sources */,
 				794B10901AFB799300D93A51 /* HEAnalyticsPlatformFlurry.swift in Sources */,
 				791FBE711AFB76F000E3453C /* AppDelegate.swift in Sources */,
 				794B108F1AFB799300D93A51 /* HEAnalyticsPlatform.swift in Sources */,
