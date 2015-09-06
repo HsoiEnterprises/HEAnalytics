@@ -20,6 +20,14 @@ class SecondViewController: UIViewController {
         // Dispose of any resources that can be recreated.
     }
 
+    override func viewDidAppear(animated: Bool) {
+        super.viewDidAppear(animated)
+        SampleAnalytics.sharedInstance.trackView(self)
+    }
+    
+    override func HE_analyticsViewTrackingTitle() -> String {
+        return "Second ViewController"
+    }
 
 }
 
