@@ -1,24 +1,23 @@
 PODS:
-  - FlurrySDK (6.2.0):
-    - FlurrySDK/FlurrySDK (= 6.2.0)
-  - FlurrySDK/FlurrySDK (6.2.0)
-  - GoogleAnalytics-iOS-SDK (3.11):
-    - GoogleAnalytics-iOS-SDK/Core (= 3.11)
-  - GoogleAnalytics-iOS-SDK/Core (3.11)
-  - Mixpanel (2.8.0):
-    - Mixpanel/Mixpanel (= 2.8.0)
-  - Mixpanel/Mixpanel (2.8.0):
-    - Mixpanel/MPCategoryHelpers
-  - Mixpanel/MPCategoryHelpers (2.8.0)
+  - FlurrySDK (6.7.0):
+    - FlurrySDK/FlurrySDK (= 6.7.0)
+  - FlurrySDK/FlurrySDK (6.7.0)
+  - GoogleAnalytics (3.13.0)
+  - Intercom (2.3.3)
+  - Mixpanel (2.8.3):
+    - Mixpanel/Mixpanel (= 2.8.3)
+  - Mixpanel/Mixpanel (2.8.3)
 
 DEPENDENCIES:
   - FlurrySDK
-  - GoogleAnalytics-iOS-SDK
+  - GoogleAnalytics
+  - Intercom
   - Mixpanel
 
 SPEC CHECKSUMS:
-  FlurrySDK: 6d8cc2f898589214ed72e481cf59cffa55b88fe0
-  GoogleAnalytics-iOS-SDK: fb15cc7e3d01d06d531653f37443fda90274d53d
-  Mixpanel: 933b51dd0c7914c80866b3753ef407dce353ebc9
+  FlurrySDK: 671e8d5769ef42a9940854c735b1eee32763eea5
+  GoogleAnalytics: fcf1f1cad57ae1a9a53520018f0f680ceeeb8b49
+  Intercom: cca76c492f181a8f8261bc0ec98d03ae3102270d
+  Mixpanel: fd52e097ae0d27295d0595b2261c60b94d191fda
 
-COCOAPODS: 0.36.4
+COCOAPODS: 0.38.2

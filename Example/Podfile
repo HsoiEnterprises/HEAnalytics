@@ -3,6 +3,7 @@ source 'https://github.com/CocoaPods/Specs.git'
 
 inhibit_all_warnings!
 
-pod 'GoogleAnalytics-iOS-SDK'
+pod 'GoogleAnalytics'
 pod 'Mixpanel'
 pod 'FlurrySDK'
+pod 'Intercom'
