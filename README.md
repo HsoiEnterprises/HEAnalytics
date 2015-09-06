@@ -173,10 +173,10 @@ There's nothing that prevents you from the former approach, but in the author's 
 Because `HEAnalytics` automatically tracks `UIApplicationDelegate` notifications, the best place to start analytics tracking is within `application(application, willFinishLaunchingWithOptions)`. Note! _willFinish_ **NOT** _didFinish_. Starting is simple:
 
 ```swift
-    func application(application: UIApplication, willFinishLaunchingWithOptions launchOptions: [NSObject : AnyObject]?) -> Bool {
-        MyAppAnalytics.sharedInstance.start()
-        return true
-    }
+func application(application: UIApplication, willFinishLaunchingWithOptions launchOptions: [NSObject : AnyObject]?) -> Bool {
+    MyAppAnalytics.sharedInstance.start()
+    return true
+}
 ```
 
 ## Tracking
@@ -186,14 +186,14 @@ Event tracking is performed by filling out an `HEAnalyticsData` object and passi
 View tracking can be performed by invoking `HEAnalytics.trackView()`, passing the `UIViewController` you wish to track. Invoking `trackView()` can technically be done anywhere, but makes most sense to be called in your `UIViewController` subclass override of `viewDidAppear()`. To facilitate view tracking, `HEAnalytics` extends `UIViewController` with the `HE_analyticsViewTrackingTitle()` function. This function is intended to provide a stable value for analytics view tracking. By default it returns the `viewController.title` if it is non-nil and non-empty, else returns the name of the `UIViewController` (sub)class. This default behavior is acceptable, but may not always be desired. For example, if your ViewController's title is based upon the contents of the ViewController, that may make it difficult for you to track the view. To counter this, your `UIViewController` subclass can override and implement `HE_analyticsViewTrackingTitle()` and return a known stable title string that is useful for tracking and doesn't interfere with your UI.
 
 ```swift
-    override func viewDidAppear(animated: Bool) {
-        super.viewDidAppear(animated)
-        MyAppAnalytics.sharedInstance.trackView(self)
-    }
-    
-    override func HE_analyticsViewTrackingTitle() -> String {
-        return "My Cool ViewController"
-    }
+override func viewDidAppear(animated: Bool) {
+    super.viewDidAppear(animated)
+    MyAppAnalytics.sharedInstance.trackView(self)
+}
+
+override func HE_analyticsViewTrackingTitle() -> String {
+    return "My Cool ViewController"
+}
 ```
 
 
