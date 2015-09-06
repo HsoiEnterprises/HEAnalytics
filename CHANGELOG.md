@@ -1,18 +1,18 @@
 # HEAnalytics CHANGELOG
 
-## v0.6 - ???
+## v0.5.1 - 2015-09-06
 
-**NB: Now requires Xcode 7 and Swift 2.**
+Originally this release was going to bring Cocoapods support, but due to HEAnalytics being written in Swift, Cocoapods requiring Swift-based pods to be in frameworks, that all the analytics SDKs are distributed as static libraries, and that the way Cocoapods works regarding dynamic frameworks and static libraries having issues... well, it won't happen. But changes made were primarily towards that end.
 
 ### Added
 
-* Cocoapods support
 * This CHANGELOG
 
 ### Changed
 
-* Updated example project
-* Improved README
+* Cleaned up access levels.
+* Updated example project.
+* Improved README.
 
 
 ## v0.5 - 2015-07-16

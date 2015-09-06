@@ -1,5 +1,5 @@
-<!---![Build Status](https://travis-ci.org/HsoiEnterprises/HEAnalytics.svg) -->
-![Cocoapods Compatible](https://img.shields.io/cocoapods/v/HEAnalytics.svg)
+<!--- ![Build Status](https://travis-ci.org/HsoiEnterprises/HEAnalytics.svg) -->
+<!--- ![Cocoapods Compatible](https://img.shields.io/cocoapods/v/HEAnalytics.svg) -->
 ![License](https://img.shields.io/badge/license-BSD%203--Clause-blue.svg)
 ![Platform](https://img.shields.io/badge/platform-iOS-lightgrey.svg)
 
@@ -51,7 +51,16 @@ No effort has been made to make this work on Mac OS X, and there are presently n
 
 # Installation
 
-Installation can be performed as a git submodule or via Cocoapods.
+Installation can be performed as a git submodule.
+
+While I'd like to add Cococapods support, there are issues.
+
+1. `HEAnalytics` is written in Swift, thus Cocoapods forced it into a framework.
+2. All of the analytics SDKs are distributed as static libraries (or fake frameworks)
+3. The way Cocoapods works, there are problems with dependency resolution and linking due to how Cocoapods works regarding the mixture of frameworks and static libraries.
+
+So, Cocoapods just won't happen right now. 
+
 
 ## Submodule
 
@@ -59,12 +68,13 @@ Add the HEAnalytics source files to your project.  You can omit `HEAnalyticsPlat
 
 You will also need to obtain and integrate the analytics platform SDK of your choice (available separately and many are available via Cocoapods).
 
+<!-- 
 ## Cocoapods
 
 ```ruby
 pod "HEAnalytics", :subspecs => ["Flurry", "GoogleAnalytics"]
 ```
-
+-->
 
 # Usage
 
