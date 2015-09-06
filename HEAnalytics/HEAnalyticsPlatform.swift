@@ -125,12 +125,12 @@ public class HEAnalyticsPlatform: NSObject {
     
     :returns: an app version string.
     */
-    internal func appVersion() -> String {
-        let infoDict = NSBundle.mainBundle().infoDictionary!
-        let shortVersion = infoDict["CFBundleShortVersionString"] as! String
-        let bundleVersion = infoDict["CFBundleVersion"] as! String
-        let fullVersion = shortVersion + "." + bundleVersion
-        return fullVersion
+    internal func appVersion() -> String? {
+        if let shortVersion = NSBundle.mainBundle().objectForInfoDictionaryKey("CFBundleShortVersionString") as? String, bundleVersion = NSBundle.mainBundle().objectForInfoDictionaryKey("CFBundleVersion") as? String {
+            let fullVersion = shortVersion + "." + bundleVersion
+            return fullVersion
+        }
+        return nil
     }
     
 

@@ -80,7 +80,9 @@ public class HEAnalyticsPlatformGAI: HEAnalyticsPlatform {
         }
         
         // Hsoi 2015-05-23 - https://groups.google.com/forum/#!topic/ga-mobile-app-analytics/U4nqqBnBhjU
-        GAI.sharedInstance().defaultTracker.set(kGAIAppVersion, value: self.appVersion())
+        if let appVersion = appVersion() {
+            GAI.sharedInstance().defaultTracker.set(kGAIAppVersion, value: appVersion)
+        }
 
         super.initializePlatform(platformData)
     }

@@ -62,7 +62,9 @@ public class HEAnalyticsPlatformFlurry: HEAnalyticsPlatform {
         Flurry.setSessionReportsOnCloseEnabled(true)
         Flurry.setSessionReportsOnPauseEnabled(true)
 
-        Flurry.setAppVersion(self.appVersion())
+        if let appVersion = appVersion() {
+            Flurry.setAppVersion(appVersion)
+        }
 
         let apiKey = platformData["apiKey"] as! String
         Flurry.startSession(apiKey)
