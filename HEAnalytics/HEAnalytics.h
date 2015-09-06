@@ -1,7 +1,7 @@
 //
-//  UIViewController+HEAnalytics.swift
+//  HEAnalytics.h
 //
-//  Created by hsoi on 4/4/15.
+//  Created by jaysonlane on 7/16/15.
 //
 //  HEAnalytics - Copyright (c) 2015, Hsoi Enterprises LLC
 //  All rights reserved.
@@ -32,34 +32,7 @@
 //  OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
 //  OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
-import UIKit
-
-/**
-HEAnalytic's extension to UIViewController.
-*/
-public extension UIViewController {
-    
-    /**
-    HE_analyticsViewTrackingTitle is an effort to always provide a stable value for view tracking by HEAnalytics.
-    
-    By default, it wants to return the title of the ViewController. If however the ViewController does not have
-    a title (either nil or empty), it will return the name of the ViewController class (e.g. "MyUIViewController").
-    
-    You can also implement this method in your UIViewController subclasses. This can be useful if you want to track
-    views by a more stable identifier. For example, a ViewController might have a title based upon the content of
-    the ViewController, but you just want to track they went to "this view" so you could override this method
-    to return a stable string constant.
-    
-    
-    :returns: A string to use as the view tracking title.
-    */
-    public func HE_analyticsViewTrackingTitle() -> String {
-        if let title = self.title {
-            if !title.isEmpty {
-                return title
-            }
-        }
-        return NSStringFromClass(self.dynamicType)
-    }
-
-}
+#import <UIKit/UIKit.h>
+ 
+FOUNDATION_EXPORT double HEAnalyticsVersionNumber;
+FOUNDATION_EXPORT const unsigned char HEAnalyticsVersionString[];

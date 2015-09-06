@@ -73,7 +73,7 @@ public class HEAnalyticsPlatform: NSObject {
     
     Subclasses generally will want to override this to start their SDK's collection of data. Note that, depending upon the implementation details of the SDK, you may need to check the  HEAnalyticsPlatform.optOut property to ensure you actually should start collecting or not.
     */
-    func start() {
+    public func start() {
 
     }
     
@@ -83,12 +83,12 @@ public class HEAnalyticsPlatform: NSObject {
     
     Subclasses will generally want to override this to stop their SDK's collection of data.
     */
-    func stop() {
+    public func stop() {
 
     }
 
     /// Has the user opt'd out of data collection? Note this value is not persisted anywhere by HEAnalytics. Exposing this setting in the GUI, persisting the value, restoring the value, and enforcing it generally is the responsibility of the app developer.
-    var optOut: Bool = false
+    public var optOut: Bool = false
     
     
     /**
@@ -98,7 +98,7 @@ public class HEAnalyticsPlatform: NSObject {
     
     :param: data The HEAnalyticsData with the information to be recorded. It is up to the subclass to interpret, preserve, and convey this data as richly and appropriately as the platform SDK allows.
     */
-    func trackData(data: HEAnalyticsData) {
+    public func trackData(data: HEAnalyticsData) {
 
     }
     
@@ -112,7 +112,7 @@ public class HEAnalyticsPlatform: NSObject {
     
     :param: viewController The UIViewController to track.
     */
-    func trackView(viewController: UIViewController) {
+    public func trackView(viewController: UIViewController) {
         // subclasses expected to override and implement to implement the tracking for that platform.
         // No need to call `super`.
     }
@@ -125,12 +125,12 @@ public class HEAnalyticsPlatform: NSObject {
     
     :returns: an app version string.
     */
-    internal func appVersion() -> String {
-        let infoDict = NSBundle.mainBundle().infoDictionary!
-        let shortVersion = infoDict["CFBundleShortVersionString"] as! String
-        let bundleVersion = infoDict["CFBundleVersion"] as! String
-        let fullVersion = shortVersion + "." + bundleVersion
-        return fullVersion
+    internal func appVersion() -> String? {
+        if let shortVersion = NSBundle.mainBundle().objectForInfoDictionaryKey("CFBundleShortVersionString") as? String, bundleVersion = NSBundle.mainBundle().objectForInfoDictionaryKey("CFBundleVersion") as? String {
+            let fullVersion = shortVersion + "." + bundleVersion
+            return fullVersion
+        }
+        return nil
     }
     
 

@@ -34,10 +34,10 @@
 
 import UIKit
 
-// Hsoi 2015-04-04 - strictly speaking this should be a struct, but since it may need to be accessed from ObjC, it can't be.
+/// HEAnalyticsData - the data structure for encapsulating data about an analytic event.
 @objc public class HEAnalyticsData {
-   
-    // convenient way to ensure we have some sort of consistent naming of the category.
+
+    // Hsoi 2015-04-04 - strictly speaking, HEAnalyticsData should be a struct, but since it may need to be accessed from ObjC, it can't be.
 
     /**
     AnalyticsCategory is an enumeration of event categories, used to help hierarchically structure and organize an analytic event.
@@ -56,7 +56,7 @@ import UIKit
     - Support:      For tracking support events (e.g. tapped on the button to email tech support)
     - VersionCheck: If your app uses built-in version checking, track it with this category.
     */
-    enum AnalyticsCategory : String {
+    public enum AnalyticsCategory : String {
         case Activity                   =   "Activity"
         case Application                =   "Application"
         case General                    =   "General"
@@ -69,8 +69,33 @@ import UIKit
     }
     
     
+    /**
+    The category of the event. Required.
+    
+    A String, to allow for flexibility, but can use an AnalyticsCategory(rawValue) for consistency.
+    
+    Events have an organizational hierarchy of category, event within the category, and then parameters of the event.
+    */
     private (set) var category: String = AnalyticsCategory.General.rawValue
+    
+    
+    /**
+    The event. Required.
+    
+    A String, to allow for flexibility.
+    
+    Events have an organizational hierarchy of category, event within the category, and then parameters of the event.
+    */
     private (set) var event: String = "<unknown>"
+    
+    
+    /**
+    The event parameters. Optional.
+    
+    Typed as an [NSObject:AnyObject] to maximize interoperability with NSDictionary and Objective-C code, but it is expected that the key is a (NS)String and the value is a plist-able/json-able type such as string, number, array/dictionary (of string, number). The data won't necessarily be santized before being passed along to a platform API, so the general recommendation is in your HEAnalytics subclass's specific event tracking functions to take the app-provided raw data to track and convert it to a "safe" type (strings and numbers are best), then pass this sanitized type/data in the event parameters.
+
+    Events have an organizational hierarchy of category, event within the category, and then parameters of the event.
+    */
     private (set) var parameters: [NSObject:AnyObject]?
 
     
@@ -93,7 +118,7 @@ import UIKit
     
     :returns: An HEAnalyticsData object, suitable for passing to HEAnalytics.trackData()
     */
-    init(category: String, event: String, parameters: [NSObject:AnyObject]? = nil) {
+    public init(category: String, event: String, parameters: [NSObject:AnyObject]? = nil) {
         self.category = category
         self.event = event
         self.parameters = parameters
@@ -111,7 +136,7 @@ import UIKit
     
     :returns: An HEAnalyticsData object, suitable for passing to HEAnalytics.trackData()
     */
-    convenience init(category: AnalyticsCategory, event: String, parameters: [NSObject:AnyObject]? = nil) {
+    public convenience init(category: AnalyticsCategory, event: String, parameters: [NSObject:AnyObject]? = nil) {
         self.init(category: category.rawValue, event: event, parameters: parameters)
     }
 

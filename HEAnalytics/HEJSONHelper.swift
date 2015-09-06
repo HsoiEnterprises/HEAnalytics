@@ -135,9 +135,11 @@ public class HEJSONHelper: NSObject {
         return json
     }
     
+    
+    /// Private function for converting a dictionary to canonical JSON representation.
     private class func canonicalJSONRepresentationWithDictionary(dictionary:[NSObject:AnyObject]?) -> String {
 
-        // Hsoi 2014-11-10 - This canonical JSON support comes from: http://stackoverflow.com/a/26591452/1737738
+        // Hsoi 2014-11-10 - This canonical JSON support is based upon: http://stackoverflow.com/a/26591452/1737738
         //
         // Our use-case is due to Analytics. Whereas Flurry's analytics lets you log a dictionary of parameters
         // and have them treated as unique bits of data, Google's analytics does not provide for such support. So what is done
@@ -224,6 +226,7 @@ public class HEJSONHelper: NSObject {
     }
 
 
+    /// Private function for converting an array to canonical JSON representation.
     private class func canonicalJSONRepresentationWithArray(array: [AnyObject]) -> String {
         var json = ""
         json += "["
@@ -276,6 +279,7 @@ public class HEJSONHelper: NSObject {
     }
     
     
+    /// Private function for converting a string to canonical JSON representation.
     private class func canonicalJSONRepresentationWithString(string: String) -> String {
         let dict = ["a":string]
         var error: NSError?
@@ -304,7 +308,6 @@ public class HEJSONHelper: NSObject {
     // help us ensure to treat a boolean value (a json value of 'true' or 'false') as a Bool and not an Int.
     //
     // This is based upon some logic I found in SwiftyJSON.
-
     private class func isBool(obj: AnyObject?) -> Bool {
         if let obj:AnyObject = obj {
             let trueNumber = NSNumber(bool: true)
