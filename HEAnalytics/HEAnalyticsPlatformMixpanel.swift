@@ -75,38 +75,38 @@ public class HEAnalyticsPlatformMixpanel: HEAnalyticsPlatform {
         }
 
         let token = platformData["token"] as! String
-        self.mixpanel = Mixpanel(token: token, launchOptions: nil, andFlushInterval: defaultFlushInterval)
+        mixpanel = Mixpanel(token: token, launchOptions: nil, andFlushInterval: defaultFlushInterval)
         
         if let flushOnBackground = platformData["flushOnBackground"] as? Bool {
-            self.mixpanel.flushOnBackground = flushOnBackground
+            mixpanel.flushOnBackground = flushOnBackground
         }
         
         if let showNetworkActivityIndicator = platformData["showNetworkActivityIndicator"] as? Bool {
-            self.mixpanel.showNetworkActivityIndicator = showNetworkActivityIndicator
+            mixpanel.showNetworkActivityIndicator = showNetworkActivityIndicator
         }
         
         if let checkForSurveysOnActive = platformData["checkForSurveysOnActive"] as? Bool {
-            self.mixpanel.checkForSurveysOnActive = checkForSurveysOnActive
+            mixpanel.checkForSurveysOnActive = checkForSurveysOnActive
         }
         
         if let showSurveyOnActive = platformData["showSurveyOnActive"] as? Bool {
-            self.mixpanel.showSurveyOnActive = showSurveyOnActive
+            mixpanel.showSurveyOnActive = showSurveyOnActive
         }
         
         if let checkForNotificationsOnActive = platformData["checkForNotificationsOnActive"] as? Bool {
-            self.mixpanel.checkForNotificationsOnActive = checkForNotificationsOnActive
+            mixpanel.checkForNotificationsOnActive = checkForNotificationsOnActive
         }
         
         if let checkForVariantsOnActive = platformData["checkForVariantsOnActive"] as? Bool {
-            self.mixpanel.checkForVariantsOnActive = checkForVariantsOnActive
+            mixpanel.checkForVariantsOnActive = checkForVariantsOnActive
         }
         
         if let showNotificationOnActive = platformData["showNotificationOnActive"] as? Bool {
-            self.mixpanel.showNotificationOnActive = showNotificationOnActive
+            mixpanel.showNotificationOnActive = showNotificationOnActive
         }
         
         if let miniNotificationPresentationTime = platformData["miniNotificationPresentationTime"] as? CGFloat {
-            self.mixpanel.miniNotificationPresentationTime = miniNotificationPresentationTime
+            mixpanel.miniNotificationPresentationTime = miniNotificationPresentationTime
         }
         
         super.initializePlatform(platformData)
@@ -123,12 +123,12 @@ public class HEAnalyticsPlatformMixpanel: HEAnalyticsPlatform {
     Subclasses generally will want to override this to start their SDK's collection of data. Note that, depending upon the implementation details of the SDK, you may need to check the  HEAnalyticsPlatform.optOut property to ensure you actually should start collecting or not.
     */
     public override func start() {
-        if !self.optOut {
-            if !self.started {
-                super.start()
-                self.started = true
-            }
+        guard !optOut && !started else {
+            return
         }
+
+        super.start()
+        started = true
     }
     
     
@@ -139,7 +139,7 @@ public class HEAnalyticsPlatformMixpanel: HEAnalyticsPlatform {
     */
     public override func stop() {
         super.stop()
-        self.started = false
+        started = false
     }
     
     
@@ -151,16 +151,16 @@ public class HEAnalyticsPlatformMixpanel: HEAnalyticsPlatform {
     - parameter data: The HEAnalyticsData with the information to be recorded. It is up to the subclass to interpret, preserve, and convey this data as richly and appropriately as the platform SDK allows.
     */
     public override func trackData(data: HEAnalyticsData) {
-        if self.optOut || !self.started {
+        guard !optOut && started else {
             return
         }
 
         let event = data.category + " - " + data.event
         if let dataParameters = data.parameters {
-            self.mixpanel.track(event, properties: dataParameters)
+            mixpanel.track(event, properties: dataParameters)
         }
         else {
-            self.mixpanel.track(event)
+            mixpanel.track(event)
         }
     }
     
@@ -175,13 +175,13 @@ public class HEAnalyticsPlatformMixpanel: HEAnalyticsPlatform {
     - parameter viewController: The UIViewController to track.
     */
     public override func trackView(viewController: UIViewController) {
-        if self.optOut || !self.started {
+        guard !optOut && started else {
             return
         }
         
-        let title = self.viewControlerTitle(viewController)
+        let title = viewControlerTitle(viewController)
         let event = "TrackView - " + title
-        self.mixpanel.track(event)
+        mixpanel.track(event)
     }
     
 }

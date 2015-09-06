@@ -88,12 +88,12 @@ public class HEAnalyticsPlatformIntercom: HEAnalyticsPlatform {
     Subclasses generally will want to override this to start their SDK's collection of data. Note that, depending upon the implementation details of the SDK, you may need to check the  HEAnalyticsPlatform.optOut property to ensure you actually should start collecting or not.
     */
     public override func start() {
-        if !self.optOut {
-            if !self.started {
-                super.start()
-                self.started = true
-            }
+        guard !optOut && !started else {
+            return
         }
+        
+        super.start()
+        started = true
     }
     
     
@@ -104,7 +104,7 @@ public class HEAnalyticsPlatformIntercom: HEAnalyticsPlatform {
     */
     public override func stop() {
         super.stop()
-        self.started = false
+        started = false
     }
     
     
@@ -116,7 +116,7 @@ public class HEAnalyticsPlatformIntercom: HEAnalyticsPlatform {
     - parameter data: The HEAnalyticsData with the information to be recorded. It is up to the subclass to interpret, preserve, and convey this data as richly and appropriately as the platform SDK allows.
     */
     public override func trackData(data: HEAnalyticsData) {
-        if self.optOut || !self.started {
+        guard !optOut && started else {
             return
         }
 
@@ -140,11 +140,11 @@ public class HEAnalyticsPlatformIntercom: HEAnalyticsPlatform {
     - parameter viewController: The UIViewController to track.
     */
     public override func trackView(viewController: UIViewController) {
-        if self.optOut || !self.started {
+        guard !optOut && started else {
             return
         }
         
-        let title = self.viewControlerTitle(viewController)
+        let title = viewControlerTitle(viewController)
         let event = "TrackView - " + title
         Intercom.logEventWithName(event)
     }

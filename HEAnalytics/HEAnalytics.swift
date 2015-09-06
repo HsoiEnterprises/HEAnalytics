@@ -120,7 +120,7 @@ public class HEAnalytics: NSObject {
     Will cause analytics collection to `stop()`.
     */
     deinit {
-        self.stop()
+        stop()
     }
     
     
@@ -136,11 +136,11 @@ public class HEAnalytics: NSObject {
     */
     public func start() {
         
-        self.loadPlatforms()
+        loadPlatforms()
         
-        self.registerForNotifications()
+        registerForNotifications()
         
-        for platform in self.platforms {
+        for platform in platforms {
             platform.start()
         }
     }
@@ -150,7 +150,7 @@ public class HEAnalytics: NSObject {
     Internal function to load the platforms.
     */
     internal func loadPlatforms() {
-        assert(self.platforms.count == 0, "calling HEAnalytics.start() and there are loaded platforms. How did this happen?")
+        assert(platforms.count == 0, "calling HEAnalytics.start() and there are loaded platforms. How did this happen?")
         
         // Hsoi 2015-04-18 - Load up the configuration.
         //
@@ -169,7 +169,7 @@ public class HEAnalytics: NSObject {
                 }
             })
         }
-        assert(self.platforms.count > 0, "no analytics platforms were loaded. Is the AnalyticsPlatformConfig.plist present and populated?")
+        assert(platforms.count > 0, "no analytics platforms were loaded. Is the AnalyticsPlatformConfig.plist present and populated?")
     }
     
     
@@ -213,12 +213,12 @@ public class HEAnalytics: NSObject {
     Stops the recording of analytics.
     */
     public func stop() {
-        for platform in self.platforms {
+        for platform in platforms {
             platform.stop()
         }
         
-        self.unregisterForNotifications()
-        self.unloadPlatforms()
+        unregisterForNotifications()
+        unloadPlatforms()
     }
     
     
@@ -232,7 +232,7 @@ public class HEAnalytics: NSObject {
     - parameter opt: true to opt out, false to not. Defaults to not being opted out (false)
     */
     public func optOut(opt: Bool) {
-        for platform in self.platforms {
+        for platform in platforms {
             platform.optOut = opt
         }
     }
@@ -247,7 +247,7 @@ public class HEAnalytics: NSObject {
     
         func tappedSomeInterestingButton() {
             let data = HEAnalyticsData(category: .General, event: "Tapping Interesting Button")
-            self.trackData(data)
+            trackData(data)
         }
     
     then client code just invokes `MyAnalytics.sharedInstance().tappedSomeInterestingButton()`.
@@ -255,7 +255,7 @@ public class HEAnalytics: NSObject {
     - parameter data: The HEAnalyticsData containing the data to track.
     */
     public func trackData(data: HEAnalyticsData) {
-        for platform in self.platforms {
+        for platform in platforms {
             platform.trackData(data)
         }
     }
@@ -269,7 +269,7 @@ public class HEAnalytics: NSObject {
     - parameter viewController: The UIViewController to track.
     */
     public func trackView(viewController: UIViewController) {
-        for platform in self.platforms {
+        for platform in platforms {
             platform.trackView(viewController)
         }
     }
@@ -298,7 +298,7 @@ public class HEAnalytics: NSObject {
         }
 
         let data = HEAnalyticsData(category: .Application, event: "Background Refresh Status Did Change", parameters: ["status":status])
-        self.trackData(data)
+        trackData(data)
     }
     
     
@@ -309,7 +309,7 @@ public class HEAnalytics: NSObject {
     */
     @objc private func handleUIApplicationDidBecomeActiveNotification(notification: NSNotification) {
         let data = HEAnalyticsData(category: .Application, event: "Did Become Active")
-        self.trackData(data)
+        trackData(data)
     }
 
     
@@ -320,7 +320,7 @@ public class HEAnalytics: NSObject {
     */
     @objc private func handleUIApplicationDidEnterBackgroundNotification(notification: NSNotification) {
         let data = HEAnalyticsData(category: .Application, event: "Did Enter Background")
-        self.trackData(data)
+        trackData(data)
     }
     
     
@@ -357,7 +357,7 @@ public class HEAnalytics: NSObject {
         
         let dataParameters:[NSObject:AnyObject]? = parameters.count != 0 ? parameters : nil
         let data = HEAnalyticsData(category: .Application, event: "Did Finish Launching", parameters: dataParameters)
-        self.trackData(data)
+        trackData(data)
     }
     
     
@@ -368,7 +368,7 @@ public class HEAnalytics: NSObject {
     */
     @objc private func handleUIApplicationUserDidTakeScreenshotNotification(notification: NSNotification) {
         let data = HEAnalyticsData(category: .Application, event: "Did Take Screenshot")
-        self.trackData(data)
+        trackData(data)
     }
     
     
@@ -379,7 +379,7 @@ public class HEAnalytics: NSObject {
     */
     @objc private func handleUIApplicationWillEnterForegroundNotification(notification: NSNotification) {
         let data = HEAnalyticsData(category: .Application, event: "Will Enter Foreground")
-        self.trackData(data)
+        trackData(data)
     }
     
     
@@ -390,7 +390,7 @@ public class HEAnalytics: NSObject {
     */
     @objc private func handleUIApplicationWillResignActiveNotification(notification: NSNotification) {
         let data = HEAnalyticsData(category: .Application, event: "Will Resign Active")
-        self.trackData(data)
+        trackData(data)
     }
     
     
@@ -401,7 +401,7 @@ public class HEAnalytics: NSObject {
     */
     @objc private func handleUIApplicationWillTerminateNotification(notification: NSNotification) {
         let data = HEAnalyticsData(category: .Application, event: "Will Terminate")
-        self.trackData(data)
+        trackData(data)
     }
     
     
@@ -416,7 +416,7 @@ public class HEAnalytics: NSObject {
             parameters["contentSize"] = newSize
         }
         let data = HEAnalyticsData(category: .Application, event: "Content Size Category Did Change", parameters: parameters)
-        self.trackData(data)
+        trackData(data)
     }
 
 }

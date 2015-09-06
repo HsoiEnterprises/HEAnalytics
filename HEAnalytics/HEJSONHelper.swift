@@ -81,13 +81,11 @@ public class HEJSONHelper: NSObject {
     return nil. For all other things, return that thing.
     */
     public class func filterNullAndEmpty(obj: AnyObject?) -> AnyObject? {
-        if let objString = obj as? String {
-            if objString.isEmpty {
-                return nil
-            }
+        if let objString = obj as? String where objString.isEmpty {
+            return nil
         }
         
-        return self.filterNull(obj)
+        return filterNull(obj)
     }
     
     
@@ -293,12 +291,16 @@ public class HEJSONHelper: NSObject {
                 return rc
             }
             else {
+                #if DEBUG
                 NSLog("An error converting JSON to string")
+                #endif
                 return "string conversion error"
             }
         } catch let error1 as NSError {
             error = error1
+            #if DEBUG
             NSLog("An error serializing string json: \(error!.description)")
+            #endif
             return "error"
         }
     }

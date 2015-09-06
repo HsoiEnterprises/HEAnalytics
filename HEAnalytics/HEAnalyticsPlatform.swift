@@ -50,7 +50,7 @@ public class HEAnalyticsPlatform: NSObject {
     */
     required public init(platformData: [NSObject:AnyObject]) {
         super.init()
-        self.initializePlatform(platformData)
+        initializePlatform(platformData)
     }
 
     
