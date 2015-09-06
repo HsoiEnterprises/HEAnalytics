@@ -160,18 +160,14 @@ public class HEAnalytics: NSObject {
         let configFileURL = NSBundle.mainBundle().URLForResource("AnalyticsPlatformConfig", withExtension: "plist")
         assert(NSFileManager.defaultManager().fileExistsAtPath(configFileURL!.path!), "AnalyticsPlatformConfig.plist does not exist in the mainBundle")
         
-        if let theURL = configFileURL {
-            if let configDict = NSDictionary(contentsOfURL: theURL) {
-                configDict.enumerateKeysAndObjectsUsingBlock({ (key:AnyObject, value:AnyObject, stop:UnsafeMutablePointer<ObjCBool>) -> Void in
-                    if let keyString = key as? String {
-                        if let valueDictionary = value as? [NSObject:AnyObject] {
-                            let theClass = NSClassFromString(keyString) as! HEAnalyticsPlatform.Type
-                            let platform = theClass.init(platformData: valueDictionary)
-                            self.platforms.append(platform)
-                        }
-                    }
-                })
-            }
+        if let theURL = configFileURL, configDict = NSDictionary(contentsOfURL: theURL) {
+            configDict.enumerateKeysAndObjectsUsingBlock({ (key:AnyObject, value:AnyObject, stop:UnsafeMutablePointer<ObjCBool>) -> Void in
+                if let keyString = key as? String, valueDictionary = value as? [NSObject:AnyObject] {
+                    let theClass = NSClassFromString(keyString) as! HEAnalyticsPlatform.Type
+                    let platform = theClass.init(platformData: valueDictionary)
+                    self.platforms.append(platform)
+                }
+            })
         }
         assert(self.platforms.count > 0, "no analytics platforms were loaded. Is the AnalyticsPlatformConfig.plist present and populated?")
     }
@@ -416,10 +412,8 @@ public class HEAnalytics: NSObject {
     */
     @objc private func handleUIContentSizeCategoryDidChangeNotification(notification: NSNotification) {
         var parameters:[NSObject:AnyObject] = ["contentSize":"<unknown>"]
-        if let userInfo: [NSObject:AnyObject] = notification.userInfo {
-            if let newSize:AnyObject = userInfo[UIContentSizeCategoryNewValueKey] {
-                parameters["contentSize"] = newSize
-            }
+        if let userInfo: [NSObject:AnyObject] = notification.userInfo, newSize: AnyObject = userInfo[UIContentSizeCategoryNewValueKey] {
+            parameters["contentSize"] = newSize
         }
         let data = HEAnalyticsData(category: .Application, event: "Content Size Category Did Change", parameters: parameters)
         self.trackData(data)
