@@ -38,14 +38,30 @@ import Intercom
 /**
 An HEAnalyticsPlatform for the Intercom.io platform.
 */
-
 @objc(HEAnalyticsPlatformIntercom)
 public class HEAnalyticsPlatformIntercom: HEAnalyticsPlatform {
    
+    /**
+    Initializer.
+    
+    :param: platformData The platform's unique settings data, usually including whatever identifier/key is used to identify this app, and any other configuration data that may be relevant to the platform. The keys and values for each platform is unique to that platform.
+    
+    :returns: A properly initialized HEAnalyticsPlatformIntercom object.
+    */
     public required init(platformData: [NSObject:AnyObject]) {
         super.init(platformData: platformData)
     }
     
+    
+    /**
+    Initializes the platform with the given data.
+    
+    Subclasses are required to override and implement this in whatever way gets the platform's SDK intialized and ready (but not started). Think of it like starting the motor on the car and letting it idle being ready to go (whereas start() is when the car is put in gear and your foot depresses the gas pedal).
+    
+    Subclasses should invoke super (generally at the end, before returning).
+    
+    :param: platformData The platform's unique settings data, usually including whatever identifier/key is used to identify this app, and any other configuration data that may be relevant to the platform. The keys and values for each platform is unique to that platform.
+    */
     public override func initializePlatform(platformData: [NSObject:AnyObject]) {
         
         Intercom.reset()
@@ -62,10 +78,15 @@ public class HEAnalyticsPlatformIntercom: HEAnalyticsPlatform {
     }
     
     
-    // Hsoi 2015-06-05 - As far as I can tell about Intercom, it doesn't really have any sort of mechanism to enforce
-    // optOut/in or start/stop. So we'll just keep track of it ourselves.
+    /// Has Intercom tracking (optOut/in start/stop) started or not? Intercom seems to have no mechanism of its own to enforce this, so we track it ourselves.
     private var started: Bool = false
     
+    
+    /**
+    Starts the platform actually recording events.
+    
+    Subclasses generally will want to override this to start their SDK's collection of data. Note that, depending upon the implementation details of the SDK, you may need to check the  HEAnalyticsPlatform.optOut property to ensure you actually should start collecting or not.
+    */
     public override func start() {
         if !self.optOut {
             if !self.started {
@@ -76,12 +97,24 @@ public class HEAnalyticsPlatformIntercom: HEAnalyticsPlatform {
     }
     
     
+    /**
+    Stops the platform from actually recording events.
+    
+    Subclasses will generally want to override this to stop their SDK's collection of data.
+    */
     public override func stop() {
         super.stop()
         self.started = false
     }
     
     
+    /**
+    The core function that's actually tracks/logs the analytic event data.
+    
+    Subclasses will need to override this and implement the SDK's event logging/tracking mechanism.
+    
+    :param: data The HEAnalyticsData with the information to be recorded. It is up to the subclass to interpret, preserve, and convey this data as richly and appropriately as the platform SDK allows.
+    */
     public override func trackData(data: HEAnalyticsData) {
         if self.optOut || !self.started {
             return
@@ -97,6 +130,15 @@ public class HEAnalyticsPlatformIntercom: HEAnalyticsPlatform {
     }
     
     
+    /**
+    Used to track views of a UIViewController.
+    
+    Subclasses will need to override and implement the SDK's view logging/tracking mechanism.
+    
+    Consider use of viewControlerTitle() to help in tracking.
+    
+    :param: viewController The UIViewController to track.
+    */
     public override func trackView(viewController: UIViewController) {
         if self.optOut || !self.started {
             return
