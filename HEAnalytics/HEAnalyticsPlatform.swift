@@ -44,9 +44,9 @@ public class HEAnalyticsPlatform: NSObject {
     /**
     Initializer.
     
-    :param: platformData The platform's unique settings data, usually including whatever identifier/key is used to identify this app, and any other configuration data that may be relevant to the platform. The keys and values for each platform is unique to that platform.
+    - parameter platformData: The platform's unique settings data, usually including whatever identifier/key is used to identify this app, and any other configuration data that may be relevant to the platform. The keys and values for each platform is unique to that platform.
     
-    :returns: A properly initialized HEAnalyticsPlatform object.
+    - returns: A properly initialized HEAnalyticsPlatform object.
     */
     required public init(platformData: [NSObject:AnyObject]) {
         super.init()
@@ -61,7 +61,7 @@ public class HEAnalyticsPlatform: NSObject {
     
     Subclasses should invoke super (generally at the end, before returning).
     
-    :param: platformData The platform's unique settings data, usually including whatever identifier/key is used to identify this app, and any other configuration data that may be relevant to the platform. The keys and values for each platform is unique to that platform.
+    - parameter platformData: The platform's unique settings data, usually including whatever identifier/key is used to identify this app, and any other configuration data that may be relevant to the platform. The keys and values for each platform is unique to that platform.
     */
     internal func initializePlatform(platformData: [NSObject:AnyObject]) {
 
@@ -96,7 +96,7 @@ public class HEAnalyticsPlatform: NSObject {
     
     Subclasses will need to override this and implement the SDK's event logging/tracking mechanism.
     
-    :param: data The HEAnalyticsData with the information to be recorded. It is up to the subclass to interpret, preserve, and convey this data as richly and appropriately as the platform SDK allows.
+    - parameter data: The HEAnalyticsData with the information to be recorded. It is up to the subclass to interpret, preserve, and convey this data as richly and appropriately as the platform SDK allows.
     */
     public func trackData(data: HEAnalyticsData) {
 
@@ -110,7 +110,7 @@ public class HEAnalyticsPlatform: NSObject {
     
     Consider use of viewControlerTitle() to help in tracking.
     
-    :param: viewController The UIViewController to track.
+    - parameter viewController: The UIViewController to track.
     */
     public func trackView(viewController: UIViewController) {
         // subclasses expected to override and implement to implement the tracking for that platform.
@@ -123,7 +123,7 @@ public class HEAnalyticsPlatform: NSObject {
     
     I like using the `CFBundleShortVersionString` as either a semantic or marketing version, such as "x.y.z". The `CFBundleVersion` then is used as a simple forever-incrementing integer build number. We will concatenate the two versions for a more descriptive version that if an analytics SDK supports it, we can use to set it to have a more robust version reporting.
     
-    :returns: an app version string.
+    - returns: an app version string.
     */
     internal func appVersion() -> String? {
         if let shortVersion = NSBundle.mainBundle().objectForInfoDictionaryKey("CFBundleShortVersionString") as? String, bundleVersion = NSBundle.mainBundle().objectForInfoDictionaryKey("CFBundleVersion") as? String {
@@ -139,9 +139,9 @@ public class HEAnalyticsPlatform: NSObject {
     
     See UIViewController+HEAnalytics and the HE_analyticsViewTrackingTitle() extension
     
-    :param: viewController The UIViewController to extract a tracking title from
+    - parameter viewController: The UIViewController to extract a tracking title from
     
-    :returns: The title to use for tracking.
+    - returns: The title to use for tracking.
     */
     internal func viewControlerTitle(viewController: UIViewController) -> String {
         var title: String = "<unknown>"

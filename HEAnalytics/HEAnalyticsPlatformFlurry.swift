@@ -43,9 +43,9 @@ public class HEAnalyticsPlatformFlurry: HEAnalyticsPlatform {
     /**
     Initializer.
     
-    :param: platformData The platform's unique settings data, usually including whatever identifier/key is used to identify this app, and any other configuration data that may be relevant to the platform. The keys and values for each platform is unique to that platform.
+    - parameter platformData: The platform's unique settings data, usually including whatever identifier/key is used to identify this app, and any other configuration data that may be relevant to the platform. The keys and values for each platform is unique to that platform.
     
-    :returns: A properly initialized HEAnalyticsPlatformFlurry object.
+    - returns: A properly initialized HEAnalyticsPlatformFlurry object.
     */
     public required init(platformData: [NSObject:AnyObject]) {
         super.init(platformData: platformData)
@@ -59,7 +59,7 @@ public class HEAnalyticsPlatformFlurry: HEAnalyticsPlatform {
     
     Subclasses should invoke super (generally at the end, before returning).
     
-    :param: platformData The platform's unique settings data, usually including whatever identifier/key is used to identify this app, and any other configuration data that may be relevant to the platform. The keys and values for each platform is unique to that platform.
+    - parameter platformData: The platform's unique settings data, usually including whatever identifier/key is used to identify this app, and any other configuration data that may be relevant to the platform. The keys and values for each platform is unique to that platform.
     */
     public override func initializePlatform(platformData: [NSObject:AnyObject]) {
 
@@ -126,7 +126,7 @@ public class HEAnalyticsPlatformFlurry: HEAnalyticsPlatform {
     
     Subclasses will need to override this and implement the SDK's event logging/tracking mechanism.
     
-    :param: data The HEAnalyticsData with the information to be recorded. It is up to the subclass to interpret, preserve, and convey this data as richly and appropriately as the platform SDK allows.
+    - parameter data: The HEAnalyticsData with the information to be recorded. It is up to the subclass to interpret, preserve, and convey this data as richly and appropriately as the platform SDK allows.
     */
     public override func trackData(data: HEAnalyticsData) {
         if self.optOut {
@@ -152,7 +152,7 @@ public class HEAnalyticsPlatformFlurry: HEAnalyticsPlatform {
     
     Consider use of viewControlerTitle() to help in tracking.
     
-    :param: viewController The UIViewController to track.
+    - parameter viewController: The UIViewController to track.
     */
     public override func trackView(viewController: UIViewController) {
         if self.optOut {
