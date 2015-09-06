@@ -61,7 +61,7 @@ You will also need to obtain and integrate the analytics platform SDK of your ch
 
 ## Cocoapods
 
-```
+```ruby
 pod "HEAnalytics", :subspecs => ["Flurry", "GoogleAnalytics"]
 ```
 
@@ -74,7 +74,7 @@ Create an `AnalyticsPlatformConfig.plist` file. The structure of this file is fa
 
 For example, if you want to support both Flurry and Google Analytics, your file might look like this:
 
-```
+```xml
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
 <plist version="1.0">
@@ -104,10 +104,28 @@ While not required, it's **strongly** recommended to subclass `HEAnalytics` and 
 
 First, you can make your subclass a singleton. Yes I know the arguments for and against singleton, and I believe this is a case where it's not so evil to use a singleton pattern. However, there is nothing that requires or mandates singleton.
 
-Second, `HEAnalytics` aims to provide a unified abstraction layer for analytics platforms so that calling code can be simpler, cleaner, easier to read and maintain. Thus it's desirable to put all the gory implementation details into the analytics code itself and not in the calling code. Since analytics are inherently app-specific, this calls for a subclass.
+Second, `HEAnalytics` ams to provide a unified abstraction layer for analytics platforms, allowing calling code to be simpler, cleaner, easier to read and maintain. Thus, while clients can certainly use the `HEAnalytics` class directly and `trackData()` directly in client code, it's preferred to put the implementation details into a subclass of `HEAnalytics`. Since analytics are inherently app-specific, this calls for a subclass.
 
-Code would look something like this:
+Thus, instead of code like:
 
+```swift
+    class MyViewController: UIViewController {
+        @IBAction func sliderValueDidChange(sender: AnyObject?) {
+            if let slider = sender as? UISlider {
+                // Do whatever you do with the slider value, like updating your data model.
+                myDataObject.value = slider.value
+                
+                let parameters = ["value": slider.value]
+                let data = HEAnalyticsData(category: .Settings, event: "Slider Value Updated", parameters: parameters)
+                myHEAnalyticsInstance.trackData(data)
+            }
+        }
+    }
+```
+
+You should do:
+
+```swift
     class MyAppAnalytics: HEAnalytics {
         static let sharedInstance = MyAppAnalytics()
 
@@ -117,14 +135,17 @@ Code would look something like this:
             self.trackData(data)
         }
     }
+```
 
 Then in your code:
 
-
+```swift
     class MyViewController: UIViewController {
         @IBAction func sliderValueDidChange(sender: AnyObject?) {
             if let slider = sender as? UISlider {
-                // do whatever you need to with the updated slider value
+                // Do whatever you do with the slider value, like updating your data model.
+                myDataObject.value = slider.value
+                
                 MyAppAnalytics.sharedInstance.trackSliderValue(slider.value)
             }
         }
@@ -133,13 +154,23 @@ Then in your code:
             return "My Interesting View"
         }
     }
+```
+
+This approach:
+
+* Keeps calling code cleaner, easier to read.
+* Abstracts away the details.
+* Encapsulates all analytics code and logic into a single, centralized location (which becomes a useful reference).
+* Improves maintainability.
+
+There's nothing that prevents you from the former approach, but in the author's experience the latter approach is preferrable.
 
 
 ## Startup and Initialization
 
 Because `HEAnalytics` automatically tracks `UIApplicationDelegate` notifications, the best place to start analytics tracking is within `application(application, willFinishLaunchingWithOptions)`. Note! _willFinish_ **NOT** _didFinish_. Starting is simple:
 
-```
+```swift
     func application(application: UIApplication, willFinishLaunchingWithOptions launchOptions: [NSObject : AnyObject]?) -> Bool {
         MyAppAnalytics.sharedInstance.start()
         return true
@@ -152,7 +183,7 @@ Event tracking is performed by filling out an `HEAnalyticsData` object and passi
 
 View tracking can be performed by invoking `HEAnalytics.trackView()`, passing the `UIViewController` you wish to track. Invoking `trackView()` can technically be done anywhere, but makes most sense to be called in your `UIViewController` subclass override of `viewDidAppear()`. To facilitate view tracking, `HEAnalytics` extends `UIViewController` with the `HE_analyticsViewTrackingTitle()` function. This function is intended to provide a stable value for analytics view tracking. By default it returns the `viewController.title` if it is non-nil and non-empty, else returns the name of the `UIViewController` (sub)class. This default behavior is acceptable, but may not always be desired. For example, if your ViewController's title is based upon the contents of the ViewController, that may make it difficult for you to track the view. To counter this, your `UIViewController` subclass can override and implement `HE_analyticsViewTrackingTitle()` and return a known stable title string that is useful for tracking and doesn't interfere with your UI.
 
-```
+```swift
     override func viewDidAppear(animated: Bool) {
         super.viewDidAppear(animated)
         MyAppAnalytics.sharedInstance.trackView(self)
