@@ -37,7 +37,7 @@ import UIKit
 /**
 HEAnalytic's extension to UIViewController.
 */
-extension UIViewController {
+public extension UIViewController {
     
     /**
     HE_analyticsViewTrackingTitle is an effort to always provide a stable value for view tracking by HEAnalytics.
@@ -53,7 +53,7 @@ extension UIViewController {
     
     :returns: A string to use as the view tracking title.
     */
-    func HE_analyticsViewTrackingTitle() -> String {
+    public func HE_analyticsViewTrackingTitle() -> String {
         if let title = self.title {
             if !title.isEmpty {
                 return title

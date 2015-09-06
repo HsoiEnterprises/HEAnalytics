@@ -39,13 +39,13 @@ import UIKit
 An HEAnalyticsPlatform for the Google Analytics (GAI) platform.
 */
 @objc(HEAnalyticsPlatformGAI)
-class HEAnalyticsPlatformGAI: HEAnalyticsPlatform {
+public class HEAnalyticsPlatformGAI: HEAnalyticsPlatform {
    
-    required init(platformData: [NSObject:AnyObject]) {
+    public required init(platformData: [NSObject:AnyObject]) {
         super.init(platformData: platformData)
     }
 
-    override func initializePlatform(platformData: [NSObject:AnyObject]) {
+    internal override func initializePlatform(platformData: [NSObject:AnyObject]) {
 
         let trackingID = platformData["trackingID"] as! String
         GAI.sharedInstance().trackerWithTrackingId(trackingID)
@@ -86,14 +86,14 @@ class HEAnalyticsPlatformGAI: HEAnalyticsPlatform {
     }
     
 
-    override var optOut: Bool {
+    public override var optOut: Bool {
         didSet {
             GAI.sharedInstance().optOut = self.optOut
         }
     }
     
     
-    override func start() {
+    public override func start() {
         if !self.optOut {
             super.start()
             GAI.sharedInstance().optOut = false
@@ -101,13 +101,13 @@ class HEAnalyticsPlatformGAI: HEAnalyticsPlatform {
     }
     
     
-    override func stop() {
+    public override func stop() {
         super.stop()
         GAI.sharedInstance().optOut = true
     }
     
     
-    override func trackData(data: HEAnalyticsData) {
+    public override func trackData(data: HEAnalyticsData) {
         if self.optOut || GAI.sharedInstance().optOut {
             return
         }
@@ -121,7 +121,7 @@ class HEAnalyticsPlatformGAI: HEAnalyticsPlatform {
     }
 
     
-    override func trackView(viewController: UIViewController) {
+    public override func trackView(viewController: UIViewController) {
         if self.optOut || GAI.sharedInstance().optOut {
             return
         }

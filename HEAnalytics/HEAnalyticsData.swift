@@ -56,7 +56,7 @@ import UIKit
     - Support:      For tracking support events (e.g. tapped on the button to email tech support)
     - VersionCheck: If your app uses built-in version checking, track it with this category.
     */
-    enum AnalyticsCategory : String {
+    public enum AnalyticsCategory : String {
         case Activity                   =   "Activity"
         case Application                =   "Application"
         case General                    =   "General"
@@ -93,7 +93,7 @@ import UIKit
     
     :returns: An HEAnalyticsData object, suitable for passing to HEAnalytics.trackData()
     */
-    init(category: String, event: String, parameters: [NSObject:AnyObject]? = nil) {
+    public init(category: String, event: String, parameters: [NSObject:AnyObject]? = nil) {
         self.category = category
         self.event = event
         self.parameters = parameters
@@ -111,7 +111,7 @@ import UIKit
     
     :returns: An HEAnalyticsData object, suitable for passing to HEAnalytics.trackData()
     */
-    convenience init(category: AnalyticsCategory, event: String, parameters: [NSObject:AnyObject]? = nil) {
+    public convenience init(category: AnalyticsCategory, event: String, parameters: [NSObject:AnyObject]? = nil) {
         self.init(category: category.rawValue, event: event, parameters: parameters)
     }
 

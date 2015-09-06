@@ -40,9 +40,9 @@ An HEAnalyticsPlatform for the Mixpanel platform.
 */
 
 @objc(HEAnalyticsPlatformMixpanel)
-class HEAnalyticsPlatformMixpanel: HEAnalyticsPlatform {
+public class HEAnalyticsPlatformMixpanel: HEAnalyticsPlatform {
    
-    required init(platformData: [NSObject:AnyObject]) {
+    public required init(platformData: [NSObject:AnyObject]) {
         super.init(platformData: platformData)
     }
     
@@ -50,7 +50,7 @@ class HEAnalyticsPlatformMixpanel: HEAnalyticsPlatform {
     // facilitates things in case someone wants to use multiple HEAnalytics instances.
     private var mixpanel: Mixpanel!
     
-    override func initializePlatform(platformData: [NSObject:AnyObject]) {
+    internal override func initializePlatform(platformData: [NSObject:AnyObject]) {
         
         var defaultFlushInterval: UInt = 15
         if let flushInterval = platformData["flushInterval"] as? UInt {
@@ -100,7 +100,7 @@ class HEAnalyticsPlatformMixpanel: HEAnalyticsPlatform {
     // optOut/in or start/stop. So we'll just keep track of it ourselves.
     private var started: Bool = false
     
-    override func start() {
+    public override func start() {
         if !self.optOut {
             if !self.started {
                 super.start()
@@ -110,13 +110,13 @@ class HEAnalyticsPlatformMixpanel: HEAnalyticsPlatform {
     }
     
     
-    override func stop() {
+    public override func stop() {
         super.stop()
         self.started = false
     }
     
     
-    override func trackData(data: HEAnalyticsData) {
+    public override func trackData(data: HEAnalyticsData) {
         if self.optOut || !self.started {
             return
         }
@@ -131,7 +131,7 @@ class HEAnalyticsPlatformMixpanel: HEAnalyticsPlatform {
     }
     
     
-    override func trackView(viewController: UIViewController) {
+    public override func trackView(viewController: UIViewController) {
         if self.optOut || !self.started {
             return
         }

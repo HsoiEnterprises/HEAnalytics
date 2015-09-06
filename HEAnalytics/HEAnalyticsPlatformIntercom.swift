@@ -40,13 +40,13 @@ An HEAnalyticsPlatform for the Intercom.io platform.
 */
 
 @objc(HEAnalyticsPlatformIntercom)
-class HEAnalyticsPlatformIntercom: HEAnalyticsPlatform {
+public class HEAnalyticsPlatformIntercom: HEAnalyticsPlatform {
    
-    required init(platformData: [NSObject:AnyObject]) {
+    public required init(platformData: [NSObject:AnyObject]) {
         super.init(platformData: platformData)
     }
     
-    override func initializePlatform(platformData: [NSObject:AnyObject]) {
+    public override func initializePlatform(platformData: [NSObject:AnyObject]) {
         
         Intercom.reset()
         
@@ -66,7 +66,7 @@ class HEAnalyticsPlatformIntercom: HEAnalyticsPlatform {
     // optOut/in or start/stop. So we'll just keep track of it ourselves.
     private var started: Bool = false
     
-    override func start() {
+    public override func start() {
         if !self.optOut {
             if !self.started {
                 super.start()
@@ -76,13 +76,13 @@ class HEAnalyticsPlatformIntercom: HEAnalyticsPlatform {
     }
     
     
-    override func stop() {
+    public override func stop() {
         super.stop()
         self.started = false
     }
     
     
-    override func trackData(data: HEAnalyticsData) {
+    public override func trackData(data: HEAnalyticsData) {
         if self.optOut || !self.started {
             return
         }
@@ -97,7 +97,7 @@ class HEAnalyticsPlatformIntercom: HEAnalyticsPlatform {
     }
     
     
-    override func trackView(viewController: UIViewController) {
+    public override func trackView(viewController: UIViewController) {
         if self.optOut || !self.started {
             return
         }

@@ -38,14 +38,14 @@ import UIKit
 An HEAnalyticsPlatform for the Flurry analytics platform.
 */
 @objc(HEAnalyticsPlatformFlurry)
-class HEAnalyticsPlatformFlurry: HEAnalyticsPlatform {
+public class HEAnalyticsPlatformFlurry: HEAnalyticsPlatform {
    
-    required init(platformData: [NSObject:AnyObject]) {
+    public required init(platformData: [NSObject:AnyObject]) {
         super.init(platformData: platformData)
     }
     
 
-    override func initializePlatform(platformData: [NSObject:AnyObject]) {
+    public override func initializePlatform(platformData: [NSObject:AnyObject]) {
 
         if let logLevel = platformData["logLevel"] as? UInt {
             let levelAsUInt32 = UInt32(logLevel)
@@ -72,14 +72,14 @@ class HEAnalyticsPlatformFlurry: HEAnalyticsPlatform {
     
     
     
-    override var optOut: Bool {
+    public override var optOut: Bool {
         didSet {
             Flurry.setEventLoggingEnabled(!self.optOut)
         }
     }
     
     
-    override func start() {
+    public override func start() {
         if !self.optOut {
             super.start()
             Flurry.setEventLoggingEnabled(true)
@@ -87,13 +87,13 @@ class HEAnalyticsPlatformFlurry: HEAnalyticsPlatform {
     }
     
     
-    override func stop() {
+    public override func stop() {
         super.stop()
         Flurry.setEventLoggingEnabled(false)
     }
 
     
-    override func trackData(data: HEAnalyticsData) {
+    public override func trackData(data: HEAnalyticsData) {
         if self.optOut {
             return
         }
@@ -110,7 +110,7 @@ class HEAnalyticsPlatformFlurry: HEAnalyticsPlatform {
     }
     
     
-    override func trackView(viewController: UIViewController) {
+    public override func trackView(viewController: UIViewController) {
         if self.optOut {
             return
         }
