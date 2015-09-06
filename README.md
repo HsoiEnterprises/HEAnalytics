@@ -1,4 +1,4 @@
-![Build Status](https://travis-ci.org/HsoiEnterprises/HEAnalytics.svg)
+<!---![Build Status](https://travis-ci.org/HsoiEnterprises/HEAnalytics.svg) -->
 ![Cocoapods Compatible](https://img.shields.io/cocoapods/v/HEAnalytics.svg)
 ![License](https://img.shields.io/badge/license-BSD%203--Clause-blue.svg)
 ![Platform](https://img.shields.io/badge/platform-iOS-lightgrey.svg)
@@ -111,51 +111,51 @@ Second, `HEAnalytics` ams to provide a unified abstraction layer for analytics p
 Thus, instead of code like:
 
 ```swift
-    class MyViewController: UIViewController {
-        @IBAction func sliderValueDidChange(sender: AnyObject?) {
-            if let slider = sender as? UISlider {
-                // Do whatever you do with the slider value, like updating your data model.
-                myDataObject.value = slider.value
-                
-                let parameters = ["value": slider.value]
-                let data = HEAnalyticsData(category: .Settings, event: "Slider Value Updated", parameters: parameters)
-                myHEAnalyticsInstance.trackData(data)
-            }
+class MyViewController: UIViewController {
+    @IBAction func sliderValueDidChange(sender: AnyObject?) {
+        if let slider = sender as? UISlider {
+            // Do whatever you do with the slider value, like updating your data model.
+            myDataObject.value = slider.value
+            
+            let parameters = ["value": slider.value]
+            let data = HEAnalyticsData(category: .Settings, event: "Slider Value Updated", parameters: parameters)
+            myHEAnalyticsInstance.trackData(data)
         }
     }
+}
 ```
 
 You should do:
 
 ```swift
-    class MyAppAnalytics: HEAnalytics {
-        static let sharedInstance = MyAppAnalytics()
+class MyAppAnalytics: HEAnalytics {
+    static let sharedInstance = MyAppAnalytics()
 
-        func trackSliderValue(value: Float) {
-            let parameters = ["value": value]
-            let data = HEAnalyticsData(category: .Settings, event: "Slider Value Updated", parameters: parameters)
-            self.trackData(data)
-        }
+    func trackSliderValue(value: Float) {
+        let parameters = ["value": value]
+        let data = HEAnalyticsData(category: .Settings, event: "Slider Value Updated", parameters: parameters)
+        self.trackData(data)
     }
+}
 ```
 
 Then in your code:
 
 ```swift
-    class MyViewController: UIViewController {
-        @IBAction func sliderValueDidChange(sender: AnyObject?) {
-            if let slider = sender as? UISlider {
-                // Do whatever you do with the slider value, like updating your data model.
-                myDataObject.value = slider.value
-                
-                MyAppAnalytics.sharedInstance.trackSliderValue(slider.value)
-            }
-        }
-        
-        func HE_analyticsViewTrackingTitle() -> String {
-            return "My Interesting View"
+class MyViewController: UIViewController {
+    @IBAction func sliderValueDidChange(sender: AnyObject?) {
+        if let slider = sender as? UISlider {
+            // Do whatever you do with the slider value, like updating your data model.
+            myDataObject.value = slider.value
+            
+            MyAppAnalytics.sharedInstance.trackSliderValue(slider.value)
         }
     }
+    
+    func HE_analyticsViewTrackingTitle() -> String {
+        return "My Interesting View"
+    }
+}
 ```
 
 This approach:
