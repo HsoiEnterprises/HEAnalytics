@@ -97,6 +97,8 @@ For example, if you want to support both Flurry and Google Analytics, your file 
 
 It is up to you and your project needs as to how the plist file is integrated into your project. It may be as simple as adding the file to the project and ensuring it is copied into the app bundle during the "Copy Bundle Resources" build phase. It may be that you add a "Run Script" build phase that copies in a different plist file depending upon the build configuration (i.e. one configuration for debug builds, another for release builds). How the file is added to the main bundle is up to you, just ensure that it is.
 
+**In the Example code, be sure to look at the `AnalyticsPlatformConfig` folder, as well as the `Run Script - HEAnalytics` build phase (and `AppBuildPostflight.rb` build script). This is one way to integrate.**
+
 
 ## Subclassing and Integrating `HEAnalytics` 
 
