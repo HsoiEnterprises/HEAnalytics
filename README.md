@@ -38,10 +38,8 @@ It enables logic for converting the data-to-track into something the analytics A
 
 # Supported OS and SDK
 
-Developed with
-
-- Xcode 6.4
-- Swift 1.2
+- Xcode 7
+- Swift 2
 - iOS 8
 
 It should work with iOS 7, but has not been extensively tested.

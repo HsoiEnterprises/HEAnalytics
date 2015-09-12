@@ -43,9 +43,9 @@ public class HEAnalyticsPlatformFlurry: HEAnalyticsPlatform {
     /**
     Initializer.
     
-    :param: platformData The platform's unique settings data, usually including whatever identifier/key is used to identify this app, and any other configuration data that may be relevant to the platform. The keys and values for each platform is unique to that platform.
+    - parameter platformData: The platform's unique settings data, usually including whatever identifier/key is used to identify this app, and any other configuration data that may be relevant to the platform. The keys and values for each platform is unique to that platform.
     
-    :returns: A properly initialized HEAnalyticsPlatformFlurry object.
+    - returns: A properly initialized HEAnalyticsPlatformFlurry object.
     */
     public required init(platformData: [NSObject:AnyObject]) {
         super.init(platformData: platformData)
@@ -59,7 +59,7 @@ public class HEAnalyticsPlatformFlurry: HEAnalyticsPlatform {
     
     Subclasses should invoke super (generally at the end, before returning).
     
-    :param: platformData The platform's unique settings data, usually including whatever identifier/key is used to identify this app, and any other configuration data that may be relevant to the platform. The keys and values for each platform is unique to that platform.
+    - parameter platformData: The platform's unique settings data, usually including whatever identifier/key is used to identify this app, and any other configuration data that may be relevant to the platform. The keys and values for each platform is unique to that platform.
     */
     public override func initializePlatform(platformData: [NSObject:AnyObject]) {
 
@@ -92,7 +92,7 @@ public class HEAnalyticsPlatformFlurry: HEAnalyticsPlatform {
     /// Has the user opt'd out of data collection? Note this value is not persisted anywhere by HEAnalytics. Exposing this setting in the GUI, persisting the value, restoring the value, and enforcing it generally is the responsibility of the app developer.
     public override var optOut: Bool {
         didSet {
-            Flurry.setEventLoggingEnabled(!self.optOut)
+            Flurry.setEventLoggingEnabled(!optOut)
         }
     }
     
@@ -103,10 +103,12 @@ public class HEAnalyticsPlatformFlurry: HEAnalyticsPlatform {
     Subclasses generally will want to override this to start their SDK's collection of data. Note that, depending upon the implementation details of the SDK, you may need to check the  HEAnalyticsPlatform.optOut property to ensure you actually should start collecting or not.
     */
     public override func start() {
-        if !self.optOut {
-            super.start()
-            Flurry.setEventLoggingEnabled(true)
+        guard !optOut else {
+            return
         }
+
+        super.start()
+        Flurry.setEventLoggingEnabled(true)
     }
     
     
@@ -126,18 +128,17 @@ public class HEAnalyticsPlatformFlurry: HEAnalyticsPlatform {
     
     Subclasses will need to override this and implement the SDK's event logging/tracking mechanism.
     
-    :param: data The HEAnalyticsData with the information to be recorded. It is up to the subclass to interpret, preserve, and convey this data as richly and appropriately as the platform SDK allows.
+    - parameter data: The HEAnalyticsData with the information to be recorded. It is up to the subclass to interpret, preserve, and convey this data as richly and appropriately as the platform SDK allows.
     */
     public override func trackData(data: HEAnalyticsData) {
-        if self.optOut {
+        guard !optOut else {
             return
         }
 
         let flurryEvent = data.category + " - " + data.event
-        if data.parameters != nil {
-            assert(data.parameters!.count <= 10, "Flurry SDK accepts at most 10 parameters per event")
-            
-            Flurry.logEvent(flurryEvent, withParameters: data.parameters!)
+        if let parameters = data.parameters {
+            assert(parameters.count <= 10, "Flurry SDK accepts at most 10 parameters per event")
+            Flurry.logEvent(flurryEvent, withParameters: parameters)
         }
         else {
             Flurry.logEvent(flurryEvent)
@@ -152,10 +153,10 @@ public class HEAnalyticsPlatformFlurry: HEAnalyticsPlatform {
     
     Consider use of viewControlerTitle() to help in tracking.
     
-    :param: viewController The UIViewController to track.
+    - parameter viewController: The UIViewController to track.
     */
     public override func trackView(viewController: UIViewController) {
-        if self.optOut {
+        guard !optOut else {
             return
         }
 
@@ -165,7 +166,7 @@ public class HEAnalyticsPlatformFlurry: HEAnalyticsPlatform {
         // solution to this, it seems both Flurry and others say to do what we want to do, we should just
         // logEvent. So, here we are.
 
-        let title = self.viewControlerTitle(viewController)
+        let title = viewControlerTitle(viewController)
         let flurryEvent = "TrackView - " + title
         Flurry.logEvent(flurryEvent)
         Flurry.logPageView()

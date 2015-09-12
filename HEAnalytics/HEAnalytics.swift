@@ -107,7 +107,7 @@ public class HEAnalytics: NSObject {
     /**
     Designated initializer.
     
-    :returns: an instance of HEAnalytics
+    - returns: an instance of HEAnalytics
     */
     public override init() {
         super.init()
@@ -120,7 +120,7 @@ public class HEAnalytics: NSObject {
     Will cause analytics collection to `stop()`.
     */
     deinit {
-        self.stop()
+        stop()
     }
     
     
@@ -136,11 +136,11 @@ public class HEAnalytics: NSObject {
     */
     public func start() {
         
-        self.loadPlatforms()
+        loadPlatforms()
         
-        self.registerForNotifications()
+        registerForNotifications()
         
-        for platform in self.platforms {
+        for platform in platforms {
             platform.start()
         }
     }
@@ -150,7 +150,7 @@ public class HEAnalytics: NSObject {
     Internal function to load the platforms.
     */
     internal func loadPlatforms() {
-        assert(self.platforms.count == 0, "calling HEAnalytics.start() and there are loaded platforms. How did this happen?")
+        assert(platforms.count == 0, "calling HEAnalytics.start() and there are loaded platforms. How did this happen?")
         
         // Hsoi 2015-04-18 - Load up the configuration.
         //
@@ -160,20 +160,16 @@ public class HEAnalytics: NSObject {
         let configFileURL = NSBundle.mainBundle().URLForResource("AnalyticsPlatformConfig", withExtension: "plist")
         assert(NSFileManager.defaultManager().fileExistsAtPath(configFileURL!.path!), "AnalyticsPlatformConfig.plist does not exist in the mainBundle")
         
-        if let theURL = configFileURL {
-            if let configDict = NSDictionary(contentsOfURL: theURL) {
-                configDict.enumerateKeysAndObjectsUsingBlock({ (key:AnyObject!, value:AnyObject!, stop:UnsafeMutablePointer<ObjCBool>) -> Void in
-                    if let keyString = key as? String {
-                        if let valueDictionary = value as? [NSObject:AnyObject] {
-                            let theClass = NSClassFromString(keyString) as! HEAnalyticsPlatform.Type
-                            let platform = theClass(platformData: valueDictionary)
-                            self.platforms.append(platform)
-                        }
-                    }
-                })
-            }
+        if let theURL = configFileURL, configDict = NSDictionary(contentsOfURL: theURL) {
+            configDict.enumerateKeysAndObjectsUsingBlock({ (key:AnyObject, value:AnyObject, stop:UnsafeMutablePointer<ObjCBool>) -> Void in
+                if let keyString = key as? String, valueDictionary = value as? [NSObject:AnyObject] {
+                    let theClass = NSClassFromString(keyString) as! HEAnalyticsPlatform.Type
+                    let platform = theClass.init(platformData: valueDictionary)
+                    self.platforms.append(platform)
+                }
+            })
         }
-        assert(self.platforms.count > 0, "no analytics platforms were loaded. Is the AnalyticsPlatformConfig.plist present and populated?")
+        assert(platforms.count > 0, "no analytics platforms were loaded. Is the AnalyticsPlatformConfig.plist present and populated?")
     }
     
     
@@ -217,12 +213,12 @@ public class HEAnalytics: NSObject {
     Stops the recording of analytics.
     */
     public func stop() {
-        for platform in self.platforms {
+        for platform in platforms {
             platform.stop()
         }
         
-        self.unregisterForNotifications()
-        self.unloadPlatforms()
+        unregisterForNotifications()
+        unloadPlatforms()
     }
     
     
@@ -233,10 +229,10 @@ public class HEAnalytics: NSObject {
     
     NB: this feature is something you generally should expose in the GUI of the app to allow the user to configure if data can be collected or not -- see the terms of use of each analytics platform. HEAnalytics does nothing to manage this setting/feature: it's upon the app developer to expose, maintain, persist, enforce, etc. this setting.
     
-    :param: opt true to opt out, false to not. Defaults to not being opted out (false)
+    - parameter opt: true to opt out, false to not. Defaults to not being opted out (false)
     */
     public func optOut(opt: Bool) {
-        for platform in self.platforms {
+        for platform in platforms {
             platform.optOut = opt
         }
     }
@@ -251,15 +247,15 @@ public class HEAnalytics: NSObject {
     
         func tappedSomeInterestingButton() {
             let data = HEAnalyticsData(category: .General, event: "Tapping Interesting Button")
-            self.trackData(data)
+            trackData(data)
         }
     
     then client code just invokes `MyAnalytics.sharedInstance().tappedSomeInterestingButton()`.
     
-    :param: data The HEAnalyticsData containing the data to track.
+    - parameter data: The HEAnalyticsData containing the data to track.
     */
     public func trackData(data: HEAnalyticsData) {
-        for platform in self.platforms {
+        for platform in platforms {
             platform.trackData(data)
         }
     }
@@ -270,10 +266,10 @@ public class HEAnalytics: NSObject {
     
     You'll want to call this at a time such as in the UIViewController's implementation of viewDidAppear(), or some other appropriate location.
     
-    :param: viewController The UIViewController to track.
+    - parameter viewController: The UIViewController to track.
     */
     public func trackView(viewController: UIViewController) {
-        for platform in self.platforms {
+        for platform in platforms {
             platform.trackView(viewController)
         }
     }
@@ -285,7 +281,7 @@ public class HEAnalytics: NSObject {
     /**
     Private handler for UIApplicationBackgroundRefreshStatusDidChangeNotification
     
-    :param: notification the notification object.
+    - parameter notification: the notification object.
     */
     @objc private func handleUIApplicationBackgroundRefreshStatusDidChangeNotification(notification: NSNotification) {
         var status = "<unknown>"
@@ -299,47 +295,44 @@ public class HEAnalytics: NSObject {
             
         case .Available:
             status = "available"
-            
-        default:
-            status = "uncased value - \(currentBackgroundRefreshStatus)"
         }
 
         let data = HEAnalyticsData(category: .Application, event: "Background Refresh Status Did Change", parameters: ["status":status])
-        self.trackData(data)
+        trackData(data)
     }
     
     
     /**
     Private handler for UIApplicationDidBecomeActiveNotification
     
-    :param: notification the notification object.
+    - parameter notification: the notification object.
     */
     @objc private func handleUIApplicationDidBecomeActiveNotification(notification: NSNotification) {
         let data = HEAnalyticsData(category: .Application, event: "Did Become Active")
-        self.trackData(data)
+        trackData(data)
     }
 
     
     /**
     Private handler for UIApplicationDidEnterBackgroundNotification
     
-    :param: notification the notification object.
+    - parameter notification: the notification object.
     */
     @objc private func handleUIApplicationDidEnterBackgroundNotification(notification: NSNotification) {
         let data = HEAnalyticsData(category: .Application, event: "Did Enter Background")
-        self.trackData(data)
+        trackData(data)
     }
     
     
     /**
     Private handler for UIApplicationDidFinishLaunchingNotification
     
-    :param: notification the notification object.
+    - parameter notification: the notification object.
     */
     @objc private func handleUIApplicationDidFinishLaunchingNotification(notification: NSNotification) {
         var parameters:[NSObject:AnyObject] = [:]
         if let notificationObject:AnyObject = notification.object {
-            if let applicationObject = notificationObject as? UIApplication {
+            if let _ = notificationObject as? UIApplication {
                 // don't track the application object
             }
             else {
@@ -349,12 +342,7 @@ public class HEAnalytics: NSObject {
         
         if let userInfo: [NSObject:AnyObject] = notification.userInfo {
             if let launchOptions = userInfo[UIApplicationLaunchOptionsURLKey] as? NSURL {
-                if let urlstring = launchOptions.absoluteString {
-                    parameters["launchOptionsURL"] = urlstring
-                }
-                else {
-                    parameters["launchOptionsURL"] = "<unknown>"
-                }
+                parameters["launchOptionsURL"] = launchOptions.absoluteString
             }
             if let sourceApplication:AnyObject = userInfo[UIApplicationLaunchOptionsSourceApplicationKey] {
                 parameters["sourceApplication"] = sourceApplication
@@ -369,68 +357,66 @@ public class HEAnalytics: NSObject {
         
         let dataParameters:[NSObject:AnyObject]? = parameters.count != 0 ? parameters : nil
         let data = HEAnalyticsData(category: .Application, event: "Did Finish Launching", parameters: dataParameters)
-        self.trackData(data)
+        trackData(data)
     }
     
     
     /**
     Private handler for UIApplicationUserDidTakeScreenshotNotification
     
-    :param: notification the notification object.
+    - parameter notification: the notification object.
     */
     @objc private func handleUIApplicationUserDidTakeScreenshotNotification(notification: NSNotification) {
         let data = HEAnalyticsData(category: .Application, event: "Did Take Screenshot")
-        self.trackData(data)
+        trackData(data)
     }
     
     
     /**
     Private handler for UIApplicationWillEnterForegroundNotification
     
-    :param: notification the notification object.
+    - parameter notification: the notification object.
     */
     @objc private func handleUIApplicationWillEnterForegroundNotification(notification: NSNotification) {
         let data = HEAnalyticsData(category: .Application, event: "Will Enter Foreground")
-        self.trackData(data)
+        trackData(data)
     }
     
     
     /**
     Private handler for UIApplicationWillResignActiveNotification
     
-    :param: notification the notification object.
+    - parameter notification: the notification object.
     */
     @objc private func handleUIApplicationWillResignActiveNotification(notification: NSNotification) {
         let data = HEAnalyticsData(category: .Application, event: "Will Resign Active")
-        self.trackData(data)
+        trackData(data)
     }
     
     
     /**
     Private handler for UIApplicationWillTerminateNotification
     
-    :param: notification the notification object.
+    - parameter notification: the notification object.
     */
     @objc private func handleUIApplicationWillTerminateNotification(notification: NSNotification) {
         let data = HEAnalyticsData(category: .Application, event: "Will Terminate")
-        self.trackData(data)
+        trackData(data)
     }
     
     
     /**
     Private handler for UIContentSizeCategoryDidChangeNotification
     
-    :param: notification the notification object.
+    - parameter notification: the notification object.
     */
     @objc private func handleUIContentSizeCategoryDidChangeNotification(notification: NSNotification) {
         var parameters:[NSObject:AnyObject] = ["contentSize":"<unknown>"]
-        if let userInfo: [NSObject:AnyObject] = notification.userInfo {
-            if let newSize:AnyObject = userInfo[UIContentSizeCategoryNewValueKey] {
-                parameters["contentSize"] = newSize
-            }
+        if let userInfo: [NSObject:AnyObject] = notification.userInfo, newSize: AnyObject = userInfo[UIContentSizeCategoryNewValueKey] {
+            parameters["contentSize"] = newSize
         }
         let data = HEAnalyticsData(category: .Application, event: "Content Size Category Did Change", parameters: parameters)
-        self.trackData(data)
+        trackData(data)
     }
 
 }

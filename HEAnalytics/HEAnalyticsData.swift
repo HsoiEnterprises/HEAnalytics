@@ -35,7 +35,7 @@
 import UIKit
 
 /// HEAnalyticsData - the data structure for encapsulating data about an analytic event.
-@objc public class HEAnalyticsData {
+public class HEAnalyticsData: NSObject {
 
     // Hsoi 2015-04-04 - strictly speaking, HEAnalyticsData should be a struct, but since it may need to be accessed from ObjC, it can't be.
 
@@ -112,11 +112,11 @@ import UIKit
     HOWEVER, it is recommended to utilize the AnalyticsCategory/Event(as String) initializers instead, and to
     extend those enums as needed. This will provide for clearer and less error-prone code over time.
     
-    :param: category   The event category.
-    :param: event      The event.
-    :param: parameters The optional parameters. Typed as an [NSObject:AnyObject] to maximize interoperability with NSDictionary and Objective-C code, but it is expected that the key is a (NS)String and the value is a plist-able/json-able type such as string, number, array/dictionary (of string, number). The data won't necessarily be santized before being passed along to a platform API, so the general recommendation is in your HEAnalytics subclass's specific event tracking functions to take the app-provided raw data to track and convert it to a "safe" type (strings and numbers are best), then pass this sanitized type/data in the event parameters.
+    - parameter category:   The event category.
+    - parameter event:      The event.
+    - parameter parameters: The optional parameters. Typed as an [NSObject:AnyObject] to maximize interoperability with NSDictionary and Objective-C code, but it is expected that the key is a (NS)String and the value is a plist-able/json-able type such as string, number, array/dictionary (of string, number). The data won't necessarily be santized before being passed along to a platform API, so the general recommendation is in your HEAnalytics subclass's specific event tracking functions to take the app-provided raw data to track and convert it to a "safe" type (strings and numbers are best), then pass this sanitized type/data in the event parameters.
     
-    :returns: An HEAnalyticsData object, suitable for passing to HEAnalytics.trackData()
+    - returns: An HEAnalyticsData object, suitable for passing to HEAnalytics.trackData()
     */
     public init(category: String, event: String, parameters: [NSObject:AnyObject]? = nil) {
         self.category = category
@@ -130,11 +130,11 @@ import UIKit
     
     Creates an HEAnalyticsData object from the given AnalyticsCategory and a string for the event.
     
-    :param: category   The AnalyticsCategory of the event to track
-    :param: event      A string/name of the event to track
-    :param: parameters The optional parameters. See comments on the designated initializer.
+    - parameter category:   The AnalyticsCategory of the event to track
+    - parameter event:      A string/name of the event to track
+    - parameter parameters: The optional parameters. See comments on the designated initializer.
     
-    :returns: An HEAnalyticsData object, suitable for passing to HEAnalytics.trackData()
+    - returns: An HEAnalyticsData object, suitable for passing to HEAnalytics.trackData()
     */
     public convenience init(category: AnalyticsCategory, event: String, parameters: [NSObject:AnyObject]? = nil) {
         self.init(category: category.rawValue, event: event, parameters: parameters)
