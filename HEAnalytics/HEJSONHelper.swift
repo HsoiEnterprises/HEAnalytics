@@ -52,12 +52,12 @@ public class HEJSONHelper: NSObject {
     conditionalize on the potential for NSNull, which is a non-nil object but semantically we generally want
     to treat it as nil. This way everything is either nil or a valid useable object.
     
-    :param: value The value to filter.
+    - parameter value: The value to filter.
     
-    :returns: if value is nil, return nil. If value is NSNull, return nil. If value is something else, return something else.
+    - returns: if value is nil, return nil. If value is NSNull, return nil. If value is something else, return something else.
     */
     public class func filterNull(obj: AnyObject?) -> AnyObject? {
-        if let theNull = obj as? NSNull {
+        if obj is NSNull {
             return nil
         }
         return obj
@@ -75,19 +75,17 @@ public class HEJSONHelper: NSObject {
     
     NB: sometimes an non-nil-but-empty string is a valid response, so it is up to you to decide upon appropriate handling.
     
-    :param: value The value to filter.
+    - parameter value: The value to filter.
     
-    :returns: if value is nil, return nil. If value is NSNull, return nil. If the value is a string and the string is empty,
+    - returns: if value is nil, return nil. If value is NSNull, return nil. If the value is a string and the string is empty,
     return nil. For all other things, return that thing.
     */
     public class func filterNullAndEmpty(obj: AnyObject?) -> AnyObject? {
-        if let objString = obj as? String {
-            if objString.isEmpty {
-                return nil
-            }
+        if let objString = obj as? String where objString.isEmpty {
+            return nil
         }
         
-        return self.filterNull(obj)
+        return filterNull(obj)
     }
     
     
@@ -108,10 +106,10 @@ public class HEJSONHelper: NSObject {
     No ordering changes happen to contents of arrays, as ordering of arrays is generally intended as-is
     and something we shouldn't change.
     
-    :param: object  A JSON object (array, dictionary), able to be converted to JSON. This means that all
+    - parameter object:  A JSON object (array, dictionary), able to be converted to JSON. This means that all
                     contents are also JSON-legal objects (array, dictionary, string, number, boolean, null)
     
-    :returns: The object, converted to a canonicalized JSON string.
+    - returns: The object, converted to a canonicalized JSON string.
     */
     
     public class func canonicalJSONRepresentationWithObject(object: AnyObject?) -> String {
@@ -164,7 +162,7 @@ public class HEJSONHelper: NSObject {
         json += "{"
         
         if let dictionary = dictionary {
-            var keys = sorted(dictionary.keys) {
+            var keys = dictionary.keys.sort {
                 (obj1, obj2) in
 
                 // Forcing casts because they SHOULD be strings. If they are not, then there's programmer error somewhere
@@ -207,7 +205,7 @@ public class HEJSONHelper: NSObject {
                         json += "\(number)"
                     }
 
-                case let null as NSNull:
+                case is NSNull:
                     json += "null"
                     
                 default:
@@ -261,7 +259,7 @@ public class HEJSONHelper: NSObject {
                     json += "\(number)"
                 }
 
-            case let null as NSNull:
+            case is NSNull:
                 json += "null"
 
             default:
@@ -283,7 +281,8 @@ public class HEJSONHelper: NSObject {
     private class func canonicalJSONRepresentationWithString(string: String) -> String {
         let dict = ["a":string]
         var error: NSError?
-        if let jsonData = NSJSONSerialization.dataWithJSONObject(dict, options: NSJSONWritingOptions(0), error: &error) {
+        do {
+            let jsonData = try NSJSONSerialization.dataWithJSONObject(dict, options: NSJSONWritingOptions(rawValue: 0))
             if let json = NSString(data: jsonData, encoding: NSUTF8StringEncoding) {
                 let colonQuote = json.rangeOfString(":\"")
                 let lastQuote = json.rangeOfString("\"", options: NSStringCompareOptions.BackwardsSearch)
@@ -292,12 +291,16 @@ public class HEJSONHelper: NSObject {
                 return rc
             }
             else {
+                #if DEBUG
                 NSLog("An error converting JSON to string")
+                #endif
                 return "string conversion error"
             }
-        }
-        else {
+        } catch let error1 as NSError {
+            error = error1
+            #if DEBUG
             NSLog("An error serializing string json: \(error!.description)")
+            #endif
             return "error"
         }
     }

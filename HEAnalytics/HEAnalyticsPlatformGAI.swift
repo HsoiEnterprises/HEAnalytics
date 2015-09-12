@@ -44,9 +44,9 @@ public class HEAnalyticsPlatformGAI: HEAnalyticsPlatform {
     /**
     Initializer.
     
-    :param: platformData The platform's unique settings data, usually including whatever identifier/key is used to identify this app, and any other configuration data that may be relevant to the platform. The keys and values for each platform is unique to that platform.
+    - parameter platformData: The platform's unique settings data, usually including whatever identifier/key is used to identify this app, and any other configuration data that may be relevant to the platform. The keys and values for each platform is unique to that platform.
     
-    :returns: A properly initialized HEAnalyticsPlatformGAI object.
+    - returns: A properly initialized HEAnalyticsPlatformGAI object.
     */
     public required init(platformData: [NSObject:AnyObject]) {
         super.init(platformData: platformData)
@@ -60,7 +60,7 @@ public class HEAnalyticsPlatformGAI: HEAnalyticsPlatform {
     
     Subclasses should invoke super (generally at the end, before returning).
     
-    :param: platformData The platform's unique settings data, usually including whatever identifier/key is used to identify this app, and any other configuration data that may be relevant to the platform. The keys and values for each platform is unique to that platform.
+    - parameter platformData: The platform's unique settings data, usually including whatever identifier/key is used to identify this app, and any other configuration data that may be relevant to the platform. The keys and values for each platform is unique to that platform.
     */
     internal override func initializePlatform(platformData: [NSObject:AnyObject]) {
 
@@ -108,7 +108,7 @@ public class HEAnalyticsPlatformGAI: HEAnalyticsPlatform {
     /// Has the user opt'd out of data collection? Note this value is not persisted anywhere by HEAnalytics. Exposing this setting in the GUI, persisting the value, restoring the value, and enforcing it generally is the responsibility of the app developer.
     public override var optOut: Bool {
         didSet {
-            GAI.sharedInstance().optOut = self.optOut
+            GAI.sharedInstance().optOut = optOut
         }
     }
     
@@ -119,10 +119,12 @@ public class HEAnalyticsPlatformGAI: HEAnalyticsPlatform {
     Subclasses generally will want to override this to start their SDK's collection of data. Note that, depending upon the implementation details of the SDK, you may need to check the  HEAnalyticsPlatform.optOut property to ensure you actually should start collecting or not.
     */
     public override func start() {
-        if !self.optOut {
-            super.start()
-            GAI.sharedInstance().optOut = false
+        guard !optOut else {
+            return
         }
+        
+        super.start()
+        GAI.sharedInstance().optOut = false
     }
     
     
@@ -142,10 +144,10 @@ public class HEAnalyticsPlatformGAI: HEAnalyticsPlatform {
     
     Subclasses will need to override this and implement the SDK's event logging/tracking mechanism.
     
-    :param: data The HEAnalyticsData with the information to be recorded. It is up to the subclass to interpret, preserve, and convey this data as richly and appropriately as the platform SDK allows.
+    - parameter data: The HEAnalyticsData with the information to be recorded. It is up to the subclass to interpret, preserve, and convey this data as richly and appropriately as the platform SDK allows.
     */
     public override func trackData(data: HEAnalyticsData) {
-        if self.optOut || GAI.sharedInstance().optOut {
+        guard !optOut && !GAI.sharedInstance().optOut else {
             return
         }
         
@@ -165,15 +167,15 @@ public class HEAnalyticsPlatformGAI: HEAnalyticsPlatform {
     
     Consider use of viewControlerTitle() to help in tracking.
     
-    :param: viewController The UIViewController to track.
+    - parameter viewController: The UIViewController to track.
     */
     public override func trackView(viewController: UIViewController) {
-        if self.optOut || GAI.sharedInstance().optOut {
+        guard !optOut && !GAI.sharedInstance().optOut else {
             return
         }
 
         let tracker = GAI.sharedInstance().defaultTracker
-        let title = self.viewControlerTitle(viewController)
+        let title = viewControlerTitle(viewController)
         tracker.set(kGAIScreenName, value: title)
         tracker.send(GAIDictionaryBuilder.createScreenView().build() as [NSObject: AnyObject])
     }
