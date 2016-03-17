@@ -284,6 +284,34 @@ public class HEAnalytics: NSObject {
     }
     
     
+    /**
+     The key function for specific user tracking.
+     
+     You'll want to call this at a time such as after a user signs in, or some other appropriate location.
+     
+     - parameter user: The HEAnalyticsUser to track.
+     */
+    public func trackUser(user: HEAnalyticsUser) {
+        for platform in platforms {
+            platform.trackUser(user)
+        }
+    }
+    
+    
+    /**
+     The key function to halt tracking a specific user.
+     
+     You'll want to call this at a time such as after a user signs out.
+     
+     - parameter user: The HEAnalyticsUser to stop tracking; optional.
+     */
+    public func stopTrackingUser(user: HEAnalyticsUser?) {
+        for platform in platforms {
+            platform.stopTrackingUser(user)
+        }
+    }
+    
+    
 // MARK: - Application Events
     
     
