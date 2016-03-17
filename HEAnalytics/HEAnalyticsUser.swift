@@ -44,7 +44,7 @@ public class HEAnalyticsUser: NSObject {
     private (set) var firstName: String?
     /// The user's last name. Optional.
     private (set) var lastName: String?
-    /// The user's full name. Optional. If not provided, first and last name will be used.
+    /// The user's full name. Optional.
     private (set) var fullName: String?
     /// The user's email address. Optional.
     private (set) var emailAddress: String?
@@ -61,7 +61,7 @@ public class HEAnalyticsUser: NSObject {
         - identifier: The user's unique identifier.
         - firstName: The user's first name. Optional.
         - lastName: The user's last name. Optional.
-        - fullName: The user's full name. Optional. If not provided, first and last name will be used.
+        - fullName: The user's full name. Optional.
         - emailAddress: The user's email address. Optional.
         - parameters: The optional parameters. Typed as an [NSObject:AnyObject] to maximize interoperability with NSDictionary and Objective-C code, but it is expected that the key is a (NS)String and the value is a plist-able/json-able type such as string, number, array/dictionary (of string, number). The data won't necessarily be santized before being passed along to a platform API, so the general recommendation is in your HEAnalytics subclass's specific event tracking functions to take the app-provided raw data to track and convert it to a "safe" type (strings and numbers are best), then pass this sanitized type/data in the event parameters.
      
@@ -72,11 +72,6 @@ public class HEAnalyticsUser: NSObject {
         self.firstName = firstName
         self.lastName = lastName
         self.fullName = fullName
-        if self.fullName == nil {
-            let joinedName = [firstName, lastName].flatMap { $0 }.joinWithSeparator(" ")
-            self.fullName = joinedName.isEmpty ? nil : joinedName
-        }
-        
         self.emailAddress = emailAddress
         self.parameters = parameters
     }
