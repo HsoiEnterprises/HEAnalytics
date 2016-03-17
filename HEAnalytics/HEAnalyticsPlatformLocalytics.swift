@@ -67,8 +67,11 @@ public class HEAnalyticsPlatformLocalytics: HEAnalyticsPlatform {
     /// Has the user opt'd out of data collection? Note this value is not persisted anywhere by HEAnalytics. Exposing this setting in the GUI, persisting the value, restoring the value, and enforcing it generally is the responsibility of the app developer.
     public override var optOut: Bool {
         didSet {
-            Localytics.closeSession()
-            started = false
+            if optOut {
+                stop()
+            } else {
+                start()
+            }
         }
     }
     
