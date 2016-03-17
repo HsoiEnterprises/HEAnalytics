@@ -117,6 +117,30 @@ public class HEAnalyticsPlatform: NSObject {
         // No need to call `super`.
     }
     
+    /**
+     Used to track specific users.
+     
+     Subclasses will need to override and implement the SDK's user tracking mechanism.
+     
+     - parameter user: The HEAnalyticsUser to track.
+     */
+    public func trackUser(user: HEAnalyticsUser) {
+        // subclasses expected to override and implement to implement the tracking for that platform.
+        // No need to call `super`.
+    }
+    
+    
+    /**
+     Used to stop tracking a specific user.
+     
+     Subclasses will need to override and implement the SDK's user logout/reset mechanism.
+     
+     - parameter user: The HEAnalyticsUser to stop tracking; optional.
+     */
+    public func stopTrackingUser(user: HEAnalyticsUser?) {
+        // subclasses expected to override and implement to implement the necessary logic for that platform.
+        // No need to call `super`.
+    }
     
     /**
     Internal function for obtaining the app version.
