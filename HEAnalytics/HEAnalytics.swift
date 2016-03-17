@@ -103,6 +103,9 @@ This approach:
 There's nothing that prevents you from the former approach, but in the author's experience the latter approach is preferrable.
 */
 public class HEAnalytics: NSObject {
+    
+    /// Tracks internal state of if HEAnalytics has been started.
+    private var started = false
 
     /**
     Designated initializer.
@@ -135,6 +138,7 @@ public class HEAnalytics: NSObject {
     Recommended to be invoked from `application(application, willFinishLaunchingWithOptions)`.
     */
     public func start() {
+        guard !started else { return }
         
         loadPlatforms()
         
@@ -143,6 +147,8 @@ public class HEAnalytics: NSObject {
         for platform in platforms {
             platform.start()
         }
+        
+        started = true
     }
     
     
@@ -213,12 +219,15 @@ public class HEAnalytics: NSObject {
     Stops the recording of analytics.
     */
     public func stop() {
+        guard started else { return }
+        
         for platform in platforms {
             platform.stop()
         }
         
         unregisterForNotifications()
         unloadPlatforms()
+        started = false
     }
     
     
