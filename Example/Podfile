@@ -3,8 +3,10 @@ source 'https://github.com/CocoaPods/Specs.git'
 
 inhibit_all_warnings!
 
+target 'HEAnalyticsExample'
+
 pod 'GoogleAnalytics'
 pod 'Mixpanel'
-pod 'FlurrySDK'
+pod 'Flurry-iOS-SDK'
 pod 'Intercom'
 pod 'Localytics'
