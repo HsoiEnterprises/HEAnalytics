@@ -168,16 +168,7 @@ public class HEAnalyticsPlatform: NSObject {
     - returns: The title to use for tracking.
     */
     internal func viewControlerTitle(viewController: UIViewController) -> String {
-        var title: String = "<unknown>"
-        if viewController.respondsToSelector(Selector("HE_analyticsViewTrackingTitle")) {
-            title = viewController.HE_analyticsViewTrackingTitle()
-        }
-        else {
-            if let viewTitle = viewController.title {
-                title = viewTitle
-            }
-        }
-        return title
+        return viewController.HE_analyticsViewTrackingTitle()
     }
     
 }
