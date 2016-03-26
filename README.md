@@ -19,6 +19,15 @@ As well, try to be as robust as possible in utilizing that platform's API and fe
 
 Need to support a new platform? Subclass `HEAnalyticsPlatform` and add it to your `AnalyticsPlatformConfig.plist`.
 
+Curently supported analytics platforms:
+
+* Flurry
+* Google Analytics
+* Intercom
+* Localytics
+* Mixpanel
+
+
 ## Configuration Options
 
 Platform configuration comes by way of a `AnalyticsPlatformConfig.plist` file within the main app bundle. This allows for greater flexibility in build and runtime configuration. For example, a white-label product could create a `AnalyticsPlatformConfig.plist` per product and your build system brings in the proper .plist file at build time. Or perhaps based upon build configuration (Debug vs. Release) you may choose a different configuration (e.g. you have a dev analytics account so your daily dev work doesn't skew your true analytics data).
@@ -38,11 +47,10 @@ It enables logic for converting the data-to-track into something the analytics A
 
 # Supported OS and SDK
 
-- Xcode 7
-- Swift 2
+- Xcode 7.3
+- Swift 2.2
 - iOS 8
 
-It should work with iOS 7, but has not been extensively tested.
 
 No effort has been made to make this work on Mac OS X, and there are presently no plans to do so.
 
