@@ -129,7 +129,6 @@ public class HEAnalyticsPlatformIntercom: HEAnalyticsPlatform {
         }
     }
     
-    
     /**
     Used to track views of a UIViewController.
     
@@ -149,4 +148,46 @@ public class HEAnalyticsPlatformIntercom: HEAnalyticsPlatform {
         Intercom.logEventWithName(event)
     }
     
+    /**
+     Used to track specific users.
+     
+     Subclasses will need to override and implement the SDK's user tracking mechanism.
+     
+     - parameter user: The HEAnalyticsUser to track.
+     */
+    public override func trackUser(user: HEAnalyticsUser) {
+        guard !optOut && started else {
+            return
+        }
+        
+        Intercom.reset()
+        Intercom.registerUserWithUserId(user.identifier, email: user.emailAddress ?? "unknown-email")
+        
+        var userAttrs = [String:AnyObject]()
+        if let fullName = user.fullName {
+            userAttrs["name"] = fullName
+        }
+        
+        if let parameters = user.parameters {
+            userAttrs["custom_attributes"] = parameters
+        }
+        
+        Intercom.updateUserWithAttributes(userAttrs)
+    }
+    
+    
+    /**
+     Used to stop tracking a specific user.
+     
+     Subclasses will need to override and implement the SDK's user logout/reset mechanism.
+     
+     - parameter user: The HEAnalyticsUser to stop tracking; optional.
+     */
+    public override func stopTrackingUser(user: HEAnalyticsUser?) {
+        guard !optOut && started else {
+            return
+        }
+        
+        Intercom.reset()
+    }
 }

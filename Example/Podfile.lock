@@ -4,6 +4,7 @@ PODS:
   - FlurrySDK/FlurrySDK (6.7.0)
   - GoogleAnalytics (3.13.0)
   - Intercom (2.3.3)
+  - Localytics (3.8.0)
   - Mixpanel (2.8.3):
     - Mixpanel/Mixpanel (= 2.8.3)
   - Mixpanel/Mixpanel (2.8.3)
@@ -12,12 +13,14 @@ DEPENDENCIES:
   - FlurrySDK
   - GoogleAnalytics
   - Intercom
+  - Localytics
   - Mixpanel
 
 SPEC CHECKSUMS:
-  FlurrySDK: 671e8d5769ef42a9940854c735b1eee32763eea5
+  FlurrySDK: ea03fd78ffb32886e26c9b7634ff0d8cb18dcd55
   GoogleAnalytics: fcf1f1cad57ae1a9a53520018f0f680ceeeb8b49
   Intercom: cca76c492f181a8f8261bc0ec98d03ae3102270d
+  Localytics: 8fd8455e92c5d5d507d1302e704e7db5ca2a33bf
   Mixpanel: fd52e097ae0d27295d0595b2261c60b94d191fda
 
 COCOAPODS: 0.38.2

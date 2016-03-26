@@ -103,6 +103,9 @@ This approach:
 There's nothing that prevents you from the former approach, but in the author's experience the latter approach is preferrable.
 */
 public class HEAnalytics: NSObject {
+    
+    /// Tracks internal state of if HEAnalytics has been started.
+    private var started = false
 
     /**
     Designated initializer.
@@ -135,6 +138,7 @@ public class HEAnalytics: NSObject {
     Recommended to be invoked from `application(application, willFinishLaunchingWithOptions)`.
     */
     public func start() {
+        guard !started else { return }
         
         loadPlatforms()
         
@@ -143,6 +147,8 @@ public class HEAnalytics: NSObject {
         for platform in platforms {
             platform.start()
         }
+        
+        started = true
     }
     
     
@@ -213,12 +219,15 @@ public class HEAnalytics: NSObject {
     Stops the recording of analytics.
     */
     public func stop() {
+        guard started else { return }
+        
         for platform in platforms {
             platform.stop()
         }
         
         unregisterForNotifications()
         unloadPlatforms()
+        started = false
     }
     
     
@@ -271,6 +280,34 @@ public class HEAnalytics: NSObject {
     public func trackView(viewController: UIViewController) {
         for platform in platforms {
             platform.trackView(viewController)
+        }
+    }
+    
+    
+    /**
+     The key function for specific user tracking.
+     
+     You'll want to call this at a time such as after a user signs in, or some other appropriate location.
+     
+     - parameter user: The HEAnalyticsUser to track.
+     */
+    public func trackUser(user: HEAnalyticsUser) {
+        for platform in platforms {
+            platform.trackUser(user)
+        }
+    }
+    
+    
+    /**
+     The key function to halt tracking a specific user.
+     
+     You'll want to call this at a time such as after a user signs out.
+     
+     - parameter user: The HEAnalyticsUser to stop tracking; optional.
+     */
+    public func stopTrackingUser(user: HEAnalyticsUser?) {
+        for platform in platforms {
+            platform.stopTrackingUser(user)
         }
     }
     
