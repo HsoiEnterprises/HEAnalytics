@@ -1,5 +1,14 @@
 # HEAnalytics CHANGELOG
 
+## v0.6 - 2016-03-26
+
+* Xcode 7.3 and Swift 2.2 support.
+* Tracking "started" state. Thanx to @kreeger
+* Added `HEAnalyticsUser` to track user information. Thanx to @kreeger
+* Added Localytics support. Thanx (again) to @kreeger
+* Simpilfied `HEAnalyticsPlatform.viewControllerTitle()` because Swift 2.2. We shouldn't NEED that logic anyways (right?)
+
+
 ## v0.5.2 - 2015-09-12
 
 Minor adjustments from the Xcode 7 GM

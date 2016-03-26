@@ -195,15 +195,15 @@ public class HEAnalytics: NSObject {
     internal func registerForNotifications() {
         // Hsoi 2015-04-18 - Most apps want to track UIApplication events, so let's just track them automatically. One less thing
         // for you to have to worry about!
-        NSNotificationCenter.defaultCenter().addObserver(self, selector: Selector("handleUIApplicationBackgroundRefreshStatusDidChangeNotification:"), name: UIApplicationBackgroundRefreshStatusDidChangeNotification, object: nil)
-        NSNotificationCenter.defaultCenter().addObserver(self, selector: Selector("handleUIApplicationDidBecomeActiveNotification:"), name: UIApplicationDidBecomeActiveNotification, object: nil)
-        NSNotificationCenter.defaultCenter().addObserver(self, selector: Selector("handleUIApplicationDidEnterBackgroundNotification:"), name: UIApplicationDidEnterBackgroundNotification, object: nil)
-        NSNotificationCenter.defaultCenter().addObserver(self, selector: Selector("handleUIApplicationDidFinishLaunchingNotification:"), name: UIApplicationDidFinishLaunchingNotification, object: nil)
-        NSNotificationCenter.defaultCenter().addObserver(self, selector: Selector("handleUIApplicationUserDidTakeScreenshotNotification:"), name: UIApplicationUserDidTakeScreenshotNotification, object: nil)
-        NSNotificationCenter.defaultCenter().addObserver(self, selector: Selector("handleUIApplicationWillEnterForegroundNotification:"), name: UIApplicationWillEnterForegroundNotification, object: nil)
-        NSNotificationCenter.defaultCenter().addObserver(self, selector: Selector("handleUIApplicationWillResignActiveNotification:"), name: UIApplicationWillResignActiveNotification, object: nil)
-        NSNotificationCenter.defaultCenter().addObserver(self, selector: Selector("handleUIApplicationWillTerminateNotification:"), name: UIApplicationWillTerminateNotification, object: nil)
-        NSNotificationCenter.defaultCenter().addObserver(self, selector: Selector("handleUIContentSizeCategoryDidChangeNotification:"), name: UIContentSizeCategoryDidChangeNotification, object: nil)
+        NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(handleUIApplicationBackgroundRefreshStatusDidChangeNotification(_:)), name: UIApplicationBackgroundRefreshStatusDidChangeNotification, object: nil)
+        NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(handleUIApplicationDidBecomeActiveNotification(_:)), name: UIApplicationDidBecomeActiveNotification, object: nil)
+        NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(handleUIApplicationDidEnterBackgroundNotification(_:)), name: UIApplicationDidEnterBackgroundNotification, object: nil)
+        NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(handleUIApplicationDidFinishLaunchingNotification(_:)), name: UIApplicationDidFinishLaunchingNotification, object: nil)
+        NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(handleUIApplicationUserDidTakeScreenshotNotification(_:)), name: UIApplicationUserDidTakeScreenshotNotification, object: nil)
+        NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(handleUIApplicationWillEnterForegroundNotification(_:)), name: UIApplicationWillEnterForegroundNotification, object: nil)
+        NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(handleUIApplicationWillResignActiveNotification(_:)), name: UIApplicationWillResignActiveNotification, object: nil)
+        NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(handleUIApplicationWillTerminateNotification(_:)), name: UIApplicationWillTerminateNotification, object: nil)
+        NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(handleUIContentSizeCategoryDidChangeNotification(_:)), name: UIContentSizeCategoryDidChangeNotification, object: nil)
     }
     
     
