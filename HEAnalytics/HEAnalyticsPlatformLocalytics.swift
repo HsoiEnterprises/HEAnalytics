@@ -87,6 +87,7 @@ public class HEAnalyticsPlatformLocalytics: HEAnalyticsPlatform {
         super.start()
         Localytics.openSession()
         Localytics.upload()
+        self.started = true
     }
     
     
@@ -102,6 +103,7 @@ public class HEAnalyticsPlatformLocalytics: HEAnalyticsPlatform {
         Localytics.dismissCurrentInAppMessage()
         Localytics.closeSession()
         Localytics.upload()
+        self.started = false
     }
     
     
@@ -142,9 +144,7 @@ public class HEAnalyticsPlatformLocalytics: HEAnalyticsPlatform {
      - parameter user: The HEAnalyticsUser to track.
      */
     public override func trackUser(user: HEAnalyticsUser) {
-        guard !optOut && started else {
-            return
-        }
+        guard !optOut && started else { return }
         
         Localytics.setCustomerId(user.identifier)
         if let firstName = user.firstName {
