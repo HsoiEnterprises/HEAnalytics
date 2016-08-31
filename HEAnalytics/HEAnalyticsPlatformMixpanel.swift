@@ -49,7 +49,7 @@ public class HEAnalyticsPlatformMixpanel: HEAnalyticsPlatform {
     
     - returns: A properly initialized HEAnalyticsPlatform object.
     */
-    public required init(platformData: [NSObject:AnyObject]) {
+    public required init(platformData: [String:Any]) {
         super.init(platformData: platformData)
     }
     
@@ -67,7 +67,7 @@ public class HEAnalyticsPlatformMixpanel: HEAnalyticsPlatform {
     
     - parameter platformData: The platform's unique settings data, usually including whatever identifier/key is used to identify this app, and any other configuration data that may be relevant to the platform. The keys and values for each platform is unique to that platform.
     */
-    internal override func initializePlatform(platformData: [NSObject:AnyObject]) {
+    internal override func initializePlatform(_ platformData: [String:Any]) {
         
         var defaultFlushInterval: UInt = 15
         if let flushInterval = platformData["flushInterval"] as? UInt {
@@ -150,7 +150,7 @@ public class HEAnalyticsPlatformMixpanel: HEAnalyticsPlatform {
     
     - parameter data: The HEAnalyticsData with the information to be recorded. It is up to the subclass to interpret, preserve, and convey this data as richly and appropriately as the platform SDK allows.
     */
-    public override func trackData(data: HEAnalyticsData) {
+    public override func trackData(_ data: HEAnalyticsData) {
         guard !optOut && started else {
             return
         }
@@ -174,7 +174,7 @@ public class HEAnalyticsPlatformMixpanel: HEAnalyticsPlatform {
     
     - parameter viewController: The UIViewController to track.
     */
-    public override func trackView(viewController: UIViewController) {
+    public override func trackView(_ viewController: UIViewController) {
         guard !optOut && started else {
             return
         }

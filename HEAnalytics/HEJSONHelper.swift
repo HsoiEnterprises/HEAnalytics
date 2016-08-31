@@ -39,7 +39,7 @@ import UIKit
 /**
 HEJSONHelper provides some simple helpers for working with JSON.
 */
-public class HEJSONHelper: NSObject {
+open class HEJSONHelper: NSObject {
    
     
 // MARK: - Filtering
@@ -56,7 +56,7 @@ public class HEJSONHelper: NSObject {
     
     - returns: if value is nil, return nil. If value is NSNull, return nil. If value is something else, return something else.
     */
-    public class func filterNull(obj: AnyObject?) -> AnyObject? {
+    open class func filterNull(_ obj: Any?) -> Any? {
         if obj is NSNull {
             return nil
         }
@@ -80,8 +80,8 @@ public class HEJSONHelper: NSObject {
     - returns: if value is nil, return nil. If value is NSNull, return nil. If the value is a string and the string is empty,
     return nil. For all other things, return that thing.
     */
-    public class func filterNullAndEmpty(obj: AnyObject?) -> AnyObject? {
-        if let objString = obj as? String where objString.isEmpty {
+    open class func filterNullAndEmpty(_ obj: Any?) -> Any? {
+        if let objString = obj as? String , objString.isEmpty {
             return nil
         }
         
@@ -112,14 +112,14 @@ public class HEJSONHelper: NSObject {
     - returns: The object, converted to a canonicalized JSON string.
     */
     
-    public class func canonicalJSONRepresentationWithObject(object: AnyObject?) -> String {
+    open class func canonicalJSONRepresentationWithObject(_ object: AnyObject?) -> String {
         var json = ""
         
         // Hsoi 2015-04-11 - legally, the "top-level" of JSON must be an object ("{}") or an array ("[]"), so that's what this works upon.
         
-        if let object:AnyObject = object {
+        if let object:Any = object {
             switch object {
-            case let dictionary as [NSObject:AnyObject]:
+            case let dictionary as [String:AnyObject]:
                 json = HEJSONHelper.canonicalJSONRepresentationWithDictionary(dictionary)
                 
             case let array as [AnyObject]:
@@ -135,7 +135,7 @@ public class HEJSONHelper: NSObject {
     
     
     /// Private function for converting a dictionary to canonical JSON representation.
-    private class func canonicalJSONRepresentationWithDictionary(dictionary:[NSObject:AnyObject]?) -> String {
+    fileprivate class func canonicalJSONRepresentationWithDictionary(_ dictionary:[String:AnyObject]?) -> String {
 
         // Hsoi 2014-11-10 - This canonical JSON support is based upon: http://stackoverflow.com/a/26591452/1737738
         //
@@ -162,13 +162,13 @@ public class HEJSONHelper: NSObject {
         json += "{"
         
         if let dictionary = dictionary {
-            var keys = dictionary.keys.sort {
+            var keys = dictionary.keys.sorted {
                 (obj1, obj2) in
 
                 // Forcing casts because they SHOULD be strings. If they are not, then there's programmer error somewhere
                 // and we should crash to become aware of whatever the problem is.
-                let s1 = obj1 as! String
-                let s2 = obj2 as! String
+                let s1 = obj1
+                let s2 = obj2
                 return s1 < s2
             }
             
@@ -176,7 +176,7 @@ public class HEJSONHelper: NSObject {
                 let key = keys[index]
                 json += "\"\(key)\":"
 
-                let item: AnyObject = dictionary[key]!
+                let item: Any = dictionary[key]
                 
                 switch item {
                 case let string as String:
@@ -185,7 +185,7 @@ public class HEJSONHelper: NSObject {
                 case let attributedString as NSAttributedString:
                     json += "\"\(HEJSONHelper.canonicalJSONRepresentationWithString(attributedString.string))\""
 
-                case let dictionary as [NSObject:AnyObject]:
+                case let dictionary as [String:AnyObject]:
                     json += HEJSONHelper.canonicalJSONRepresentationWithDictionary(dictionary)
 
                 case let array as [AnyObject]:
@@ -209,7 +209,7 @@ public class HEJSONHelper: NSObject {
                     json += "null"
                     
                 default:
-                    assertionFailure("canonicalJSONRepresentationWithDictionary does not have support for class: '\(NSStringFromClass(item.dynamicType))' for data: \(item.description)")
+                    assertionFailure("canonicalJSONRepresentationWithDictionary does not have support for class: '\(NSStringFromClass(type(of: item) as! AnyClass))' for data: \((item as AnyObject).description)")
                 }
                 
                 if index < (keys.count - 1) {
@@ -225,12 +225,12 @@ public class HEJSONHelper: NSObject {
 
 
     /// Private function for converting an array to canonical JSON representation.
-    private class func canonicalJSONRepresentationWithArray(array: [AnyObject]) -> String {
+    fileprivate class func canonicalJSONRepresentationWithArray(_ array: [AnyObject]) -> String {
         var json = ""
         json += "["
         
         for index in 0..<array.count {
-            let item: AnyObject = array[index]
+            let item: Any = array[index]
 
             switch item {
             case let string as String:
@@ -239,7 +239,7 @@ public class HEJSONHelper: NSObject {
             case let attributedString as NSAttributedString:
                 json += "\"\(HEJSONHelper.canonicalJSONRepresentationWithString(attributedString.string))\""
 
-            case let dictionary as [NSObject:AnyObject]:
+            case let dictionary as [String:AnyObject]:
                 json += HEJSONHelper.canonicalJSONRepresentationWithDictionary(dictionary)
 
             case let array as [AnyObject]:
@@ -263,7 +263,7 @@ public class HEJSONHelper: NSObject {
                 json += "null"
 
             default:
-                assertionFailure("canonicalJSONRepresentationWithArray does not have support for class: '\(NSStringFromClass(item.dynamicType))' for data: \(item.description)")
+                assertionFailure("canonicalJSONRepresentationWithArray does not have support for class: '\(NSStringFromClass(type(of: item) as! AnyClass))' for data: \((item as AnyObject).description)")
             }
             
             if index < (array.count - 1) {
@@ -278,16 +278,16 @@ public class HEJSONHelper: NSObject {
     
     
     /// Private function for converting a string to canonical JSON representation.
-    private class func canonicalJSONRepresentationWithString(string: String) -> String {
+    fileprivate class func canonicalJSONRepresentationWithString(_ string: String) -> String {
         let dict = ["a":string]
         var error: NSError?
         do {
-            let jsonData = try NSJSONSerialization.dataWithJSONObject(dict, options: NSJSONWritingOptions(rawValue: 0))
-            if let json = NSString(data: jsonData, encoding: NSUTF8StringEncoding) {
-                let colonQuote = json.rangeOfString(":\"")
-                let lastQuote = json.rangeOfString("\"", options: NSStringCompareOptions.BackwardsSearch)
+            let jsonData = try JSONSerialization.data(withJSONObject: dict, options: JSONSerialization.WritingOptions(rawValue: 0))
+            if let json = NSString(data: jsonData, encoding: String.Encoding.utf8.rawValue) {
+                let colonQuote = json.range(of: ":\"")
+                let lastQuote = json.range(of: "\"", options: NSString.CompareOptions.backwards)
                 let range = NSMakeRange(colonQuote.location + 2, lastQuote.location - colonQuote.location - 2)
-                let rc = json.substringWithRange(range)
+                let rc = json.substring(with: range)
                 return rc
             }
             else {
@@ -311,15 +311,15 @@ public class HEJSONHelper: NSObject {
     // help us ensure to treat a boolean value (a json value of 'true' or 'false') as a Bool and not an Int.
     //
     // This is based upon some logic I found in SwiftyJSON.
-    private class func isBool(obj: AnyObject?) -> Bool {
-        if let obj:AnyObject = obj {
-            let trueNumber = NSNumber(bool: true)
-            let falseNumber = NSNumber(bool: false)
-            let trueObjCType = String.fromCString(trueNumber.objCType)
-            let falseObjCType = String.fromCString(falseNumber.objCType)
-            let objCType = String.fromCString(obj.objCType)
+    fileprivate class func isBool(_ obj: AnyObject?) -> Bool {
+        if let obj = obj {
+            let trueNumber = NSNumber(value: true)
+            let falseNumber = NSNumber(value: false)
+            let trueObjCType = String(cString: trueNumber.objCType)
+            let falseObjCType = String(cString: falseNumber.objCType)
+            let objCType = String(cString: obj.objCType)
             
-            if (obj.compare(trueNumber) == NSComparisonResult.OrderedSame && objCType == trueObjCType) || (obj.compare(falseNumber) == NSComparisonResult.OrderedSame && objCType == falseObjCType) {
+            if (obj.compare(trueNumber) == ComparisonResult.orderedSame && objCType == trueObjCType) || (obj.compare(falseNumber) == ComparisonResult.orderedSame && objCType == falseObjCType) {
                 return true
             }
         }

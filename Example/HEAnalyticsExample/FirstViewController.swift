@@ -21,7 +21,7 @@ class FirstViewController: UIViewController {
     }
 
     
-    override func viewDidAppear(animated: Bool) {
+    override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
         SampleAnalytics.sharedInstance.trackView(self)
     }

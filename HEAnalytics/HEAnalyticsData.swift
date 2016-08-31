@@ -35,7 +35,7 @@
 import UIKit
 
 /// HEAnalyticsData - the data structure for encapsulating data about an analytic event.
-public class HEAnalyticsData: NSObject {
+open class HEAnalyticsData: NSObject {
 
     // Hsoi 2015-04-04 - strictly speaking, HEAnalyticsData should be a struct, but since it may need to be accessed from ObjC, it can't be.
 
@@ -76,7 +76,7 @@ public class HEAnalyticsData: NSObject {
     
     Events have an organizational hierarchy of category, event within the category, and then parameters of the event.
     */
-    private (set) var category: String = AnalyticsCategory.General.rawValue
+    fileprivate (set) var category: String = AnalyticsCategory.General.rawValue
     
     
     /**
@@ -86,17 +86,17 @@ public class HEAnalyticsData: NSObject {
     
     Events have an organizational hierarchy of category, event within the category, and then parameters of the event.
     */
-    private (set) var event: String = "<unknown>"
+    fileprivate (set) var event: String = "<unknown>"
     
     
     /**
     The event parameters. Optional.
     
-    Typed as an [NSObject:AnyObject] to maximize interoperability with NSDictionary and Objective-C code, but it is expected that the key is a (NS)String and the value is a plist-able/json-able type such as string, number, array/dictionary (of string, number). The data won't necessarily be santized before being passed along to a platform API, so the general recommendation is in your HEAnalytics subclass's specific event tracking functions to take the app-provided raw data to track and convert it to a "safe" type (strings and numbers are best), then pass this sanitized type/data in the event parameters.
+    Typed as an [String:Any] to maximize interoperability with NSDictionary and Objective-C code, but it is expected that the key is a (NS)String and the value is a plist-able/json-able type such as string, number, array/dictionary (of string, number). The data won't necessarily be santized before being passed along to a platform API, so the general recommendation is in your HEAnalytics subclass's specific event tracking functions to take the app-provided raw data to track and convert it to a "safe" type (strings and numbers are best), then pass this sanitized type/data in the event parameters.
 
     Events have an organizational hierarchy of category, event within the category, and then parameters of the event.
     */
-    private (set) var parameters: [NSObject:AnyObject]?
+    fileprivate (set) var parameters: [String:Any]?
 
     
     /**
@@ -114,11 +114,11 @@ public class HEAnalyticsData: NSObject {
     
     - parameter category:   The event category.
     - parameter event:      The event.
-    - parameter parameters: The optional parameters. Typed as an [NSObject:AnyObject] to maximize interoperability with NSDictionary and Objective-C code, but it is expected that the key is a (NS)String and the value is a plist-able/json-able type such as string, number, array/dictionary (of string, number). The data won't necessarily be santized before being passed along to a platform API, so the general recommendation is in your HEAnalytics subclass's specific event tracking functions to take the app-provided raw data to track and convert it to a "safe" type (strings and numbers are best), then pass this sanitized type/data in the event parameters.
+    - parameter parameters: The optional parameters. Typed as an [String:Any] to maximize interoperability with NSDictionary and Objective-C code, but it is expected that the key is a (NS)String and the value is a plist-able/json-able type such as string, number, array/dictionary (of string, number). The data won't necessarily be santized before being passed along to a platform API, so the general recommendation is in your HEAnalytics subclass's specific event tracking functions to take the app-provided raw data to track and convert it to a "safe" type (strings and numbers are best), then pass this sanitized type/data in the event parameters.
     
     - returns: An HEAnalyticsData object, suitable for passing to HEAnalytics.trackData()
     */
-    public init(category: String, event: String, parameters: [NSObject:AnyObject]? = nil) {
+    public init(category: String, event: String, parameters: [String:Any]? = nil) {
         self.category = category
         self.event = event
         self.parameters = parameters
@@ -136,7 +136,7 @@ public class HEAnalyticsData: NSObject {
     
     - returns: An HEAnalyticsData object, suitable for passing to HEAnalytics.trackData()
     */
-    public convenience init(category: AnalyticsCategory, event: String, parameters: [NSObject:AnyObject]? = nil) {
+    public convenience init(category: AnalyticsCategory, event: String, parameters: [String:Any]? = nil) {
         self.init(category: category.rawValue, event: event, parameters: parameters)
     }
 
