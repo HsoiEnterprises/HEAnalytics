@@ -241,15 +241,11 @@
 				TargetAttributes = {
 					791FBE6A1AFB76F000E3453C = {
 						CreatedOnToolsVersion = 6.4;
-						DevelopmentTeam = 72DNMVDQ38;
 						LastSwiftMigration = 0800;
-						ProvisioningStyle = Automatic;
 					};
 					791FBE811AFB76F000E3453C = {
 						CreatedOnToolsVersion = 6.4;
-						DevelopmentTeam = 72DNMVDQ38;
 						LastSwiftMigration = 0800;
-						ProvisioningStyle = Automatic;
 						TestTargetID = 791FBE6A1AFB76F000E3453C;
 					};
 				};
@@ -506,8 +502,6 @@
 			baseConfigurationReference = E9943BC4D7F91ECF4D3E83F2 /* Pods-HEAnalyticsExample.debug.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
-				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
-				DEVELOPMENT_TEAM = 72DNMVDQ38;
 				INFOPLIST_FILE = HEAnalyticsExample/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
@@ -523,8 +517,6 @@
 			baseConfigurationReference = E51BB4A52F1F2A0C3D10CD4B /* Pods-HEAnalyticsExample.release.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
-				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
-				DEVELOPMENT_TEAM = 72DNMVDQ38;
 				INFOPLIST_FILE = HEAnalyticsExample/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
@@ -539,8 +531,6 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				BUNDLE_LOADER = "$(TEST_HOST)";
-				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
-				DEVELOPMENT_TEAM = 72DNMVDQ38;
 				GCC_PREPROCESSOR_DEFINITIONS = (
 					"DEBUG=1",
 					"$(inherited)",
@@ -559,8 +549,6 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				BUNDLE_LOADER = "$(TEST_HOST)";
-				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
-				DEVELOPMENT_TEAM = 72DNMVDQ38;
 				INFOPLIST_FILE = HEAnalyticsExampleTests/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
