@@ -79,7 +79,7 @@ open class HEAnalyticsPlatformGAI: HEAnalyticsPlatform {
         }
         else {
         #if DEBUG
-            GAI.sharedInstance().logger.logLevel = .Verbose
+            GAI.sharedInstance().logger.logLevel = .verbose
         #else
             GAI.sharedInstance().logger.logLevel = .error
         #endif
