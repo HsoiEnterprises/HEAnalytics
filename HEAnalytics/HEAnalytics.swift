@@ -41,7 +41,7 @@ While not required, it's **strongly** recommended to subclass `HEAnalytics` and 
 
 First, you can make your subclass a singleton. Yes I know the arguments for and against singleton, and I believe this is a case where it's not so evil to use a singleton pattern. However, there is nothing that requires or mandates singleton.
 
-Second, `HEAnalytics` ams to provide a unified abstraction layer for analytics platforms, allowing calling code to be simpler, cleaner, easier to read and maintain. Thus, while clients can certainly use the `HEAnalytics` class directly and `trackData()` directly in client code, it's preferred to put the implementation details into a subclass of `HEAnalytics`. Since analytics are inherently app-specific, this calls for a subclass.
+Second, `HEAnalytics` ams to provide a unified abstraction layer for analytics platforms, allowing calling code to be simpler, cleaner, easier to read and maintain. Thus, while clients can certainly use the `HEAnalytics` class directly and `track(data:)` directly in client code, it's preferred to put the implementation details into a subclass of `HEAnalytics`. Since analytics are inherently app-specific, this calls for a subclass.
 
 Thus, instead of code like:
 
@@ -87,7 +87,7 @@ class MyViewController: UIViewController {
         }
     }
 
-    func HE_analyticsViewTrackingTitle() -> String {
+    override var HE_analyticsViewTrackingTitle: String {
         return "My Interesting View"
     }
 }
@@ -135,7 +135,7 @@ open class HEAnalytics: NSObject {
     
     Loads the `AnalyticsPlatformConfig.plist`, creates the `HEAnalyticsPlatform`s from it, initializes and starts each platform, and registers for some events that it can automatically track for you.
     
-    Recommended to be invoked from `application(application, willFinishLaunchingWithOptions)`.
+    Recommended to be invoked from `application(_:willFinishLaunchingWithOptions:)`.
     */
     open func start() {
         guard !started else { return }
@@ -250,7 +250,7 @@ open class HEAnalytics: NSObject {
     /**
     The key function for actually tracking the analytics data.
     
-    While in general you could fill out an HEAnalyticsData and call trackData() from client code, the general recommendation is in your HEAnalytics subclass to implement functions for particular events and encapsulate the logic in the analytics class, not client code.
+    While in general you could fill out an HEAnalyticsData and call track(data:) from client code, the general recommendation is in your HEAnalytics subclass to implement functions for particular events and encapsulate the logic in the analytics class, not client code.
     
     For example:
     
@@ -334,7 +334,7 @@ open class HEAnalytics: NSObject {
             status = "available"
         }
 
-        let data = HEAnalyticsData(category: .Application, event: "Background Refresh Status Did Change", parameters: ["status":status])
+        let data = HEAnalyticsData(category: .application, event: "Background Refresh Status Did Change", parameters: ["status":status])
         track(data: data)
     }
     
@@ -345,7 +345,7 @@ open class HEAnalytics: NSObject {
     - parameter notification: the notification object.
     */
     @objc fileprivate func handleUIApplicationDidBecomeActiveNotification(_ notification: Notification) {
-        let data = HEAnalyticsData(category: .Application, event: "Did Become Active")
+        let data = HEAnalyticsData(category: .application, event: "Did Become Active")
         track(data: data)
     }
 
@@ -356,7 +356,7 @@ open class HEAnalytics: NSObject {
     - parameter notification: the notification object.
     */
     @objc fileprivate func handleUIApplicationDidEnterBackgroundNotification(_ notification: Notification) {
-        let data = HEAnalyticsData(category: .Application, event: "Did Enter Background")
+        let data = HEAnalyticsData(category: .application, event: "Did Enter Background")
         track(data: data)
     }
     
@@ -393,7 +393,7 @@ open class HEAnalytics: NSObject {
         }
         
         let dataParameters:[String:Any]? = parameters.count != 0 ? parameters : nil
-        let data = HEAnalyticsData(category: .Application, event: "Did Finish Launching", parameters: dataParameters)
+        let data = HEAnalyticsData(category: .application, event: "Did Finish Launching", parameters: dataParameters)
         track(data: data)
     }
     
@@ -404,7 +404,7 @@ open class HEAnalytics: NSObject {
     - parameter notification: the notification object.
     */
     @objc fileprivate func handleUIApplicationUserDidTakeScreenshotNotification(_ notification: Notification) {
-        let data = HEAnalyticsData(category: .Application, event: "Did Take Screenshot")
+        let data = HEAnalyticsData(category: .application, event: "Did Take Screenshot")
         track(data: data)
     }
     
@@ -415,7 +415,7 @@ open class HEAnalytics: NSObject {
     - parameter notification: the notification object.
     */
     @objc fileprivate func handleUIApplicationWillEnterForegroundNotification(_ notification: Notification) {
-        let data = HEAnalyticsData(category: .Application, event: "Will Enter Foreground")
+        let data = HEAnalyticsData(category: .application, event: "Will Enter Foreground")
         track(data: data)
     }
     
@@ -426,7 +426,7 @@ open class HEAnalytics: NSObject {
     - parameter notification: the notification object.
     */
     @objc fileprivate func handleUIApplicationWillResignActiveNotification(_ notification: Notification) {
-        let data = HEAnalyticsData(category: .Application, event: "Will Resign Active")
+        let data = HEAnalyticsData(category: .application, event: "Will Resign Active")
         track(data: data)
     }
     
@@ -437,7 +437,7 @@ open class HEAnalytics: NSObject {
     - parameter notification: the notification object.
     */
     @objc fileprivate func handleUIApplicationWillTerminateNotification(_ notification: Notification) {
-        let data = HEAnalyticsData(category: .Application, event: "Will Terminate")
+        let data = HEAnalyticsData(category: .application, event: "Will Terminate")
         track(data: data)
     }
     
@@ -452,7 +452,7 @@ open class HEAnalytics: NSObject {
         if let newSize: Any = notification.userInfo?[UIContentSizeCategoryNewValueKey] {
             parameters["contentSize"] = newSize
         }
-        let data = HEAnalyticsData(category: .Application, event: "Content Size Category Did Change", parameters: parameters)
+        let data = HEAnalyticsData(category: .application, event: "Content Size Category Did Change", parameters: parameters)
         track(data: data)
     }
 

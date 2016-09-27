@@ -159,16 +159,16 @@ open class HEAnalyticsPlatform: NSObject {
     
 
     /**
-    A helper for obtaining the UIViewController "title" for use in trackView().
+    A helper for obtaining the UIViewController "title" for use in track(viewController:).
     
-    See UIViewController+HEAnalytics and the HE_analyticsViewTrackingTitle() extension
+    See UIViewController+HEAnalytics and the HE_analyticsViewTrackingTitle extension
     
     - parameter viewController: The UIViewController to extract a tracking title from
     
     - returns: The title to use for tracking.
     */
     internal func titleFor(viewController: UIViewController) -> String {
-        return viewController.HE_analyticsViewTrackingTitle()
+        return viewController.HE_analyticsViewTrackingTitle
     }
     
 }

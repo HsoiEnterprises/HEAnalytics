@@ -57,26 +57,26 @@ open class HEAnalyticsData: NSObject {
     - VersionCheck: If your app uses built-in version checking, track it with this category.
     */
     public enum AnalyticsCategory : String {
-        case Activity                   =   "Activity"
-        case Application                =   "Application"
-        case General                    =   "General"
-        case View                       =   "View"
-        case Error                      =   "Error"
-        case Settings                   =   "Settings"
-        case Sharing                    =   "Sharing"
-        case Support                    =   "Support"
-        case VersionCheck               =   "VersionCheck"
+        case activity                   =   "Activity"
+        case application                =   "Application"
+        case general                    =   "General"
+        case view                       =   "View"
+        case error                      =   "Error"
+        case settings                   =   "Settings"
+        case sharing                    =   "Sharing"
+        case support                    =   "Support"
+        case versionCheck               =   "VersionCheck"
     }
     
     
     /**
     The category of the event. Required.
     
-    A String, to allow for flexibility, but can use an AnalyticsCategory(rawValue) for consistency.
+    A String, to allow for flexibility, but can use an AnalyticsCategory(rawValue:) for consistency.
     
     Events have an organizational hierarchy of category, event within the category, and then parameters of the event.
     */
-    fileprivate (set) var category: String = AnalyticsCategory.General.rawValue
+    fileprivate (set) var category: String = AnalyticsCategory.general.rawValue
     
     
     /**
@@ -116,7 +116,7 @@ open class HEAnalyticsData: NSObject {
     - parameter event:      The event.
     - parameter parameters: The optional parameters. Typed as an [String:Any] to maximize interoperability with NSDictionary and Objective-C code, but it is expected that the key is a (NS)String and the value is a plist-able/json-able type such as string, number, array/dictionary (of string, number). The data won't necessarily be santized before being passed along to a platform API, so the general recommendation is in your HEAnalytics subclass's specific event tracking functions to take the app-provided raw data to track and convert it to a "safe" type (strings and numbers are best), then pass this sanitized type/data in the event parameters.
     
-    - returns: An HEAnalyticsData object, suitable for passing to HEAnalytics.trackData()
+    - returns: An HEAnalyticsData object, suitable for passing to HEAnalytics.track(data:)
     */
     public init(category: String, event: String, parameters: [String:Any]? = nil) {
         self.category = category
@@ -134,7 +134,7 @@ open class HEAnalyticsData: NSObject {
     - parameter event:      A string/name of the event to track
     - parameter parameters: The optional parameters. See comments on the designated initializer.
     
-    - returns: An HEAnalyticsData object, suitable for passing to HEAnalytics.trackData()
+    - returns: An HEAnalyticsData object, suitable for passing to HEAnalytics.track(data:)
     */
     public convenience init(category: AnalyticsCategory, event: String, parameters: [String:Any]? = nil) {
         self.init(category: category.rawValue, event: event, parameters: parameters)

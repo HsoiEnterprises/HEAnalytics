@@ -25,7 +25,7 @@ class SecondViewController: UIViewController {
         SampleAnalytics.sharedInstance.track(viewController: self)
     }
     
-    override func HE_analyticsViewTrackingTitle() -> String {
+    override var HE_analyticsViewTrackingTitle: String {
         return "Second ViewController"
     }
 

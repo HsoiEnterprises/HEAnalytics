@@ -17,12 +17,12 @@ class SampleAnalytics : HEAnalytics {
     
     
     func selectedTab1() {
-        let data = HEAnalyticsData(category: .View, event: "Selected Tab 1")
+        let data = HEAnalyticsData(category: .view, event: "Selected Tab 1")
         self.track(data: data)
     }
 
     func selectedTab2() {
-        let data = HEAnalyticsData(category: .View, event: "Selected Tab 2")
+        let data = HEAnalyticsData(category: .view, event: "Selected Tab 2")
         self.track(data: data)
     }
 

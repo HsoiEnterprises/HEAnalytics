@@ -153,7 +153,7 @@ open class HEAnalyticsPlatformGAI: HEAnalyticsPlatform {
         
         var JSONString: String?
         if let dataParameters = data.parameters {
-            JSONString = HEJSONHelper.canonicalJSONRepresentationWithObject(dataParameters as AnyObject?)
+            JSONString = HEJSONHelper.canonicalJSONRepresentation(with: dataParameters)
         }
         let sendData = GAIDictionaryBuilder.createEvent(withCategory: data.category, action:data.event, label:JSONString, value:nil).build()
         var converted = [String:Any]()

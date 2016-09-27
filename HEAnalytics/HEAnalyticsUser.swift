@@ -65,7 +65,7 @@ open class HEAnalyticsUser: NSObject {
         - emailAddress: The user's email address. Optional.
         - parameters: The optional parameters. Typed as an [String:Any] to maximize interoperability with NSDictionary and Objective-C code, but it is expected that the key is a (NS)String and the value is a plist-able/json-able type such as string, number, array/dictionary (of string, number). The data won't necessarily be santized before being passed along to a platform API, so the general recommendation is in your HEAnalytics subclass's specific event tracking functions to take the app-provided raw data to track and convert it to a "safe" type (strings and numbers are best), then pass this sanitized type/data in the event parameters.
      
-     - returns: An HEAnalyticsUser object, suitable for passing to HEAnalytics.trackUser()
+     - returns: An HEAnalyticsUser object, suitable for passing to HEAnalytics.track(user:)
      */
     public init(identifier: String, firstName: String? = nil, lastName: String? = nil, fullName: String? = nil, emailAddress: String? = nil, parameters: [String:Any]? = nil) {
         self.identifier = identifier

@@ -112,7 +112,7 @@ open class HEJSONHelper: NSObject {
     - returns: The object, converted to a canonicalized JSON string.
     */
     
-    open class func canonicalJSONRepresentationWithObject(_ object: AnyObject?) -> String {
+    open class func canonicalJSONRepresentation(with object: Any?) -> String {
         var json = ""
         
         // Hsoi 2015-04-11 - legally, the "top-level" of JSON must be an object ("{}") or an array ("[]"), so that's what this works upon.
@@ -120,10 +120,10 @@ open class HEJSONHelper: NSObject {
         if let object:Any = object {
             switch object {
             case let dictionary as [String:AnyObject]:
-                json = HEJSONHelper.canonicalJSONRepresentationWithDictionary(dictionary)
+                json = HEJSONHelper.canonicalJSONRepresentation(with: dictionary)
                 
             case let array as [AnyObject]:
-                json = HEJSONHelper.canonicalJSONRepresentationWithArray(array)
+                json = HEJSONHelper.canonicalJSONRepresentation(with: array)
                 
             default:
                 break
@@ -135,7 +135,7 @@ open class HEJSONHelper: NSObject {
     
     
     /// Private function for converting a dictionary to canonical JSON representation.
-    fileprivate class func canonicalJSONRepresentationWithDictionary(_ dictionary:[String:AnyObject]?) -> String {
+    fileprivate class func canonicalJSONRepresentation(with dictionary: [String:AnyObject]?) -> String {
 
         // Hsoi 2014-11-10 - This canonical JSON support is based upon: http://stackoverflow.com/a/26591452/1737738
         //
@@ -180,16 +180,16 @@ open class HEJSONHelper: NSObject {
                 
                 switch item {
                 case let string as String:
-                    json += "\"\(HEJSONHelper.canonicalJSONRepresentationWithString(string))\""
+                    json += "\"\(HEJSONHelper.canonicalJSONRepresentation(with: string))\""
                     
                 case let attributedString as NSAttributedString:
-                    json += "\"\(HEJSONHelper.canonicalJSONRepresentationWithString(attributedString.string))\""
+                    json += "\"\(HEJSONHelper.canonicalJSONRepresentation(with: attributedString.string))\""
 
                 case let dictionary as [String:AnyObject]:
-                    json += HEJSONHelper.canonicalJSONRepresentationWithDictionary(dictionary)
+                    json += HEJSONHelper.canonicalJSONRepresentation(with: dictionary)
 
                 case let array as [AnyObject]:
-                    json += HEJSONHelper.canonicalJSONRepresentationWithArray(array)
+                    json += HEJSONHelper.canonicalJSONRepresentation(with: array)
 
                 case let number as NSNumber:
                     if HEJSONHelper.isBool(number) {
@@ -225,7 +225,7 @@ open class HEJSONHelper: NSObject {
 
 
     /// Private function for converting an array to canonical JSON representation.
-    fileprivate class func canonicalJSONRepresentationWithArray(_ array: [AnyObject]) -> String {
+    fileprivate class func canonicalJSONRepresentation(with array: [AnyObject]) -> String {
         var json = ""
         json += "["
         
@@ -234,16 +234,16 @@ open class HEJSONHelper: NSObject {
 
             switch item {
             case let string as String:
-                json += "\"\(HEJSONHelper.canonicalJSONRepresentationWithString(string))\""
+                json += "\"\(HEJSONHelper.canonicalJSONRepresentation(with: string))\""
 
             case let attributedString as NSAttributedString:
-                json += "\"\(HEJSONHelper.canonicalJSONRepresentationWithString(attributedString.string))\""
+                json += "\"\(HEJSONHelper.canonicalJSONRepresentation(with: attributedString.string))\""
 
             case let dictionary as [String:AnyObject]:
-                json += HEJSONHelper.canonicalJSONRepresentationWithDictionary(dictionary)
+                json += HEJSONHelper.canonicalJSONRepresentation(with: dictionary)
 
             case let array as [AnyObject]:
-                json += HEJSONHelper.canonicalJSONRepresentationWithArray(array)
+                json += HEJSONHelper.canonicalJSONRepresentation(with: array)
 
             case let number as NSNumber:
                 if HEJSONHelper.isBool(number) {
@@ -278,7 +278,7 @@ open class HEJSONHelper: NSObject {
     
     
     /// Private function for converting a string to canonical JSON representation.
-    fileprivate class func canonicalJSONRepresentationWithString(_ string: String) -> String {
+    fileprivate class func canonicalJSONRepresentation(with string: String) -> String {
         let dict = ["a":string]
         var error: NSError?
         do {
