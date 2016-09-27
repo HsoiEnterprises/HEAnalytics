@@ -50,7 +50,7 @@ open class HEAnalyticsPlatform: NSObject {
     */
     required public init(platformData: [String:Any]) {
         super.init()
-        initializePlatform(platformData)
+        initialize(with: platformData)
     }
 
     
@@ -63,7 +63,7 @@ open class HEAnalyticsPlatform: NSObject {
     
     - parameter platformData: The platform's unique settings data, usually including whatever identifier/key is used to identify this app, and any other configuration data that may be relevant to the platform. The keys and values for each platform is unique to that platform.
     */
-    internal func initializePlatform(_ platformData: [String:Any]) {
+    internal func initialize(with platformData: [String:Any]) {
 
     }
     
@@ -98,7 +98,7 @@ open class HEAnalyticsPlatform: NSObject {
     
     - parameter data: The HEAnalyticsData with the information to be recorded. It is up to the subclass to interpret, preserve, and convey this data as richly and appropriately as the platform SDK allows.
     */
-    open func trackData(_ data: HEAnalyticsData) {
+    open func track(data: HEAnalyticsData) {
 
     }
     
@@ -108,11 +108,11 @@ open class HEAnalyticsPlatform: NSObject {
     
     Subclasses will need to override and implement the SDK's view logging/tracking mechanism.
     
-    Consider use of viewControlerTitle() to help in tracking.
+    Consider use of titleFor(viewController:) to help in tracking.
     
     - parameter viewController: The UIViewController to track.
     */
-    open func trackView(_ viewController: UIViewController) {
+    open func track(viewController: UIViewController) {
         // subclasses expected to override and implement to implement the tracking for that platform.
         // No need to call `super`.
     }
@@ -124,7 +124,7 @@ open class HEAnalyticsPlatform: NSObject {
      
      - parameter user: The HEAnalyticsUser to track.
      */
-    open func trackUser(_ user: HEAnalyticsUser) {
+    open func track(user: HEAnalyticsUser) {
         // subclasses expected to override and implement to implement the tracking for that platform.
         // No need to call `super`.
     }
@@ -137,7 +137,7 @@ open class HEAnalyticsPlatform: NSObject {
      
      - parameter user: The HEAnalyticsUser to stop tracking; optional.
      */
-    open func stopTrackingUser(_ user: HEAnalyticsUser?) {
+    open func stopTracking(user: HEAnalyticsUser?) {
         // subclasses expected to override and implement to implement the necessary logic for that platform.
         // No need to call `super`.
     }
@@ -149,7 +149,7 @@ open class HEAnalyticsPlatform: NSObject {
     
     - returns: an app version string.
     */
-    internal func appVersion() -> String? {
+    internal var appVersion: String? {
         if let shortVersion = Bundle.main.object(forInfoDictionaryKey: "CFBundleShortVersionString") as? String, let bundleVersion = Bundle.main.object(forInfoDictionaryKey: "CFBundleVersion") as? String {
             let fullVersion = shortVersion + "." + bundleVersion
             return fullVersion
@@ -167,7 +167,7 @@ open class HEAnalyticsPlatform: NSObject {
     
     - returns: The title to use for tracking.
     */
-    internal func viewControlerTitle(_ viewController: UIViewController) -> String {
+    internal func titleFor(viewController: UIViewController) -> String {
         return viewController.HE_analyticsViewTrackingTitle()
     }
     

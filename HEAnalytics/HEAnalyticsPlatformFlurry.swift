@@ -61,7 +61,7 @@ public class HEAnalyticsPlatformFlurry: HEAnalyticsPlatform {
     
     - parameter platformData: The platform's unique settings data, usually including whatever identifier/key is used to identify this app, and any other configuration data that may be relevant to the platform. The keys and values for each platform is unique to that platform.
     */
-    public override func initializePlatform(_ platformData: [String:Any]) {
+    public override func initialize(with platformData: [String:Any]) {
 
         if let logLevel = platformData["logLevel"] as? UInt {
             let levelAsUInt32 = UInt32(logLevel)
@@ -78,14 +78,14 @@ public class HEAnalyticsPlatformFlurry: HEAnalyticsPlatform {
         Flurry.setSessionReportsOnCloseEnabled(true)
         Flurry.setSessionReportsOnPauseEnabled(true)
 
-        if let appVersion = appVersion() {
+        if let appVersion = appVersion {
             Flurry.setAppVersion(appVersion)
         }
 
         let apiKey = platformData["apiKey"] as! String
         Flurry.startSession(apiKey)
 
-        super.initializePlatform(platformData)
+        super.initialize(with: platformData)
     }
     
     
@@ -130,7 +130,7 @@ public class HEAnalyticsPlatformFlurry: HEAnalyticsPlatform {
     
     - parameter data: The HEAnalyticsData with the information to be recorded. It is up to the subclass to interpret, preserve, and convey this data as richly and appropriately as the platform SDK allows.
     */
-    public override func trackData(_ data: HEAnalyticsData) {
+    public override func track(data: HEAnalyticsData) {
         guard !optOut else {
             return
         }
@@ -151,11 +151,11 @@ public class HEAnalyticsPlatformFlurry: HEAnalyticsPlatform {
     
     Subclasses will need to override and implement the SDK's view logging/tracking mechanism.
     
-    Consider use of viewControlerTitle() to help in tracking.
+    Consider use of titleFor(viewController:) to help in tracking.
     
     - parameter viewController: The UIViewController to track.
     */
-    public override func trackView(_ viewController: UIViewController) {
+    public override func track(viewController: UIViewController) {
         guard !optOut else {
             return
         }
@@ -166,7 +166,7 @@ public class HEAnalyticsPlatformFlurry: HEAnalyticsPlatform {
         // solution to this, it seems both Flurry and others say to do what we want to do, we should just
         // logEvent. So, here we are.
 
-        let title = viewControlerTitle(viewController)
+        let title = titleFor(viewController: viewController)
         let flurryEvent = "TrackView - " + title
         Flurry.logEvent(flurryEvent)
         Flurry.logPageView()

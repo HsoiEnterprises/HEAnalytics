@@ -49,7 +49,7 @@ open class HEAnalyticsPlatformLocalytics: HEAnalyticsPlatform {
      
      - parameter platformData: The platform's unique settings data, usually including whatever identifier/key is used to identify this app, and any other configuration data that may be relevant to the platform. The keys and values for each platform is unique to that platform.
      */
-    internal override func initializePlatform(_ platformData: [String:Any]) {
+    internal override func initialize(with platformData: [String:Any]) {
         let trackingID = platformData["trackingID"] as! String
         Localytics.integrate(trackingID)
         
@@ -60,7 +60,7 @@ open class HEAnalyticsPlatformLocalytics: HEAnalyticsPlatform {
             Localytics.setSessionTimeoutInterval(60) // Localytics's documented default.
         }
         
-        super.initializePlatform(platformData)
+        super.initialize(with: platformData)
     }
     
     
@@ -114,7 +114,7 @@ open class HEAnalyticsPlatformLocalytics: HEAnalyticsPlatform {
      
      - parameter data: The HEAnalyticsData with the information to be recorded. It is up to the subclass to interpret, preserve, and convey this data as richly and appropriately as the platform SDK allows.
      */
-    open override func trackData(_ data: HEAnalyticsData) {
+    open override func track(data: HEAnalyticsData) {
         guard !optOut && started else { return }
         
         Localytics.tagEvent(data.event, attributes: data.parameters)
@@ -126,14 +126,14 @@ open class HEAnalyticsPlatformLocalytics: HEAnalyticsPlatform {
      
      Subclasses will need to override and implement the SDK's view logging/tracking mechanism.
      
-     Consider use of viewControlerTitle() to help in tracking.
+     Consider use of titleFor(viewController:) to help in tracking.
      
      - parameter viewController: The UIViewController to track.
      */
-    open override func trackView(_ viewController: UIViewController) {
+    open override func track(viewController: UIViewController) {
         guard !optOut && started else { return }
         
-        Localytics.tagScreen(viewControlerTitle(viewController))
+        Localytics.tagScreen(titleFor(viewController: viewController))
     }
     
     /**
@@ -143,7 +143,7 @@ open class HEAnalyticsPlatformLocalytics: HEAnalyticsPlatform {
      
      - parameter user: The HEAnalyticsUser to track.
      */
-    open override func trackUser(_ user: HEAnalyticsUser) {
+    open override func track(user: HEAnalyticsUser) {
         guard !optOut && started else { return }
         
         Localytics.setCustomerId(user.identifier)

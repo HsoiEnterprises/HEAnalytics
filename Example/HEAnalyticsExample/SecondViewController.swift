@@ -22,7 +22,7 @@ class SecondViewController: UIViewController {
 
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
-        SampleAnalytics.sharedInstance.trackView(self)
+        SampleAnalytics.sharedInstance.track(viewController: self)
     }
     
     override func HE_analyticsViewTrackingTitle() -> String {

@@ -62,7 +62,7 @@ open class HEAnalyticsPlatformGAI: HEAnalyticsPlatform {
     
     - parameter platformData: The platform's unique settings data, usually including whatever identifier/key is used to identify this app, and any other configuration data that may be relevant to the platform. The keys and values for each platform is unique to that platform.
     */
-    internal override func initializePlatform(_ platformData: [String:Any]) {
+    internal override func initialize(with platformData: [String:Any]) {
 
         let trackingID = platformData["trackingID"] as! String
         GAI.sharedInstance().tracker(withTrackingId: trackingID)
@@ -97,11 +97,11 @@ open class HEAnalyticsPlatformGAI: HEAnalyticsPlatform {
         }
         
         // Hsoi 2015-05-23 - https://groups.google.com/forum/#!topic/ga-mobile-app-analytics/U4nqqBnBhjU
-        if let appVersion = appVersion() {
+        if let appVersion = appVersion {
             GAI.sharedInstance().defaultTracker.set(kGAIAppVersion, value: appVersion)
         }
 
-        super.initializePlatform(platformData)
+        super.initialize(with: platformData)
     }
     
 
@@ -146,7 +146,7 @@ open class HEAnalyticsPlatformGAI: HEAnalyticsPlatform {
     
     - parameter data: The HEAnalyticsData with the information to be recorded. It is up to the subclass to interpret, preserve, and convey this data as richly and appropriately as the platform SDK allows.
     */
-    open override func trackData(_ data: HEAnalyticsData) {
+    open override func track(data: HEAnalyticsData) {
         guard !optOut && !GAI.sharedInstance().optOut else {
             return
         }
@@ -170,17 +170,17 @@ open class HEAnalyticsPlatformGAI: HEAnalyticsPlatform {
     
     Subclasses will need to override and implement the SDK's view logging/tracking mechanism.
     
-    Consider use of viewControlerTitle() to help in tracking.
+    Consider use of titleFor(viewController:) to help in tracking.
     
     - parameter viewController: The UIViewController to track.
     */
-    open override func trackView(_ viewController: UIViewController) {
+    open override func track(viewController: UIViewController) {
         guard !optOut && !GAI.sharedInstance().optOut else {
             return
         }
 
         let tracker = GAI.sharedInstance().defaultTracker
-        let title = viewControlerTitle(viewController)
+        let title = titleFor(viewController: viewController)
         tracker?.set(kGAIScreenName, value: title)
         var converted = [String:Any]()
         GAIDictionaryBuilder.createScreenView().build()?.forEach { key, value in

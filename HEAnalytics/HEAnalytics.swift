@@ -54,7 +54,7 @@ class MyViewController: UIViewController {
 
             let parameters = ["value": slider.value]
             let data = HEAnalyticsData(category: .Settings, event: "Slider Value Updated", parameters: parameters)
-            myHEAnalyticsInstance.trackData(data)
+            myHEAnalyticsInstance.track(data: data)
         }
     }
 }
@@ -69,7 +69,7 @@ class MyAppAnalytics: HEAnalytics {
     func trackSliderValue(value: Float) {
         let parameters = ["value": value]
         let data = HEAnalyticsData(category: .Settings, event: "Slider Value Updated", parameters: parameters)
-        self.trackData(data)
+        self.track(data: data)
     }
 }
 ```
@@ -256,16 +256,16 @@ open class HEAnalytics: NSObject {
     
         func tappedSomeInterestingButton() {
             let data = HEAnalyticsData(category: .General, event: "Tapping Interesting Button")
-            trackData(data)
+            track(data: data)
         }
     
     then client code just invokes `MyAnalytics.sharedInstance().tappedSomeInterestingButton()`.
     
     - parameter data: The HEAnalyticsData containing the data to track.
     */
-    open func trackData(_ data: HEAnalyticsData) {
+    open func track(data: HEAnalyticsData) {
         for platform in platforms {
-            platform.trackData(data)
+            platform.track(data: data)
         }
     }
     
@@ -277,9 +277,9 @@ open class HEAnalytics: NSObject {
     
     - parameter viewController: The UIViewController to track.
     */
-    open func trackView(_ viewController: UIViewController) {
+    open func track(viewController: UIViewController) {
         for platform in platforms {
-            platform.trackView(viewController)
+            platform.track(viewController: viewController)
         }
     }
     
@@ -291,9 +291,9 @@ open class HEAnalytics: NSObject {
      
      - parameter user: The HEAnalyticsUser to track.
      */
-    open func trackUser(_ user: HEAnalyticsUser) {
+    open func track(user: HEAnalyticsUser) {
         for platform in platforms {
-            platform.trackUser(user)
+            platform.track(user: user)
         }
     }
     
@@ -305,9 +305,9 @@ open class HEAnalytics: NSObject {
      
      - parameter user: The HEAnalyticsUser to stop tracking; optional.
      */
-    open func stopTrackingUser(_ user: HEAnalyticsUser?) {
+    open func stopTracking(user: HEAnalyticsUser?) {
         for platform in platforms {
-            platform.stopTrackingUser(user)
+            platform.stopTracking(user: user)
         }
     }
     
@@ -335,7 +335,7 @@ open class HEAnalytics: NSObject {
         }
 
         let data = HEAnalyticsData(category: .Application, event: "Background Refresh Status Did Change", parameters: ["status":status])
-        trackData(data)
+        track(data: data)
     }
     
     
@@ -346,7 +346,7 @@ open class HEAnalytics: NSObject {
     */
     @objc fileprivate func handleUIApplicationDidBecomeActiveNotification(_ notification: Notification) {
         let data = HEAnalyticsData(category: .Application, event: "Did Become Active")
-        trackData(data)
+        track(data: data)
     }
 
     
@@ -357,7 +357,7 @@ open class HEAnalytics: NSObject {
     */
     @objc fileprivate func handleUIApplicationDidEnterBackgroundNotification(_ notification: Notification) {
         let data = HEAnalyticsData(category: .Application, event: "Did Enter Background")
-        trackData(data)
+        track(data: data)
     }
     
     
@@ -394,7 +394,7 @@ open class HEAnalytics: NSObject {
         
         let dataParameters:[String:Any]? = parameters.count != 0 ? parameters : nil
         let data = HEAnalyticsData(category: .Application, event: "Did Finish Launching", parameters: dataParameters)
-        trackData(data)
+        track(data: data)
     }
     
     
@@ -405,7 +405,7 @@ open class HEAnalytics: NSObject {
     */
     @objc fileprivate func handleUIApplicationUserDidTakeScreenshotNotification(_ notification: Notification) {
         let data = HEAnalyticsData(category: .Application, event: "Did Take Screenshot")
-        trackData(data)
+        track(data: data)
     }
     
     
@@ -416,7 +416,7 @@ open class HEAnalytics: NSObject {
     */
     @objc fileprivate func handleUIApplicationWillEnterForegroundNotification(_ notification: Notification) {
         let data = HEAnalyticsData(category: .Application, event: "Will Enter Foreground")
-        trackData(data)
+        track(data: data)
     }
     
     
@@ -427,7 +427,7 @@ open class HEAnalytics: NSObject {
     */
     @objc fileprivate func handleUIApplicationWillResignActiveNotification(_ notification: Notification) {
         let data = HEAnalyticsData(category: .Application, event: "Will Resign Active")
-        trackData(data)
+        track(data: data)
     }
     
     
@@ -438,7 +438,7 @@ open class HEAnalytics: NSObject {
     */
     @objc fileprivate func handleUIApplicationWillTerminateNotification(_ notification: Notification) {
         let data = HEAnalyticsData(category: .Application, event: "Will Terminate")
-        trackData(data)
+        track(data: data)
     }
     
     
@@ -453,7 +453,7 @@ open class HEAnalytics: NSObject {
             parameters["contentSize"] = newSize
         }
         let data = HEAnalyticsData(category: .Application, event: "Content Size Category Did Change", parameters: parameters)
-        trackData(data)
+        track(data: data)
     }
 
 }

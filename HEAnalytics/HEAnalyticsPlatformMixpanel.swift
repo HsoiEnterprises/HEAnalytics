@@ -67,7 +67,7 @@ public class HEAnalyticsPlatformMixpanel: HEAnalyticsPlatform {
     
     - parameter platformData: The platform's unique settings data, usually including whatever identifier/key is used to identify this app, and any other configuration data that may be relevant to the platform. The keys and values for each platform is unique to that platform.
     */
-    internal override func initializePlatform(_ platformData: [String:Any]) {
+    internal override func initialize(with platformData: [String:Any]) {
         
         var defaultFlushInterval: UInt = 15
         if let flushInterval = platformData["flushInterval"] as? UInt {
@@ -109,7 +109,7 @@ public class HEAnalyticsPlatformMixpanel: HEAnalyticsPlatform {
             mixpanel.miniNotificationPresentationTime = miniNotificationPresentationTime
         }
         
-        super.initializePlatform(platformData)
+        super.initialize(with: platformData)
     }
     
     
@@ -150,7 +150,7 @@ public class HEAnalyticsPlatformMixpanel: HEAnalyticsPlatform {
     
     - parameter data: The HEAnalyticsData with the information to be recorded. It is up to the subclass to interpret, preserve, and convey this data as richly and appropriately as the platform SDK allows.
     */
-    public override func trackData(_ data: HEAnalyticsData) {
+    public override func track(data: HEAnalyticsData) {
         guard !optOut && started else {
             return
         }
@@ -170,16 +170,16 @@ public class HEAnalyticsPlatformMixpanel: HEAnalyticsPlatform {
     
     Subclasses will need to override and implement the SDK's view logging/tracking mechanism.
     
-    Consider use of viewControlerTitle() to help in tracking.
+    Consider use of titleFor(viewController:) to help in tracking.
     
     - parameter viewController: The UIViewController to track.
     */
-    public override func trackView(_ viewController: UIViewController) {
+    public override func track(viewController: UIViewController) {
         guard !optOut && started else {
             return
         }
         
-        let title = viewControlerTitle(viewController)
+        let title = titleFor(viewController: viewController)
         let event = "TrackView - " + title
         mixpanel.track(event)
     }
