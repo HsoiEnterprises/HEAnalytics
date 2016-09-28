@@ -47,10 +47,11 @@ It enables logic for converting the data-to-track into something the analytics A
 
 # Supported OS and SDK
 
-- Xcode 7.3
-- Swift 2.2
+- Xcode 8+
+- Swift 3
 - iOS 8
 
+If you need Swift 2.2 support, use v0.6.2.
 
 No effort has been made to make this work on Mac OS X, and there are presently no plans to do so.
 

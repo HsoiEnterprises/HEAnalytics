@@ -1,13 +1,13 @@
 PODS:
-  - Flurry-iOS-SDK (7.5.2):
-    - Flurry-iOS-SDK/FlurrySDK (= 7.5.2)
-  - Flurry-iOS-SDK/FlurrySDK (7.5.2)
-  - GoogleAnalytics (3.14.0)
-  - Intercom (2.3.19)
-  - Localytics (3.8.0)
-  - Mixpanel (2.9.4):
-    - Mixpanel/Mixpanel (= 2.9.4)
-  - Mixpanel/Mixpanel (2.9.4)
+  - Flurry-iOS-SDK (7.6.6):
+    - Flurry-iOS-SDK/FlurrySDK (= 7.6.6)
+  - Flurry-iOS-SDK/FlurrySDK (7.6.6)
+  - GoogleAnalytics (3.17.0)
+  - Intercom (3.0.12)
+  - Localytics (4.1.0)
+  - Mixpanel (3.0.4):
+    - Mixpanel/Mixpanel (= 3.0.4)
+  - Mixpanel/Mixpanel (3.0.4)
 
 DEPENDENCIES:
   - Flurry-iOS-SDK
@@ -17,12 +17,12 @@ DEPENDENCIES:
   - Mixpanel
 
 SPEC CHECKSUMS:
-  Flurry-iOS-SDK: 8c87c4eab6008184ad9f63afabd79ec0d109c82e
-  GoogleAnalytics: 9be1afdb8deeac4bb5f13ca7f7d3b9db2a1f43dc
-  Intercom: de20d3f2eeb7798aac66b26a7a7b92979211e05c
-  Localytics: 8fd8455e92c5d5d507d1302e704e7db5ca2a33bf
-  Mixpanel: 80d2ca9bb38ae91c1044d738e80fe448377ac89f
+  Flurry-iOS-SDK: 97bbeec09cca666c2f1772f6e161c4f8ccff611e
+  GoogleAnalytics: f42cc53a87a51fe94334821868d9c8481ff47a7b
+  Intercom: b709f2055c8ab0333c255d0ad49886598d14705f
+  Localytics: 6b567857273ffa9b76bb6e4c4e11c5f6f2b15a86
+  Mixpanel: 4a2330c26556109d2f42b01e36a05eb9e2caf25e
 
 PODFILE CHECKSUM: 6e8fc3d4164c346fafab72cd49fba159cdcb5302
 
-COCOAPODS: 1.1.0.beta.1
+COCOAPODS: 1.1.0.rc.2

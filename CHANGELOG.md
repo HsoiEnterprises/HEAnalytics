@@ -1,5 +1,18 @@
 # HEAnalytics CHANGELOG
 
+
+## v1.0.0 - 2016-09-24
+
+* Conversion to Swift 3 (and Xcode 8). `:props:` to @kreeger for the massive contribution!
+
+
+## v0.6.1 - 2016-09-24
+
+* Fixed a Localytics tracking bug
+
+Last version to support Swift 2.2
+
+
 ## v0.6 - 2016-03-26
 
 * Xcode 7.3 and Swift 2.2 support.
