@@ -39,7 +39,7 @@ import UIKit
 An HEAnalyticsPlatform for the Google Analytics (GAI) platform.
 */
 @objc(HEAnalyticsPlatformGAI)
-public class HEAnalyticsPlatformGAI: HEAnalyticsPlatform {
+open class HEAnalyticsPlatformGAI: HEAnalyticsPlatform {
    
     /**
     Initializer.
@@ -48,7 +48,7 @@ public class HEAnalyticsPlatformGAI: HEAnalyticsPlatform {
     
     - returns: A properly initialized HEAnalyticsPlatformGAI object.
     */
-    public required init(platformData: [NSObject:AnyObject]) {
+    public required init(platformData: [String:Any]) {
         super.init(platformData: platformData)
     }
 
@@ -62,12 +62,12 @@ public class HEAnalyticsPlatformGAI: HEAnalyticsPlatform {
     
     - parameter platformData: The platform's unique settings data, usually including whatever identifier/key is used to identify this app, and any other configuration data that may be relevant to the platform. The keys and values for each platform is unique to that platform.
     */
-    internal override func initializePlatform(platformData: [NSObject:AnyObject]) {
+    internal override func initialize(with platformData: [String:Any]) {
 
         let trackingID = platformData["trackingID"] as! String
-        GAI.sharedInstance().trackerWithTrackingId(trackingID)
+        GAI.sharedInstance().tracker(withTrackingId: trackingID)
 
-        if let dispatchInterval = platformData["dispatchInterval"] as? NSTimeInterval {
+        if let dispatchInterval = platformData["dispatchInterval"] as? TimeInterval {
             GAI.sharedInstance().dispatchInterval = dispatchInterval
         }
         else {
@@ -75,13 +75,13 @@ public class HEAnalyticsPlatformGAI: HEAnalyticsPlatform {
         }
         
         if let logLevel = platformData["logLevel"] as? UInt {
-            GAI.sharedInstance().logger.logLevel = GAILogLevel(rawValue: logLevel) ?? .Error
+            GAI.sharedInstance().logger.logLevel = GAILogLevel(rawValue: logLevel) ?? .error
         }
         else {
         #if DEBUG
-            GAI.sharedInstance().logger.logLevel = .Verbose
+            GAI.sharedInstance().logger.logLevel = .verbose
         #else
-            GAI.sharedInstance().logger.logLevel = .Error
+            GAI.sharedInstance().logger.logLevel = .error
         #endif
         }
         
@@ -97,16 +97,16 @@ public class HEAnalyticsPlatformGAI: HEAnalyticsPlatform {
         }
         
         // Hsoi 2015-05-23 - https://groups.google.com/forum/#!topic/ga-mobile-app-analytics/U4nqqBnBhjU
-        if let appVersion = appVersion() {
+        if let appVersion = appVersion {
             GAI.sharedInstance().defaultTracker.set(kGAIAppVersion, value: appVersion)
         }
 
-        super.initializePlatform(platformData)
+        super.initialize(with: platformData)
     }
     
 
     /// Has the user opt'd out of data collection? Note this value is not persisted anywhere by HEAnalytics. Exposing this setting in the GUI, persisting the value, restoring the value, and enforcing it generally is the responsibility of the app developer.
-    public override var optOut: Bool {
+    open override var optOut: Bool {
         didSet {
             GAI.sharedInstance().optOut = optOut
         }
@@ -118,7 +118,7 @@ public class HEAnalyticsPlatformGAI: HEAnalyticsPlatform {
     
     Subclasses generally will want to override this to start their SDK's collection of data. Note that, depending upon the implementation details of the SDK, you may need to check the  HEAnalyticsPlatform.optOut property to ensure you actually should start collecting or not.
     */
-    public override func start() {
+    open override func start() {
         guard !optOut else {
             return
         }
@@ -133,7 +133,7 @@ public class HEAnalyticsPlatformGAI: HEAnalyticsPlatform {
     
     Subclasses will generally want to override this to stop their SDK's collection of data.
     */
-    public override func stop() {
+    open override func stop() {
         super.stop()
         GAI.sharedInstance().optOut = true
     }
@@ -146,17 +146,22 @@ public class HEAnalyticsPlatformGAI: HEAnalyticsPlatform {
     
     - parameter data: The HEAnalyticsData with the information to be recorded. It is up to the subclass to interpret, preserve, and convey this data as richly and appropriately as the platform SDK allows.
     */
-    public override func trackData(data: HEAnalyticsData) {
+    open override func track(data: HEAnalyticsData) {
         guard !optOut && !GAI.sharedInstance().optOut else {
             return
         }
         
         var JSONString: String?
         if let dataParameters = data.parameters {
-            JSONString = HEJSONHelper.canonicalJSONRepresentationWithObject(dataParameters)
+            JSONString = HEJSONHelper.canonicalJSONRepresentation(with: dataParameters)
         }
-        let sendData = GAIDictionaryBuilder.createEventWithCategory(data.category, action:data.event, label:JSONString, value:nil).build()
-        GAI.sharedInstance().defaultTracker.send(sendData as [NSObject: AnyObject])
+        let sendData = GAIDictionaryBuilder.createEvent(withCategory: data.category, action:data.event, label:JSONString, value:nil).build()
+        var converted = [String:Any]()
+        sendData?.forEach { key, value in
+            guard let key = key as? String else { return }
+            converted[key] = value
+        }
+        GAI.sharedInstance().defaultTracker.send(converted)
     }
 
 
@@ -165,19 +170,24 @@ public class HEAnalyticsPlatformGAI: HEAnalyticsPlatform {
     
     Subclasses will need to override and implement the SDK's view logging/tracking mechanism.
     
-    Consider use of viewControlerTitle() to help in tracking.
+    Consider use of titleFor(viewController:) to help in tracking.
     
     - parameter viewController: The UIViewController to track.
     */
-    public override func trackView(viewController: UIViewController) {
+    open override func track(viewController: UIViewController) {
         guard !optOut && !GAI.sharedInstance().optOut else {
             return
         }
 
         let tracker = GAI.sharedInstance().defaultTracker
-        let title = viewControlerTitle(viewController)
-        tracker.set(kGAIScreenName, value: title)
-        tracker.send(GAIDictionaryBuilder.createScreenView().build() as [NSObject: AnyObject])
+        let title = titleFor(viewController: viewController)
+        tracker?.set(kGAIScreenName, value: title)
+        var converted = [String:Any]()
+        GAIDictionaryBuilder.createScreenView().build()?.forEach { key, value in
+            guard let key = key as? String else { return }
+            converted[key] = value
+        }
+        tracker?.send(converted)
     }
 
 }

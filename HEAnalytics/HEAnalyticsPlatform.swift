@@ -39,7 +39,7 @@ import UIKit
 HEAnalyticsPlatform provides the base class and structure for implementing an analytics platform's specific API and integrating it into the HEAnalytics framework.
 */
 @objc(HEAnalyticsPlatform)
-public class HEAnalyticsPlatform: NSObject {
+open class HEAnalyticsPlatform: NSObject {
 
     /**
     Initializer.
@@ -48,9 +48,9 @@ public class HEAnalyticsPlatform: NSObject {
     
     - returns: A properly initialized HEAnalyticsPlatform object.
     */
-    required public init(platformData: [NSObject:AnyObject]) {
+    required public init(platformData: [String:Any]) {
         super.init()
-        initializePlatform(platformData)
+        initialize(with: platformData)
     }
 
     
@@ -63,7 +63,7 @@ public class HEAnalyticsPlatform: NSObject {
     
     - parameter platformData: The platform's unique settings data, usually including whatever identifier/key is used to identify this app, and any other configuration data that may be relevant to the platform. The keys and values for each platform is unique to that platform.
     */
-    internal func initializePlatform(platformData: [NSObject:AnyObject]) {
+    internal func initialize(with platformData: [String:Any]) {
 
     }
     
@@ -73,7 +73,7 @@ public class HEAnalyticsPlatform: NSObject {
     
     Subclasses generally will want to override this to start their SDK's collection of data. Note that, depending upon the implementation details of the SDK, you may need to check the  HEAnalyticsPlatform.optOut property to ensure you actually should start collecting or not.
     */
-    public func start() {
+    open func start() {
 
     }
     
@@ -83,12 +83,12 @@ public class HEAnalyticsPlatform: NSObject {
     
     Subclasses will generally want to override this to stop their SDK's collection of data.
     */
-    public func stop() {
+    open func stop() {
 
     }
 
     /// Has the user opt'd out of data collection? Note this value is not persisted anywhere by HEAnalytics. Exposing this setting in the GUI, persisting the value, restoring the value, and enforcing it generally is the responsibility of the app developer.
-    public var optOut: Bool = false
+    open var optOut: Bool = false
     
     
     /**
@@ -98,7 +98,7 @@ public class HEAnalyticsPlatform: NSObject {
     
     - parameter data: The HEAnalyticsData with the information to be recorded. It is up to the subclass to interpret, preserve, and convey this data as richly and appropriately as the platform SDK allows.
     */
-    public func trackData(data: HEAnalyticsData) {
+    open func track(data: HEAnalyticsData) {
 
     }
     
@@ -108,11 +108,11 @@ public class HEAnalyticsPlatform: NSObject {
     
     Subclasses will need to override and implement the SDK's view logging/tracking mechanism.
     
-    Consider use of viewControlerTitle() to help in tracking.
+    Consider use of titleFor(viewController:) to help in tracking.
     
     - parameter viewController: The UIViewController to track.
     */
-    public func trackView(viewController: UIViewController) {
+    open func track(viewController: UIViewController) {
         // subclasses expected to override and implement to implement the tracking for that platform.
         // No need to call `super`.
     }
@@ -124,7 +124,7 @@ public class HEAnalyticsPlatform: NSObject {
      
      - parameter user: The HEAnalyticsUser to track.
      */
-    public func trackUser(user: HEAnalyticsUser) {
+    open func track(user: HEAnalyticsUser) {
         // subclasses expected to override and implement to implement the tracking for that platform.
         // No need to call `super`.
     }
@@ -137,7 +137,7 @@ public class HEAnalyticsPlatform: NSObject {
      
      - parameter user: The HEAnalyticsUser to stop tracking; optional.
      */
-    public func stopTrackingUser(user: HEAnalyticsUser?) {
+    open func stopTracking(user: HEAnalyticsUser?) {
         // subclasses expected to override and implement to implement the necessary logic for that platform.
         // No need to call `super`.
     }
@@ -149,8 +149,8 @@ public class HEAnalyticsPlatform: NSObject {
     
     - returns: an app version string.
     */
-    internal func appVersion() -> String? {
-        if let shortVersion = NSBundle.mainBundle().objectForInfoDictionaryKey("CFBundleShortVersionString") as? String, bundleVersion = NSBundle.mainBundle().objectForInfoDictionaryKey("CFBundleVersion") as? String {
+    internal var appVersion: String? {
+        if let shortVersion = Bundle.main.object(forInfoDictionaryKey: "CFBundleShortVersionString") as? String, let bundleVersion = Bundle.main.object(forInfoDictionaryKey: "CFBundleVersion") as? String {
             let fullVersion = shortVersion + "." + bundleVersion
             return fullVersion
         }
@@ -159,16 +159,16 @@ public class HEAnalyticsPlatform: NSObject {
     
 
     /**
-    A helper for obtaining the UIViewController "title" for use in trackView().
+    A helper for obtaining the UIViewController "title" for use in track(viewController:).
     
-    See UIViewController+HEAnalytics and the HE_analyticsViewTrackingTitle() extension
+    See UIViewController+HEAnalytics and the HE_analyticsViewTrackingTitle extension
     
     - parameter viewController: The UIViewController to extract a tracking title from
     
     - returns: The title to use for tracking.
     */
-    internal func viewControlerTitle(viewController: UIViewController) -> String {
-        return viewController.HE_analyticsViewTrackingTitle()
+    internal func titleFor(viewController: UIViewController) -> String {
+        return viewController.HE_analyticsViewTrackingTitle
     }
     
 }

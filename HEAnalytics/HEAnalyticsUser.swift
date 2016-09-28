@@ -36,20 +36,20 @@
 import UIKit
 
 /// The data structure for encapsulating data about a user object to track via analytics.
-public class HEAnalyticsUser: NSObject {
+open class HEAnalyticsUser: NSObject {
     
     /// The user's unique identifier. Required.
-    private (set) var identifier: String = ""
+    fileprivate (set) var identifier: String = ""
     /// The user's first name. Optional.
-    private (set) var firstName: String?
+    fileprivate (set) var firstName: String?
     /// The user's last name. Optional.
-    private (set) var lastName: String?
+    fileprivate (set) var lastName: String?
     /// The user's full name. Optional.
-    private (set) var fullName: String?
+    fileprivate (set) var fullName: String?
     /// The user's email address. Optional.
-    private (set) var emailAddress: String?
+    fileprivate (set) var emailAddress: String?
     /// Any extra parameters to be sent back as auxiliary data on behalf of a user.
-    private (set) var parameters: [NSObject:AnyObject]?
+    fileprivate (set) var parameters: [String:Any]?
     
     
     /**
@@ -63,11 +63,11 @@ public class HEAnalyticsUser: NSObject {
         - lastName: The user's last name. Optional.
         - fullName: The user's full name. Optional.
         - emailAddress: The user's email address. Optional.
-        - parameters: The optional parameters. Typed as an [NSObject:AnyObject] to maximize interoperability with NSDictionary and Objective-C code, but it is expected that the key is a (NS)String and the value is a plist-able/json-able type such as string, number, array/dictionary (of string, number). The data won't necessarily be santized before being passed along to a platform API, so the general recommendation is in your HEAnalytics subclass's specific event tracking functions to take the app-provided raw data to track and convert it to a "safe" type (strings and numbers are best), then pass this sanitized type/data in the event parameters.
+        - parameters: The optional parameters. Typed as an [String:Any] to maximize interoperability with NSDictionary and Objective-C code, but it is expected that the key is a (NS)String and the value is a plist-able/json-able type such as string, number, array/dictionary (of string, number). The data won't necessarily be santized before being passed along to a platform API, so the general recommendation is in your HEAnalytics subclass's specific event tracking functions to take the app-provided raw data to track and convert it to a "safe" type (strings and numbers are best), then pass this sanitized type/data in the event parameters.
      
-     - returns: An HEAnalyticsUser object, suitable for passing to HEAnalytics.trackUser()
+     - returns: An HEAnalyticsUser object, suitable for passing to HEAnalytics.track(user:)
      */
-    public init(identifier: String, firstName: String? = nil, lastName: String? = nil, fullName: String? = nil, emailAddress: String? = nil, parameters: [NSObject:AnyObject]? = nil) {
+    public init(identifier: String, firstName: String? = nil, lastName: String? = nil, fullName: String? = nil, emailAddress: String? = nil, parameters: [String:Any]? = nil) {
         self.identifier = identifier
         self.firstName = firstName
         self.lastName = lastName

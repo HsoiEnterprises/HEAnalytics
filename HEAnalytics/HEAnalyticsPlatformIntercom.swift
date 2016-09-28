@@ -39,7 +39,7 @@ import Intercom
 An HEAnalyticsPlatform for the Intercom.io platform.
 */
 @objc(HEAnalyticsPlatformIntercom)
-public class HEAnalyticsPlatformIntercom: HEAnalyticsPlatform {
+open class HEAnalyticsPlatformIntercom: HEAnalyticsPlatform {
    
     /**
     Initializer.
@@ -48,7 +48,7 @@ public class HEAnalyticsPlatformIntercom: HEAnalyticsPlatform {
     
     - returns: A properly initialized HEAnalyticsPlatformIntercom object.
     */
-    public required init(platformData: [NSObject:AnyObject]) {
+    public required init(platformData: [String:Any]) {
         super.init(platformData: platformData)
     }
     
@@ -62,7 +62,7 @@ public class HEAnalyticsPlatformIntercom: HEAnalyticsPlatform {
     
     - parameter platformData: The platform's unique settings data, usually including whatever identifier/key is used to identify this app, and any other configuration data that may be relevant to the platform. The keys and values for each platform is unique to that platform.
     */
-    public override func initializePlatform(platformData: [NSObject:AnyObject]) {
+    open override func initialize(with platformData: [String:Any]) {
         
         Intercom.reset()
         
@@ -70,16 +70,16 @@ public class HEAnalyticsPlatformIntercom: HEAnalyticsPlatform {
         let appID = platformData["appID"] as! String
         Intercom.setApiKey(apikey, forAppId: appID)
         
-        if let logging = platformData["enableLogging"] as? Bool where logging {
+        if let logging = platformData["enableLogging"] as? Bool , logging {
             Intercom.enableLogging()
         }
         
-        super.initializePlatform(platformData)
+        super.initialize(with: platformData)
     }
     
     
     /// Has Intercom tracking (optOut/in start/stop) started or not? Intercom seems to have no mechanism of its own to enforce this, so we track it ourselves.
-    private var started: Bool = false
+    fileprivate var started: Bool = false
     
     
     /**
@@ -87,7 +87,7 @@ public class HEAnalyticsPlatformIntercom: HEAnalyticsPlatform {
     
     Subclasses generally will want to override this to start their SDK's collection of data. Note that, depending upon the implementation details of the SDK, you may need to check the  HEAnalyticsPlatform.optOut property to ensure you actually should start collecting or not.
     */
-    public override func start() {
+    open override func start() {
         guard !optOut && !started else {
             return
         }
@@ -102,7 +102,7 @@ public class HEAnalyticsPlatformIntercom: HEAnalyticsPlatform {
     
     Subclasses will generally want to override this to stop their SDK's collection of data.
     */
-    public override func stop() {
+    open override func stop() {
         super.stop()
         started = false
     }
@@ -115,17 +115,17 @@ public class HEAnalyticsPlatformIntercom: HEAnalyticsPlatform {
     
     - parameter data: The HEAnalyticsData with the information to be recorded. It is up to the subclass to interpret, preserve, and convey this data as richly and appropriately as the platform SDK allows.
     */
-    public override func trackData(data: HEAnalyticsData) {
+    open override func track(data: HEAnalyticsData) {
         guard !optOut && started else {
             return
         }
 
         let event = data.category + " - " + data.event
-        if let dataParameters = data.parameters where dataParameters.count > 0 {
-            Intercom.logEventWithName(event, metaData: dataParameters)
+        if let dataParameters = data.parameters , dataParameters.count > 0 {
+            Intercom.logEvent(withName: event, metaData: dataParameters)
         }
         else {
-           Intercom.logEventWithName(event)
+           Intercom.logEvent(withName: event)
         }
     }
     
@@ -134,18 +134,18 @@ public class HEAnalyticsPlatformIntercom: HEAnalyticsPlatform {
     
     Subclasses will need to override and implement the SDK's view logging/tracking mechanism.
     
-    Consider use of viewControlerTitle() to help in tracking.
+    Consider use of titleFor(viewController:) to help in tracking.
     
     - parameter viewController: The UIViewController to track.
     */
-    public override func trackView(viewController: UIViewController) {
+    open override func track(viewController: UIViewController) {
         guard !optOut && started else {
             return
         }
         
-        let title = viewControlerTitle(viewController)
+        let title = titleFor(viewController: viewController)
         let event = "TrackView - " + title
-        Intercom.logEventWithName(event)
+        Intercom.logEvent(withName: event)
     }
     
     /**
@@ -155,15 +155,15 @@ public class HEAnalyticsPlatformIntercom: HEAnalyticsPlatform {
      
      - parameter user: The HEAnalyticsUser to track.
      */
-    public override func trackUser(user: HEAnalyticsUser) {
+    open override func track(user: HEAnalyticsUser) {
         guard !optOut && started else {
             return
         }
         
         Intercom.reset()
-        Intercom.registerUserWithUserId(user.identifier, email: user.emailAddress ?? "unknown-email")
+        Intercom.registerUser(withUserId: user.identifier, email: user.emailAddress ?? "unknown-email")
         
-        var userAttrs = [String:AnyObject]()
+        var userAttrs = [String:Any]()
         if let fullName = user.fullName {
             userAttrs["name"] = fullName
         }
@@ -172,7 +172,7 @@ public class HEAnalyticsPlatformIntercom: HEAnalyticsPlatform {
             userAttrs["custom_attributes"] = parameters
         }
         
-        Intercom.updateUserWithAttributes(userAttrs)
+        Intercom.updateUser(attributes: userAttrs)
     }
     
     
@@ -183,7 +183,7 @@ public class HEAnalyticsPlatformIntercom: HEAnalyticsPlatform {
      
      - parameter user: The HEAnalyticsUser to stop tracking; optional.
      */
-    public override func stopTrackingUser(user: HEAnalyticsUser?) {
+    open override func stopTracking(user: HEAnalyticsUser?) {
         guard !optOut && started else {
             return
         }

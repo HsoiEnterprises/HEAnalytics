@@ -36,9 +36,9 @@
 import UIKit
 
 @objc(HEAnalyticsPlatformLocalytics)
-public class HEAnalyticsPlatformLocalytics: HEAnalyticsPlatform {
+open class HEAnalyticsPlatformLocalytics: HEAnalyticsPlatform {
     // Tracks internals state.
-    private var started = false
+    fileprivate var started = false
     
     /**
      Initializes the platform with the given data.
@@ -49,23 +49,23 @@ public class HEAnalyticsPlatformLocalytics: HEAnalyticsPlatform {
      
      - parameter platformData: The platform's unique settings data, usually including whatever identifier/key is used to identify this app, and any other configuration data that may be relevant to the platform. The keys and values for each platform is unique to that platform.
      */
-    internal override func initializePlatform(platformData: [NSObject:AnyObject]) {
+    internal override func initialize(with platformData: [String:Any]) {
         let trackingID = platformData["trackingID"] as! String
         Localytics.integrate(trackingID)
         
-        if let dispatchInterval = platformData["dispatchInterval"] as? NSTimeInterval {
+        if let dispatchInterval = platformData["dispatchInterval"] as? TimeInterval {
             Localytics.setSessionTimeoutInterval(dispatchInterval)
         }
         else {
             Localytics.setSessionTimeoutInterval(60) // Localytics's documented default.
         }
         
-        super.initializePlatform(platformData)
+        super.initialize(with: platformData)
     }
     
     
     /// Has the user opt'd out of data collection? Note this value is not persisted anywhere by HEAnalytics. Exposing this setting in the GUI, persisting the value, restoring the value, and enforcing it generally is the responsibility of the app developer.
-    public override var optOut: Bool {
+    open override var optOut: Bool {
         didSet {
             if optOut {
                 stop()
@@ -81,7 +81,7 @@ public class HEAnalyticsPlatformLocalytics: HEAnalyticsPlatform {
      
      Subclasses generally will want to override this to start their SDK's collection of data. Note that, depending upon the implementation details of the SDK, you may need to check the  HEAnalyticsPlatform.optOut property to ensure you actually should start collecting or not.
      */
-    public override func start() {
+    open override func start() {
         guard !optOut && !started else { return }
         
         super.start()
@@ -96,7 +96,7 @@ public class HEAnalyticsPlatformLocalytics: HEAnalyticsPlatform {
      
      Subclasses will generally want to override this to stop their SDK's collection of data.
      */
-    public override func stop() {
+    open override func stop() {
         guard started else { return }
         
         super.stop()
@@ -114,7 +114,7 @@ public class HEAnalyticsPlatformLocalytics: HEAnalyticsPlatform {
      
      - parameter data: The HEAnalyticsData with the information to be recorded. It is up to the subclass to interpret, preserve, and convey this data as richly and appropriately as the platform SDK allows.
      */
-    public override func trackData(data: HEAnalyticsData) {
+    open override func track(data: HEAnalyticsData) {
         guard !optOut && started else { return }
         
         Localytics.tagEvent(data.event, attributes: data.parameters)
@@ -126,14 +126,14 @@ public class HEAnalyticsPlatformLocalytics: HEAnalyticsPlatform {
      
      Subclasses will need to override and implement the SDK's view logging/tracking mechanism.
      
-     Consider use of viewControlerTitle() to help in tracking.
+     Consider use of titleFor(viewController:) to help in tracking.
      
      - parameter viewController: The UIViewController to track.
      */
-    public override func trackView(viewController: UIViewController) {
+    open override func track(viewController: UIViewController) {
         guard !optOut && started else { return }
         
-        Localytics.tagScreen(viewControlerTitle(viewController))
+        Localytics.tagScreen(titleFor(viewController: viewController))
     }
     
     /**
@@ -143,7 +143,7 @@ public class HEAnalyticsPlatformLocalytics: HEAnalyticsPlatform {
      
      - parameter user: The HEAnalyticsUser to track.
      */
-    public override func trackUser(user: HEAnalyticsUser) {
+    open override func track(user: HEAnalyticsUser) {
         guard !optOut && started else { return }
         
         Localytics.setCustomerId(user.identifier)
