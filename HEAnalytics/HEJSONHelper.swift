@@ -4,7 +4,7 @@
 //
 //  Created by hsoi on 4/6/15.
 //
-//  HEAnalytics - Copyright (c) 2015, Hsoi Enterprises LLC
+//  HEAnalytics - Copyright (c) 2015-2016, Hsoi Enterprises LLC
 //  All rights reserved.
 //  hsoi@hsoienterprises.com
 //
