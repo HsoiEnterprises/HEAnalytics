@@ -81,8 +81,13 @@ public class HEAnalyticsPlatformMixpanel: HEAnalyticsPlatform {
             mixpanel.flushOnBackground = flushOnBackground
         }
         
+        // Hsoi 2016-09-28 - Mixpanel seems to have replaced `showNetworkActivityIndicator` with `shouldManageNetworkActivityIndicator`.
+        // We'll support the new option, and we'll support the old option mapped into the new property.
         if let showNetworkActivityIndicator = platformData["showNetworkActivityIndicator"] as? Bool {
-            mixpanel.showNetworkActivityIndicator = showNetworkActivityIndicator
+            mixpanel.shouldManageNetworkActivityIndicator = showNetworkActivityIndicator
+        }
+        if let shouldManageNetworkActivityIndicator = platformData["shouldManageNetworkActivityIndicator"] as? Bool {
+            mixpanel.shouldManageNetworkActivityIndicator = shouldManageNetworkActivityIndicator
         }
         
         if let checkForSurveysOnActive = platformData["checkForSurveysOnActive"] as? Bool {

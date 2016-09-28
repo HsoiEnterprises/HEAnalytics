@@ -11,4 +11,4 @@
 #import <GAI.h>
 #import <GAIDictionaryBuilder.h>
 #import <GAIFields.h>
-#import <Localytics.h>
+#import <Localytics/Localytics.h>

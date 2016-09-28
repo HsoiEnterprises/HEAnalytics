@@ -54,10 +54,18 @@ open class HEAnalyticsPlatformLocalytics: HEAnalyticsPlatform {
         Localytics.integrate(trackingID)
         
         if let dispatchInterval = platformData["dispatchInterval"] as? TimeInterval {
-            Localytics.setSessionTimeoutInterval(dispatchInterval)
+            Localytics.setOptions(["session_timeout": dispatchInterval as NSObject])
         }
         else {
-            Localytics.setSessionTimeoutInterval(60) // Localytics's documented default.
+            // Hsoi 2016-09-28 - when I originally wrote this, Localytics had a setSessionTimeoutInterval() API and
+            // documented 60 seconds at the default. While updating for Swift 3, I also updated the Localytics SDK
+            // and it dropped the lone API call for `setOptions()` using `session_timeout`. There's little documentation
+            // on the option and nothing stating what the default is, but Localytics.h's one reference to "timeout"
+            // says: BACKGROUND_SESSION_TIMEOUT, (15 seconds by default). Is `BACKGROUND_SESSION_TIMEOUT` the same
+            // as the `session_timeout`? I don't know. Either way, I'm sticking with 60 so that MY code at least
+            // remains consistent with its prior versions. If you want 15 (or any other value) of course it's
+            // easy enough to change by specifying the `dispatchInterval` in the platform data plist.
+            Localytics.setOptions(["session_timeout": 60 as NSObject])
         }
         
         super.initialize(with: platformData)
@@ -117,7 +125,20 @@ open class HEAnalyticsPlatformLocalytics: HEAnalyticsPlatform {
     open override func track(data: HEAnalyticsData) {
         guard !optOut && started else { return }
         
-        Localytics.tagEvent(data.event, attributes: data.parameters)
+        // Hsoi 2016-09-28 - While we allow the data.parameters value to be anything (because different analytics
+        // platforms work in their own ways), LOCALYTICS DOES NOT WANT THIS.
+        //
+        // As of (at least) Localytics SDK v4.1.0, the event attributes are specified in their ObjC header as:
+        //
+        //  nullable NSDictionary<NSString *, NSString *> *
+        //
+        // A nice way that Swift improved ObjC - lightweight generics! So Localytics expects string values.
+        //
+        // Our cast here is what Xcode 8 suggested to us as a fix, and I think it's OK -- because the hope is that
+        // you will test your code, and if there's a problem with the data you pass, it's better to crash now
+        // and get you to detect it sooner rather than later (and hopefully you'll read this comment and it
+        // provides a hint as to the issue and how to resolve it).
+        Localytics.tagEvent(data.event, attributes: data.parameters as! [String : String]?)
     }
     
     
