@@ -34,6 +34,7 @@
 //  OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
 import UIKit
+import Localytics
 
 @objc(HEAnalyticsPlatformLocalytics)
 open class HEAnalyticsPlatformLocalytics: HEAnalyticsPlatform {
