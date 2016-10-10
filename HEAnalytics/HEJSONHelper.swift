@@ -176,7 +176,7 @@ open class HEJSONHelper: NSObject {
                 let key = keys[index]
                 json += "\"\(key)\":"
 
-                let item: Any = dictionary[key]
+                let item: AnyObject? = dictionary[key]
                 
                 switch item {
                 case let string as String:
